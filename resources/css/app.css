@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+[x-cloak] {
+    display: none;
+}
+.grid-height{
+grid-auto-rows: minmax(70px, auto);
+}
+.grid-search-box{
+    grid-column: 3/7;
+    border-radius: 30px;
+    position: relative;
+    outline: none;
+}
+.grid-search-input{
+    position:absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    outline: none;
+    border-color: white;
+    border-radius: 30px;
+    padding: 30px;
+}
