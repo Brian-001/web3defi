@@ -21,7 +21,6 @@ grid-auto-rows: minmax(70px, auto);
     width: 100%;
     height: 100%;
     outline: none;
-    border-color: white;
     border-radius: 30px;
     padding: 30px;
 }
