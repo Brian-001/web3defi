@@ -13,6 +13,9 @@ class ListingController extends Controller
     public function index()
     {
         //
+        $listings = Listing::get();
+
+        return view('listings.index', compact($listings));
     }
 
     /**
@@ -21,6 +24,7 @@ class ListingController extends Controller
     public function create()
     {
         //
+        return view('listings.create');
     }
 
     /**
