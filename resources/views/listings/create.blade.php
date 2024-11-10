@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="flex items-center justify-center min-h-screen bg-slate-700">
-    <form action="#" class="shadow-lg bg-slate-700 p-6 rounded-lg w-full max-w-lg">
+    <form action="{{route('listings.store')}}" method="POST" class="shadow-lg bg-slate-700 p-6 rounded-lg w-full max-w-lg">
         @csrf
 
         <h1 class="text-2xl text-cyan-300 mb-4 place-items-center">Create a new job</h1>
@@ -40,18 +40,30 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {{-- Salary --}}
-            <div class="mb-4 flex flex-col">
-                <label for="salary" class="font-semibold">Salary<span class="text-sm text-red-500">*</span></label>
-                <input type="number" name="salary" id="salary" class="bg-slate-600 font-semibold rounded-lg p-2" required>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 mb-4">
+            <div class="flex flex-col">
+                {{-- Salary --}}
+                <label for="min_salary" class="font-semibold">Estimated Salary<span class="text-sm text-red-500">*</span></label>
+                <div class="flex flex-col md:flex-row gap-4"> {{-- Changed to flex-col for small screens and flex-row for medium and larger screens --}}
+                    {{-- Minimum Salary --}}
+                    <div class="flex flex-col w-full"> {{-- Use w-full to ensure full width on small screens --}}
+                        <label for="min_salary" class="text-sm">Minimum Salary<span class="text-sm text-red-500">*</span></label>
+                        <input type="number" name="min_salary" id="min_salary" min=0 class="bg-slate-600 font-semibold rounded-lg p-2" required>
+                    </div>
+                    {{-- Maximum Salary --}}
+                    <div class="flex flex-col w-full"> {{-- Use w-full to ensure full width on small screens --}}
+                        <label for="max_salary" class="text-sm">Maximum Salary<span class="text-sm text-red-500">*</span></label>
+                        <input type="number" name="max_salary" min="0" id="max_salary" class="bg-slate-600 font-semibold rounded-lg p-2" required>
+                    </div>
+                </div>
             </div>
+        </div>
 
-            {{-- Location --}}
-            <div class="mb-4 flex flex-col">
-                <label for="location" class="font-semibold">Location<span class="text-sm text-red-500">*</span></label>
-                <input type="text" name="location" id="location" placeholder="City, Country" class="bg-slate-600 font-semibold rounded-lg p-2">
-            </div>
+
+        {{-- Location --}}
+        <div class="mb-4 flex flex-col">
+            <label for="location" class="font-semibold">Location<span class="text-sm text-red-500">*</span></label>
+            <input type="text" name="location" id="location" placeholder="City, Country" class="bg-slate-600 font-semibold rounded-lg p-2">
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -71,7 +83,7 @@
             {{-- Job Type --}}
             <div class="mb-4 flex flex-col">
                 <label for="job_type" class= "font-semibold">Job Type<span class="text-sm text-red-500">*</span></label> 
-                <select name= "job_type"id= "job_type"class= "bg-slate-600 font-semibold rounded-lg p-2">
+                <select name= "job_type" id= "job_type"class= "bg-slate-600 font-semibold rounded-lg p-2">
                     <option value= "onsite">On-site</option> 
                     <option value= "remote">Remote</option> 
                     <option value= "hybrid">Hybrid</option> 

@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('listing_title');
             $table->text('company_description')->nullable();
+            $table->text('job_description');
             $table->text('job_roles');
             $table->text('additional_info')->nullable();
-            $table->decimal('salary', 10,2);
+            $table->string('tags');
             $table->string('location');
+            $table->string('salary');
             $table->string('job_type');
             $table->timestamps();
         });

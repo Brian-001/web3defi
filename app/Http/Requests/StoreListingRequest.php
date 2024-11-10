@@ -25,12 +25,13 @@ class StoreListingRequest extends FormRequest
             'listing_title' => 'required|string|max:255',
             'company_description' => 'nullable|string',
             'job_description' => 'required|string',
-            'job_roles' => 'required|sting',
+            'job_roles' => 'required|string',
             'additional_info' => 'nullable|string',
             'tags' => 'required|string',
             'location' => 'required|string',
-            'salary' =>'required|numeric',
-            'job_type' => 'required|string|in:onsite,remote,hybrid',
+            'min_salary' => 'required|numeric',
+            'max_salary' => 'required|numeric|gte:min_salary', //Ensure max is greater than minimum salary
+            'job_type' => 'required|string',
         ];
     }
 }

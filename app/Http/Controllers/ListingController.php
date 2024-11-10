@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreListingRequest;
 use App\Models\Listing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Http\Requests\StoreListingRequest;
 
 class ListingController extends Controller
 {
@@ -33,8 +34,23 @@ class ListingController extends Controller
      */
     public function store(StoreListingRequest $request)
     {
+        // Log validated request data for debugging
+        Log::info($request->validated());
 
-        Listing::create($request->validated());
+        // Create a new listing instance and save it to the database
+        Listing::create([
+            'listing_title' => $request->input('listing_title'),
+            'company_description' => $request->input('company_description'),
+            'job_description' => $request->input('job_description'),
+            'job_roles' => $request->input('job_roles'),
+            'additional_info' => $request->input('additional_info'),
+            'tags' => $request->input('tags'),
+            'location' => $request->input('location'),
+            // Concatenate min and max salary into one string
+            'salary' => $request->input('min_salary') . ' to ' . $request->input('max_salary'),
+            'job_type' => $request->input('job_type'),
+        ]);
+
         return redirect()->back()->with('success', 'Job created successfully');
     }
 
