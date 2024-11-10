@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreListingRequest;
 use App\Models\Listing;
 use Illuminate\Http\Request;
 
@@ -30,9 +31,11 @@ class ListingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreListingRequest $request)
     {
-        //
+
+        Listing::create($request->validated());
+        return redirect()->back()->with('success', 'Job created successfully');
     }
 
     /**
