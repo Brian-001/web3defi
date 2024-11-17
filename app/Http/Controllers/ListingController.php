@@ -15,9 +15,9 @@ class ListingController extends Controller
     public function index()
     {
         //
-        $listings = Listing::get();
+        $listings = Listing::all();
 
-        return view('listings.index', compact($listings));
+        return view('index', compact('listings'));
     }
 
     /**
@@ -37,6 +37,15 @@ class ListingController extends Controller
         // Log validated request data for debugging
         Log::info($request->validated());
 
+        //Initialize the variable for storing logo path
+        $listingLogoPath = 'images/default_logo/default_logo.jpg'; //Logo path for an image if at all listing_logo was not uploaded
+
+        //Handle file upload if an image was provided
+        if($request->hasFile('listing_logo') && $request->file('listing_logo')->isValid())
+        {
+            $listingLogoPath = $request->file('listing_logo')->store('logos', 'public');
+            //Store in public/logos directory
+        }
         // Create a new listing instance and save it to the database
         Listing::create([
             'listing_title' => $request->input('listing_title'),
@@ -49,6 +58,7 @@ class ListingController extends Controller
             // Concatenate min and max salary into one string
             'salary' => $request->input('min_salary') . ' to ' . $request->input('max_salary'),
             'job_type' => $request->input('job_type'),
+            'listing_logo'=> $listingLogoPath,
         ]);
 
         return redirect()->back()->with('success', 'Job created successfully');

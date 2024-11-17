@@ -19,6 +19,7 @@ class Listing extends Model
         'tags', 
         'location', 
         'salary', 
-        'job_type'
+        'job_type',
+        'listing_logo'
     ];
 }

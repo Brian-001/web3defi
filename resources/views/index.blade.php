@@ -73,108 +73,32 @@
     <h2 class="text-3xl text-center text-cyan-300 mb-6">Jobs</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-4">
         <!-- Card 1 -->
-        <div class="bg-slate-600 hover:bg-slate-800 p-4 rounded-lg hover:shadow-md hover:shadow-cyan-400 max-h-96">
-            <div class="flex flex-col gap-2">
-                <div class="flex items-center justify-center mb-2">
-                    <img src="{{asset('images/logo2.png')}}" alt="Company Logo" class="w-40 h-40 mr-4 bg-cover rounded-md">
+        @foreach ($listings as $listing )
+            <div class="bg-slate-600 hover:bg-slate-700 p-4 rounded-lg hover:shadow-md hover:shadow-cyan-400 max-h-96">
+                <div class="flex items-center">
+                    <div class="hidden md:flex items-center justify-center  mr-4">
+                        <img src="{{asset('storage/' . $listing->listing_logo )}}" alt="Listing Logo" class="w-16 h-16 rounded-lg">
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-semibold text-center">{{$listing->listing_title}}</h2>
+                        <p class="text-sm text-pretty overflow-hidden whitespace-nowrap text-ellipsis">{{Str::limit($listing->job_description, 100)}}.</p>
+                        <div class="flex mt-2 space-x-2 overflow-hidden">
+                            @foreach (explode(',', $listing->tags) as $tag )
+                                <div class="bg-white text-slate-700 text-sm px-2 py-0.5 rounded-full">{{$tag}}</div>
+                            @endforeach
+                        </div>
+                        <div class="flex mt-2 space-x-4">
+                            <p class="text-sm ">Salary: {{$listing->salary}}</p>
+                            <p class="text-sm">Location: {{$listing->location}}</p>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="box3">
-                    <div class="title">
-                        <h3 class="text-xl text-center mb-2">Job Title 1</h3>
-                    </div>
-                    <div class="description mb-2 relative overflow-hidden">
-                        <p class="text-sm text-pretty overflow-hidden whitespace-nowrap text-ellipsis">
-                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Est dolores
-                            since the 1500s..
-                        </p>
-                    </div>
-                    <div class="tags flex flex-wrap gap-2 mb-2">
-                        <span class="bg-white text-slate-700 text-sm px-2 py-0.5 rounded-full">Tag 1</span>
-                        <span class="bg-white text-slate-700 text-sm px-2 py-0.5 rounded-full">Tag 2</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <div class="location_salary flex flex-col">
-                            <p class="mb-2 text-sm">Location: City 1</p>
-                            <p class="mb-2 text-sm">Salary: $60,000 - $70,000</p>
-                        </div>
-                        <div class="flex items-baseline">
-                            <button class="bg-cyan-300 text-slate-700 px-2 py-1.5 rounded-md">Learn more</button>
-                        </div>
-                    </div>                        
+                <div class="flex justify-end mt-4">
+                    <button class="bg-cyan-300 text-slate-700 px-2 py-1.5 rounded-md">Learn more</button>
                 </div>
             </div>
-        </div>
-
-            
-         <!-- Card 2 -->
-        <div class="bg-slate-600 hover:bg-slate-800 p-4 rounded-lg hover:shadow-md hover:shadow-cyan-400 max-h-96">
-            <div class="flex flex-col gap-2">
-                <div class="flex items-center justify-center mb-2">
-                    <img src="{{asset('images/logo3.jpg')}}" alt="Company Logo" class="w-40 h-40 mr-4 bg-cover rounded-md">
-                </div>
-
-                <div class="box3">
-                    <div class="title">
-                        <h3 class="text-xl text-center mb-2">Job Title 2</h3>
-                    </div>
-                    <div class="description mb-2 relative overflow-hidden">
-                        <p class="text-sm text-pretty overflow-hidden whitespace-nowrap text-ellipsis">
-                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Est dolores
-                            since the 1500s...
-                        </p>
-                    </div>
-                    <div class="tags flex flex-wrap gap-2 mb-2">
-                        <span class="bg-white text-slate-700 text-sm px-2 py-0.5 rounded-full">Tag 1</span>
-                        <span class="bg-white text-slate-700 text-sm px-2 py-0.5 rounded-full">Tag 2</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <div class="location_salary flex flex-col">
-                            <p class="mb-2 text-sm">Location: City 1</p>
-                            <p class="mb-2 text-sm">Salary: $60,000 - $70,000</p>
-                        </div>
-                        <div class="flex items-baseline">
-                            <button class="bg-cyan-300 text-slate-700 px-2 py-1.5 rounded-md">Learn more</button>
-                        </div>
-                    </div>                        
-                </div>
-            </div>
-        </div>
-
-        {{-- Card 3 --}}
-        <div class="bg-slate-600 hover:bg-slate-800 p-4 rounded-lg hover:shadow-md hover:shadow-cyan-400 max-h-96">
-            <div class="flex flex-col gap-2">
-                <div class="flex items-center justify-center mb-2">
-                    <img src="{{asset('images/logo4.jpg')}}" alt="Company Logo" class="w-40 h-40 mr-4 bg-cover rounded-md">
-                </div>
-
-                <div class="box3">
-                    <div class="title">
-                        <h3 class="text-xl text-center mb-2">Job Title 3</h3>
-                    </div>
-                    <div class="description mb-2 relative overflow-hidden">
-                        <p class="text-sm text-pretty overflow-hidden whitespace-nowrap text-ellipsis">
-                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Est dolores
-                            since the 1500s..
-                        </p>
-                    </div>
-                    <div class="tags flex flex-wrap gap-2 mb-2">
-                        <span class="bg-white text-slate-700 text-sm px-2 py-0.5 rounded-full">Tag 1</span>
-                        <span class="bg-white text-slate-700 text-sm px-2 py-0.5 rounded-full">Tag 2</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <div class="location_salary flex flex-col">
-                            <p class="mb-2 text-sm">Location: City 1</p>
-                            <p class="mb-2 text-sm">Salary: $60,000 - $70,000</p>
-                        </div>
-                        <div class="flex items-baseline">
-                            <button class="bg-cyan-300 text-slate-700 px-2 py-1.5 rounded-md">Learn more</button>
-                        </div>
-                    </div>                        
-                </div>
-            </div>
-        </div>
-    </div>
+        @endforeach
+        
 @endsection
     
         

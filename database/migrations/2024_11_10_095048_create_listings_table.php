@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('location');
             $table->string('salary');
             $table->string('job_type');
+            $table->string('listing_logo')->nullable();
             $table->timestamps();
         });
     }
