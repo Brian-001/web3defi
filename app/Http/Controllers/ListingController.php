@@ -38,7 +38,7 @@ class ListingController extends Controller
         Log::info($request->validated());
 
         //Initialize the variable for storing logo path
-        $listingLogoPath = 'images/default_logo/default_logo.jpg'; //Logo path for an image if at all listing_logo was not uploaded
+        $listingLogoPath = 'storage\app\public\default_logo.jpg'; //Logo path for an image if at all listing_logo was not uploaded
 
         //Handle file upload if an image was provided
         if($request->hasFile('listing_logo') && $request->file('listing_logo')->isValid())

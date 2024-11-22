@@ -12,7 +12,9 @@ class TagController extends Controller
      */
     public function index()
     {
-        //
+        //Diplay all tags
+        $tags = Tag::all();
+        return view('tags.index', compact('tags'));
     }
 
     /**
@@ -21,6 +23,7 @@ class TagController extends Controller
     public function create()
     {
         //
+        return view('tags.create');
     }
 
     /**
@@ -29,6 +32,10 @@ class TagController extends Controller
     public function store(Request $request)
     {
         //
+        Tag::create([
+            'tag_name' => $request->input('tag_name'),
+        ]);
+        return redirect()->back()->with('success', 'Tag created successfully');
     }
 
     /**

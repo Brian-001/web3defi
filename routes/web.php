@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
 // Update this route to use ListingController's index method
@@ -27,4 +28,26 @@ Route::prefix('listings')->group(function(){
 
     // Delete specific listing
     Route::delete('/{id}', [ListingController::class, 'destroy'])->name('listings.destroy');
+});
+
+Route::prefix('tags')->group(function(){
+    Route::get('/', [TagController::class, 'index'])->name('tags.index');
+
+    // Show form to create new tag
+    Route::get('/create', [TagController::class, 'create'])->name('tags.create');
+
+    // Store new tag in db
+    Route::post('/store', [TagController::class, 'store'])->name('tags.store');
+
+    // Show a specific tag
+    Route::get('/{id}', [TagController::class, 'show'])->name('tags.show');
+
+    // Show form to edit specific tag
+    Route::get('/{id}/edit', [TagController::class, 'edit'])->name('tags.edit');
+
+    // Update specific tag
+    Route::put('/{id}', [TagController::class, 'update'])->name('tags.update');
+
+    // Delete specific tag
+    Route::delete('/{id}', [TagController::class, 'destroy'])->name('tags.destroy');
 });

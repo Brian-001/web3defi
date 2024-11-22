@@ -52,10 +52,12 @@
             <!-- Content for Tab 1 -->
             <p>Web3 Jobs</p>
             <a href="{{route('listings.create')}}">Create Listing</a>
+            
         </div>
         <div x-show="tab === 'tab2'" class="p-4">
             <!-- Content for Tab 2 -->
             <p>Trending Jobs</p>
+            <a href="{{route('tags.create')}}">Create tag</a>
         </div>
         <div x-show="tab === 'tab3'" class="p-4">
             <!-- Content for Tab 3 -->
@@ -71,14 +73,17 @@
         <input type="text" placeholder="Search..." class="search-bar font-semibold tracking-wide md:w-1/2 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-300 bg-slate-600">
     </div>
     <h2 class="text-3xl text-center text-cyan-300 mb-6">Jobs</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
         <!-- Card 1 -->
         @foreach ($listings as $listing )
             <div class="bg-slate-600 hover:bg-slate-700 p-4 rounded-lg hover:shadow-md hover:shadow-cyan-400 max-h-96">
+                <div class="flex items-end justify-end">
+                    <p class="text-sm text-gray-300 opacity-50">{{ $listing->created_at_formatted }}</p>
+                </div>
+                <div class="hidden md:flex items-center justify-center  mr-4">
+                    <img src="{{asset('storage/' . $listing->listing_logo )}}" alt="Listing Logo" class="w-16 h-16 rounded-full bg-cover object-cover">
+                </div>
                 <div class="flex items-center">
-                    <div class="hidden md:flex items-center justify-center  mr-4">
-                        <img src="{{asset('storage/' . $listing->listing_logo )}}" alt="Listing Logo" class="w-16 h-16 rounded-lg">
-                    </div>
                     <div>
                         <h2 class="text-lg font-semibold text-center">{{$listing->listing_title}}</h2>
                         <p class="text-sm text-pretty overflow-hidden whitespace-nowrap text-ellipsis">{{Str::limit($listing->job_description, 100)}}.</p>

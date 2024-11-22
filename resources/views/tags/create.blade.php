@@ -20,17 +20,6 @@
                 <span class="text-red-500 text-sm">{{$message}}</span>
             @enderror
         </div>
-
-        {{-- Location --}}
-        <div class="mb-4 flex flex-col">
-            <label for="location" class="font-semibold">Location<span class="text-sm text-red-500">*</span></label>
-            <input type="text" name="location" id="location" value="{{old('location')}}" placeholder="City, Country" class="bg-slate-600 font-semibold rounded-lg p- focus:outline-none focus:ring-2 focus:ring-cyan-300">
-            @error('location')
-                <span class="text-red-500 text-sm">{{$message}}</span>
-            @enderror
-        </div>
-
-
                 
         <div>
             <button type="submit" class="bg-cyan-300 text-slate-700 px-2 py-1.5 rounded-md">Post Job</button>

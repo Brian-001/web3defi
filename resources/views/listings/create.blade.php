@@ -101,7 +101,7 @@
             {{-- Tags --}}
             <div class="mb-4 flex flex-col">
                 <label for="tags" class="font-semibold">Tags<span class="text-sm text-red-500">*</span></label>
-                <select name="tags" id="tags" class="bg-slate-600 font-semibold rounded-lg p-2">
+                <select name="tags" id="tags" class="bg-slate-600 font-semibold rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-cyan-300">
                     <option value="" class="text-gray-200" disabled selected>--Select a tag--</option>
                     <option value="Laravel">Laravel</option>
                     <option value="JavaScript">JavaScript</option>
