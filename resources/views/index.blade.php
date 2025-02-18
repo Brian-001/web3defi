@@ -23,6 +23,20 @@
             <div class="mb-4 bg-slate-600 py-4 hover:drop-shadow-md nav-link">
                 <a href="#" class="text-white hover:text-cyan-300">Contact</a>
             </div>
+            <div class="mt-8">
+                @if (Auth::check())
+                    <a href="{{route('logout')}}" 
+                    class="text-gray-800 bg-gray-300  hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+
+                    <form id="logout-form" action = "{{route('logout')}}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                @else
+                    <a href="{{route('login')}}" class="text-gray-800 bg-gray-300  hover:text-white px-3 py-2 rounded-md text-sm font-medium">Login</a>
+                    <a href="{{route('register')}}" class="text-gray-800 bg-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Register</a>
+                @endif
+            </div>
         </nav>
     </div>
 
