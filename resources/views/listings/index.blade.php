@@ -26,7 +26,7 @@
                         <p class="mb-2 text-sm">Salary: {{$listing->salary}}</p>
                     </div>
                     <div class="flex items-baseline">
-                        <button class="bg-cyan-300 text-slate-700 px-2 py-1.5 rounded-md">Learn more</button>
+                        <a href="{{ route('listings.show', $listing->id)}}" class="bg-white text-slate-700 px-2 py-1.5 rounded-md">Learn more</a>
                     </div>
                 </div>                        
             </div>

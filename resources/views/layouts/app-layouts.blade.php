@@ -22,7 +22,7 @@
             }
         </style>
     </head>
-    <body class="font-sans antialiased dark:bg-slate-700 dark:text-white">
+    <body class="font-sans antialiased bg-slate-700">
         @yield('content')
     </body>
 </html>

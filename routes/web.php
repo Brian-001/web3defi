@@ -18,7 +18,7 @@ Route::prefix('listings')->group(function(){
     Route::post('/store', [ListingController::class, 'store'])->name('listings.store');
 
     // Show a specific listing
-    Route::get('/{id}', [ListingController::class, 'show'])->name('listings.show');
+    Route::get('/listings/{listing}', [ListingController::class, 'show'])->name('listings.show');
 
     // Show form to edit specific listing
     Route::get('/{id}/edit', [ListingController::class, 'edit'])->name('listings.edit');

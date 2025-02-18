@@ -70,6 +70,8 @@ class ListingController extends Controller
     public function show(Listing $listing)
     {
         //
+        Log::info('Listing Data:', $listing->toArray());
+        return view('listings.show', compact('listing'));
     }
 
     /**
