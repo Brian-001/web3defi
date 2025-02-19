@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
@@ -51,3 +52,7 @@ Route::prefix('tags')->group(function(){
     // Delete specific tag
     Route::delete('/{id}', [TagController::class, 'destroy'])->name('tags.destroy');
 });
+
+// Job Application
+Route::get('/apply/{listing}', [JobApplicationController::class, 'showJobApplicationForm'])->name('apply.form');
+Route::post('/apply/{listing}', [JobApplicationController::class, 'submitApplication'])->name('apply.submit');

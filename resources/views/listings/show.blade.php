@@ -1,8 +1,8 @@
 @extends('layouts.app-layouts')
 
 @section('content')
-    <div class="grid-grid-cols-1 gap-4 items-center justify-center">
-        <div class="bg-slate-600 p-6 rounded-lg shadow-lg w-full md:w-1/2 mt-10 mb-10 md:mx-auto h-full">
+    <div class="grid grid-cols-1 gap-4 items-center justify-center mb-10">
+        <div class="bg-slate-600 p-6 rounded-lg shadow-lg w-full md:w-1/2 mt-10 md:mx-auto h-full">
             <div class="flex items-center justify-between flex-wrap">
                 <a href="/" class="flex  gap-4">
                     <span class="text-white order-2">Back</span> 
@@ -65,10 +65,7 @@
                 <p class="text-white text-sm md:tracking-wider">{{$listing->job_type}}</p>
             </div>
             <div class="flex items-center justify-center mx-4 mb-4">
-                <form action="#" method="post">
-                    @csrf
-                    <button type="submit" class="bg-cyan-300 text-gray-700 font-semibold rounded-lg px-3 py-1.5 hover:bg-cyan-500 hover:text-white">Apply</button>
-                </form>
+                <a href="{{route('apply.form', $listing)}}" class="bg-cyan-300 text-gray-700 font-semibold rounded-lg px-3 py-1.5 hover:bg-cyan-500 hover:text-white">Apply</a>
             </div>
             
         </div>
