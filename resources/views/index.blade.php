@@ -94,8 +94,13 @@
                 <div class="flex items-end justify-end">
                     <p class="text-sm text-gray-300 opacity-50">{{ $listing->created_at_formatted }}</p>
                 </div>
-                <div class="hidden md:flex items-center justify-center  mr-4">
-                    <img src="{{asset('storage/' . $listing->listing_logo )}}" alt="Listing Logo" class="w-16 h-16 rounded-full bg-cover object-cover">
+                <div class="hidden md:flex items-center justify-center mr-4">
+                    
+                    <img 
+                        src="{{$listing->listing_logo ? asset('storage/' . $listing->listing_logo) : asset('images/default_logo.jpg') }}" 
+                        alt="Listing Logo" 
+                        class="w-16 h-16 rounded-full bg-cover object-cover"
+                    >
                 </div>
                 <div class="flex items-center">
                     <div>
@@ -107,8 +112,14 @@
                             @endforeach
                         </div>
                         <div class="flex mt-2 space-x-4">
-                            <p class="text-sm text-white">Salary: {{$listing->salary}}</p>
-                            <p class="text-sm text-white">Location: {{$listing->location}}</p>
+                            <div>
+                                <h2 class="text-cyan-300">Salary</h2>
+                                <p class="text-sm text-white"><span class="font-semibold text-white">$ </span>{{$listing->salary}} <span class="font-semibold text-white"> K</p>
+                            </div>
+                            <div>
+                                <h2 class="text-cyan-300">Location</h2>
+                                <p class="text-sm text-white">{{$listing->location}}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
