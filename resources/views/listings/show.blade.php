@@ -18,7 +18,7 @@
             </div>
             <div class="mx-4 mb-4">
                 <h2 class="text-cyan-300">Company description</h2>
-                <p class="text-white tracking-wider">{{$listing->company_description}}</p>
+                <p class="text-white text-sm tracking-wider">{{$listing->company_description}}</p>
             </div>
             <div class="mx-4 mb-4">
                 <h2 class="text-cyan-300">Job Description</h2>
@@ -27,11 +27,22 @@
 
             <div class="mx-4 mb-4">
                 <h2 class="text-cyan-300">Job Roles</h2>
-                <p class="text-white text-sm md:tracking-wider">{{$listing->job_roles}}</p>
+                <ul style="list-style-type:disc;" class="ml-8 mt-4">
+                    @if(!empty($listing->formatted_job_roles))
+                        @foreach($listing->formatted_job_roles as $index => $jobRole)
+                            <li class="text-white text-sm md:tracking-wider mb-3">{{ $jobRole }}</li>
+                            @if($index < count($listing->formatted_job_roles) - 1)
+                                
+                            @endif
+                        @endforeach
+                    @else
+                        <li>No job roles available.</li>
+                    @endif
+                </ul>
             </div>
             <div class="mx-4 mb-4">
                 <h2 class="text-cyan-300">Additional Info</h2>
-                <p class="text-white text-sm md:tracking-wider">{{$listing->job_roles}}</p>
+                <p class="text-white text-sm md:tracking-wider">{{$listing->additional_info}}</p>
             </div>
             <div class="mx-4 mb-4">
                 <h2 class="text-cyan-300">Skills</h2>

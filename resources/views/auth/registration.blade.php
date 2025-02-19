@@ -4,9 +4,10 @@
 @section('content')
 <div class="flex items-center justify-center min-h-screen">
     <div class="bg-white p-10 rounded-lg shadow-md w-96">
-        {{-- <div class="mt-4 mb-4 flex items-center justify-end">
-            <a href="/" class="flex gap-1 hover:gap-2"><x-icons.arrow-back />Back</a>
-        </div> --}}
+        
+        <div class="mt-4 mb-4 flex items-center justify-end">
+            <a href="/" class="flex gap-1 hover:gap-2"><x-icons.arrow-uturn />Back</a>
+        </div>
         <h1 class="text-2xl font-bold mb-6 text-center">Register</h1>
         <form action="{{route('register')}}" method="POST" >
             @csrf

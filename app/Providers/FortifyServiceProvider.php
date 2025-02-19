@@ -49,7 +49,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         Fortify::registerView(function(){
-            return view('auth.registration', ['roles', Role::all()]);
+            return view('auth.registration', ['roles'=> Role::all()]);
         });
     }
 }

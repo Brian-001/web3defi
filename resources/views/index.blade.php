@@ -94,8 +94,7 @@
                 <div class="flex items-end justify-end">
                     <p class="text-sm text-gray-300 opacity-50">{{ $listing->created_at_formatted }}</p>
                 </div>
-                <div class="hidden md:flex items-center justify-center mr-4">
-                    
+                <div class="hidden md:flex items-center justify-center mr-4">   
                     <img 
                         src="{{$listing->listing_logo ? asset('storage/' . $listing->listing_logo) : asset('images/default_logo.jpg') }}" 
                         alt="Listing Logo" 

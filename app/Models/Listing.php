@@ -40,4 +40,17 @@ class Listing extends Model
             ]
         ]);
     }
+
+    //Format job roles into an array, splitting by full stops
+
+    public function getFormattedJobRolesAttribute(): array
+    {
+        //Split the job roles by full-stops and remove any empty values
+        $jobRoles = array_filter(explode('.', $this->job_roles));
+
+        //Trim whitespace from each job role
+        $jobRoles = array_map('trim', $jobRoles);
+
+        return $jobRoles;
+    }
 }
