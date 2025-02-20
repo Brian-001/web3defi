@@ -39,6 +39,7 @@ class JobApplicationController extends Controller
 
         //Save application data to database
         JobApplication::create($validatedData);
+        // dd($validatedData);
         
         return redirect()->route('home')->with('success', 'Your application has been submitted successfully');
     }

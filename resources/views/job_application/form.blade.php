@@ -49,11 +49,11 @@
         <!-- Resume Upload -->
         <div class="flex flex-col mx-4 mb-4">
             <label for="resume" class="text-white mb-3">Upload Resume (PDF only)<span class="tesxt-sm text-red-500">*</span></label>
-            <input type="file" id="resume" name="resume" class="file:px-2 file:py-1.5 file:border-none file:rounded-lg file:bg-slate-500
+            <input type="file" id="resume_path" name="resume_path" class="file:px-2 file:py-1.5 file:border-none file:rounded-lg file:bg-slate-500
              file:text-white text-white font-semibold file:cursor-pointer rounded-md shadow-sm outline-none border-none file:outline-none focus:ring-0  shadow-cyan-300" 
              required
             >
-            @error('resume')
+            @error('resume_path')
                 <span class="text-sm text-red-500">{{ $message }}</span>
             @enderror
         </div>
@@ -61,7 +61,7 @@
         <!-- Submit Button -->
         <div class="flex items-center justify-center mb-4 mt-10">
             <button type="submit" class="bg-cyan-300 text-slate-700 px-2 py-1.5 rounded-md hover:bg-cyan-500"
-            onsubmit="return confirm('The information I am about to submit is true and the best of my knowledge')">Submit Application</button>
+            >Submit Application</button>
         </div>
     </form>
     </div>

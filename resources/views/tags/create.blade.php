@@ -14,15 +14,15 @@
             </div>
         @endif
         <div class="mb-4 flex flex-col">
-            <label for="tag_name" class="font-semibold">Tag Name <span class="text-sm text-red-500">*</span></label>
-            <input type="text" name="tag_name" id="tag_name" value="{{old('tag_name')}}" class="focus:outline-none focus:ring-2 focus:ring-cyan-300 bg-slate-600 font-semibold rounded-lg p-2" autocomplete="off" required>
+            <label for="tag_name" class="font-semibold text-white mb-2">Tag Name <span class="text-sm text-red-500">*</span></label>
+            <input type="text" name="tag_name" id="tag_name" value="{{old('tag_name')}}" class="focus:outline-none focus:ring-2 focus:ring-cyan-300 bg-slate-600 text-white font-semibold rounded-lg p-2" autocomplete="off" required>
             @error('tag_name')
                 <span class="text-red-500 text-sm">{{$message}}</span>
             @enderror
         </div>
                 
         <div>
-            <button type="submit" class="bg-cyan-300 text-slate-700 px-2 py-1.5 rounded-md">Post Job</button>
+            <button type="submit" class="bg-cyan-300 text-slate-700 px-2 py-1.5 rounded-md">Add Tag</button>
         </div>
     </form> 
 </div> 
