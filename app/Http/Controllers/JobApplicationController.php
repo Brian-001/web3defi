@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JobApplication;
 use App\Models\Listing;
+use Illuminate\Contracts\Support\ValidatedData;
 use Illuminate\Http\Request;
 
 class JobApplicationController extends Controller
@@ -19,16 +21,24 @@ class JobApplicationController extends Controller
     public function submitApplication(Request $request, Listing $listing)
     {
         //Validate the form data
-        $request->validate([
+        $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'resume' => 'required|file|mimes:pdf|max:2048'
+            'resume_path' => 'required|file|mimes:pdf|max:2048'
         ]);
 
+        //Save listing_id
+        $validatedData['listing_id'] = $listing->id;
+
         //Save resume path
-        $resumePath = $request->file('resume')->store('/storage', 'resumes');
+        if($request->hasFile('resume_path')){
+            $resume_path = $request->file('resume_path')->store('resumes', 'public');
+            $validatedData['resume_path'] = $resume_path;
+        }
+        
 
         //Save application data to database
+        JobApplication::create($validatedData);
         
         return redirect()->route('home')->with('success', 'Your application has been submitted successfully');
     }

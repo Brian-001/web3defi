@@ -30,7 +30,7 @@
              <!-- Applicant Name -->
             <div class="flex flex-col mx-4 mb-4">
                 <label for="name" class="text-white mb-2">Your Name <span class="tesxt-sm text-red-500">*</span></label>
-                <input type="text" class="text-white font-semibold rounded-md bg-slate-500 focus:ring-cyan-300" id="name" name="name" autocomplete="off" required>
+                <input type="text" id="name" name="name" class="text-white font-semibold rounded-md bg-slate-500 focus:ring-cyan-300" autocomplete="off" value="{{old('name')}}" required>
                 @error('name')
                     <span class="text-sm text-red-500">{{ $message }}</span>
                 @enderror
@@ -39,7 +39,7 @@
             <!-- Applicant Email -->
             <div class="flex flex-col mx-4 mb-4">
                 <label for="email" class="text-white mb-2">Your Email<span class="tesxt-sm text-red-500">*</span></label>
-                <input type="email" class="text-white font-semibold rounded-md bg-slate-500 focus:ring-cyan-300" id="email" name="email" autocomplete="off" required>
+                <input type="email" id="email" name="email" class="text-white font-semibold rounded-md bg-slate-500 focus:ring-cyan-300" autocomplete="off" value="{{old('email')}}" required>
                 @error('email')
                     <span class="text-sm text-red-500">{{ $message }}</span>
                 @enderror
@@ -60,7 +60,8 @@
 
         <!-- Submit Button -->
         <div class="flex items-center justify-center mb-4 mt-10">
-            <button type="submit" class="bg-cyan-300 text-slate-700 px-2 py-1.5 rounded-md">Submit Application</button>
+            <button type="submit" class="bg-cyan-300 text-slate-700 px-2 py-1.5 rounded-md hover:bg-cyan-500"
+            onsubmit="return confirm('The information I am about to submit is true and the best of my knowledge')">Submit Application</button>
         </div>
     </form>
     </div>
