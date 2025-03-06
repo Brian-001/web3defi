@@ -72,7 +72,7 @@
                 {{-- Job Roles --}}
                 <div class="mb-4 flex flex-col mr-4 w-full">
                     <label for="job_roles" class="font-semibold text-white mb-2">Job Roles<span class="text-sm text-red-500">*</span></label>
-                    <textarea name="job_roles" id="job_roles" cols="30" rows="5" value={{old('job_roles')}} placeholder="Rememeber to include fullstops after every statement" class="text-white focus:outline-none focus:ring-2 focus:ring-cyan-300 bg-slate-600 h-32 resize-none p-2 rounded-lg"></textarea>
+                    <textarea name="job_roles" id="job_roles" cols="30" rows="5" placeholder="Rememeber to include fullstops after every statement" class="text-white focus:outline-none focus:ring-2 focus:ring-cyan-300 bg-slate-600 h-32 resize-none p-2 rounded-lg">{{old('job_roles')}}</textarea>
                     @error('job_roles')
                         <span class="text-red-500 text-sm">{{$message}}</span>
                     @enderror
@@ -81,7 +81,7 @@
                 {{-- Additional Information --}}
                 <div class="mb-4 flex flex-col w-full">
                     <label for="additional_info" class="font-semibold text-white mb-2">Additional Information</label>
-                    <textarea name="additional_info" id="additional_info" cols="30" rows="5" value={{old('additional_info')}} placeholder="More info about job e.g., Benefits, Holidays" class="text-white focus:outline-none focus:ring-2 focus:ring-cyan-300 bg-slate-600 h-32 resize-none p-2 rounded-lg"></textarea>
+                    <textarea name="additional_info" id="additional_info" cols="30" rows="5" placeholder="More info about job e.g., Benefits, Holidays" class="text-white focus:outline-none focus:ring-2 focus:ring-cyan-300 bg-slate-600 h-32 resize-none p-2 rounded-lg">{{old('additional_info')}}</textarea>
                     @error('additional_info')
                         <span class="text-red-500 text-sm">{{$message}}</span>
                     @enderror
@@ -92,16 +92,23 @@
                 {{-- Tags --}}
                 <div class="mb-4 flex flex-col">
                     <label for="tags" class="font-semibold text-white mb-2">Tags<span class="text-sm text-red-500">*</span></label>
-                    <select name="tags" id="tags" class=" bg-slate-600 font-semibold text-white rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-cyan-300">
-                        <option value="" class="text-gray-200" disabled selected>--Select a tag--</option>
-                        <option value="Laravel">Laravel</option>
-                        <option value="JavaScript">JavaScript</option>
-                        <option value="Java">Java</option>
-                        <option value="Golang">Golang</option>
-                        <option value="Rust">Rust</option>
-                    </select>
+                    <div class="bg-slate-600 rounded-lg p-4 max-h-56 overflow-y-auto">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                            @foreach ($tags as $tag)
+                                <label class="flex items-center space-x-2 text-white cursor-pointer">
+                                    <input 
+                                        type="checkbox" 
+                                        name="tags[]" 
+                                        value="{{ $tag->id }}" 
+                                        class="form-checkbox p-2 h-5 w-5 text-cyan-300 bg-slate-700 border-slate-500 rounded focus:ring-2 focus:ring-cyan-300"
+                                    >
+                                    <span class="font-semibold">{{ $tag->tag_name }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
                     @error('tags')
-                        <span class="text-red-500 text-sm">{{$message}}</span>
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
 
@@ -161,6 +168,7 @@
             <div>
                 <button type="submit" class="bg-cyan-300 text-slate-700 px-2 py-1.5 rounded-md">Post Job</button>
             </div>
+            
         </form> 
     </div>
     

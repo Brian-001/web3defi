@@ -30,7 +30,7 @@ class StoreListingRequest extends FormRequest
             'job_description' => 'required|string',
             'job_roles' => 'required|string',
             'additional_info' => 'nullable|string',
-            'tags' => 'required|string',
+            'tags' => 'required|array',
             'location' => 'required|string',
             'min_salary' => 'required|numeric',
             'max_salary' => 'required|numeric|gte:min_salary', //Ensure max is greater than minimum salary

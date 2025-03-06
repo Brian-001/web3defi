@@ -32,6 +32,7 @@ class TagController extends Controller
     public function store(Request $request)
     {
         //
+        $selectedTagsIds = $request->input('tags', []);
         Tag::create([
             'tag_name' => $request->input('tag_name'),
         ]);

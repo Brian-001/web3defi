@@ -18,36 +18,46 @@
             </div>
             <div class="mx-4 mb-4">
                 <h2 class="text-cyan-300">Company description</h2>
-                <p class="text-white text-sm tracking-wider">{{$listing->company_description}}</p>
+                <p class="text-white text-sm md:text-base tracking-wider">{{$listing->company_description}}</p>
             </div>
             <div class="mx-4 mb-4">
                 <h2 class="text-cyan-300">Job Description</h2>
-                <p class="text-white text-sm md:tracking-wider">{{$listing->job_description}}</p>
+                <p class="text-white text-sm md:text-base md:tracking-wider">{{$listing->job_description}}</p>
             </div>
 
             <div class="mx-4 mb-4">
-                <h2 class="text-cyan-300">Job Roles</h2>
-                <ul style="list-style-type:disc;" class="ml-8 mt-4">
-                    @if(!empty($listing->formatted_job_roles))
-                        @foreach($listing->formatted_job_roles as $index => $jobRole)
-                            <li class="text-white text-sm md:tracking-wider mb-3">{{ $jobRole }}</li>
-                            @if($index < count($listing->formatted_job_roles) - 1)
-                                
-                            @endif
+                <h2 class="text-cyan-300 mb-4">Job Roles</h2>
+                @if(!empty($listing->formatted_job_roles) && is_array($listing->formatted_job_roles))
+                    <ul class="ml-6 space-y-3">
+                        @foreach($listing->formatted_job_roles as $jobRole)
+                            <li class="text-white text-sm md:text-base md:tracking-wide flex items-start">
+                                <span class="text-cyan-300 mr-2">•</span>
+                                <span>{{ $jobRole }}</span>
+                            </li>
                         @endforeach
-                    @else
-                        <li>No job roles available.</li>
-                    @endif
-                </ul>
+                    </ul>
+                @else
+                    <p class="text-white text-sm italic">No job roles available.</p>
+                @endif
             </div>
-            <div class="mx-4 mb-4">
-                <h2 class="text-cyan-300">Additional Info</h2>
-                <p class="text-white text-sm md:tracking-wider">{{$listing->additional_info}}</p>
+            {{-- Additional Information (Conditional) --}}
+            @if (!empty($listing->additional_info))
+            <div class="mb-4 mx-4 flex flex-col w-full">
+                <h3 class="text-cyan-300 mb-2">Additional Information</h3>
+                <div class="text-white text-sm md:text-base md:tracking-wide bg-slate-600 p-2 rounded-lg">
+                    {{ $listing->additional_info }}
+                </div>
             </div>
-            <div class="mx-4 mb-4">
-                <h2 class="text-cyan-300">Skills</h2>
-                @foreach (explode(',', $listing->tags) as $tag )
-                    <div class="bg-white text-slate-700 text-sm px-2 py-0.5 rounded-full max-w-fit">{{$tag}}</div>
+            @endif
+            <div class="flex mt-2 mb-4 mx-4 space-x-2 overflow-hidden">
+                @php
+                    // Decode the JSON string into an array of tag IDs
+                    $tagIds = json_decode($listing->tags, true) ?? [];
+                    // Fetch the tags from the database
+                    $tags = App\Models\Tag::whereIn('id', $tagIds)->pluck('tag_name')->toArray();
+                @endphp
+                @foreach ($tags as $tag)
+                    <div class="bg-white text-slate-700 text-sm px-2 py-0.5 rounded-full">{{ $tag }}</div>
                 @endforeach
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2">

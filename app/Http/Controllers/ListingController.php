@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tag;
 use App\Models\Listing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -26,7 +27,9 @@ class ListingController extends Controller
     public function create()
     {
         //
-        return view('listings.create');
+        $tags = Tag::all();
+        // dd($tags);
+        return view('listings.create', compact('tags'));
     }
 
     /**
@@ -53,7 +56,8 @@ class ListingController extends Controller
             'job_description' => $request->input('job_description'),
             'job_roles' => $request->input('job_roles'),
             'additional_info' => $request->input('additional_info'),
-            'tags' => $request->input('tags'),
+            // 'tags' => $request->input('tags'),
+            'tags' => json_encode($request->input('tags')), // Store tags as JSON
             'location' => $request->input('location'),
             // Concatenate min and max salary into one string
             'salary' => $request->input('min_salary') . ' to ' . $request->input('max_salary'),
@@ -61,7 +65,9 @@ class ListingController extends Controller
             'listing_logo'=> $listingLogoPath,
         ]);
 
-        return redirect()->back()->with('success', 'Job created successfully');
+        notify()->success('Job created successfully');
+
+        return redirect()->back();
     }
 
     /**

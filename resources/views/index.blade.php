@@ -106,13 +106,19 @@
                         <h2 class="text-lg font-semibold text-cyan-300">{{$listing->listing_title}}</h2>
                         <p class="text-sm text-pretty overflow-hidden whitespace-nowrap text-ellipsis text-gray-100">{{Str::limit($listing->job_description, 100)}}.</p>
                         <div class="flex mt-2 space-x-2 overflow-hidden">
-                            @foreach (explode(',', $listing->tags) as $tag )
-                                <div class="bg-white text-slate-700 text-sm px-2 py-0.5 rounded-full">{{$tag}}</div>
+                            @php
+                                // Decode the JSON string into an array of tag IDs
+                                $tagIds = json_decode($listing->tags, true) ?? [];
+                                // Fetch the tags from the database
+                                $tags = App\Models\Tag::whereIn('id', $tagIds)->pluck('tag_name')->toArray();
+                            @endphp
+                            @foreach ($tags as $tag)
+                                <div class="bg-white text-slate-700 text-sm px-2 py-0.5 rounded-full">{{ $tag }}</div>
                             @endforeach
                         </div>
                         <div class="flex mt-2 space-x-4">
                             <div>
-                                <h2 class="text-cyan-300">Salary</h2>
+                                <h2 class="text-cyan-300">Estimated Salary</h2>
                                 <p class="text-sm text-white"><span class="font-semibold text-white">$ </span>{{$listing->salary}} <span class="font-semibold text-white"> K</p>
                             </div>
                             <div>
