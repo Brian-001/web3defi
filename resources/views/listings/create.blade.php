@@ -37,7 +37,8 @@
                 {{-- Location --}}
                 <div class="mb-4 flex flex-col">
                     <label for="location" class="font-semibold text-white mb-2">Location<span class="text-sm text-red-500">*</span></label>
-                    <input type="text" name="location" id="location" value="{{old('location')}}" placeholder="City, Country" class="text-white bg-slate-600 font-semibold rounded-lg p- focus:outline-none focus:ring-2 focus:ring-cyan-300">
+                    <input type="text" name="location" id="location" value="{{old('location')}}" placeholder="City, Country" 
+                    class="text-white bg-slate-600 font-semibold rounded-lg p- focus:outline-none focus:ring-2 focus:ring-cyan-300">
                     @error('location')
                         <span class="text-red-500 text-sm">{{$message}}</span>
                     @enderror
@@ -49,7 +50,8 @@
                 {{-- Company Description --}}
                 <div class="mb-4 flex flex-col mr-4 w-full">
                     <label for="company_description" class="font-semibold text-white mb-2">Company Description</label>
-                    <textarea name="company_description" id="company_description" cols="30" rows="5" value="{{old('company_description')}}" placeholder="Summarised information about the company" class="text-white focus:outline-none focus:ring-2 focus:ring-cyan-300 bg-slate-600 h-32 resize-none p-2 rounded-lg"></textarea>
+                    <textarea name="company_description" id="company_description" cols="30" rows="5" value="{{old('company_description')}}" 
+                    placeholder="Summarised information about the company" class="text-white focus:outline-none focus:ring-2 focus:ring-cyan-300 bg-slate-600 h-32 resize-none p-2 rounded-lg"></textarea>
                     @error('company_description')
                         <span class="text-red-500 text-sm">{{$message}}</span>
                     @enderror

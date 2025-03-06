@@ -14,8 +14,8 @@
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 
         <!-- Styles -->
-        @vite('resources/css/app.css')
-
+        @notifyCss
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
         <style>
             html {
                 scroll-behavior: smooth;
@@ -24,5 +24,8 @@
     </head>
     <body class="font-sans antialiased bg-slate-700">
         @yield('content')
+
+        <x-notify::notify />
+        @notifyJs
     </body>
 </html>

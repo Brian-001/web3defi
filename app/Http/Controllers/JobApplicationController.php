@@ -6,6 +6,8 @@ use App\Models\JobApplication;
 use App\Models\Listing;
 use Illuminate\Contracts\Support\ValidatedData;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Redirect;
 
 class JobApplicationController extends Controller
 {
@@ -40,7 +42,7 @@ class JobApplicationController extends Controller
         //Save application data to database
         JobApplication::create($validatedData);
         // dd($validatedData);
-        
-        return redirect()->route('home')->with('success', 'Your application has been submitted successfully');
+        notify()->success('Your application has been submitted successfully');
+        return redirect()->route('home');
     }
 }
