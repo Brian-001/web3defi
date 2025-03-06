@@ -35,7 +35,9 @@ class TagController extends Controller
         Tag::create([
             'tag_name' => $request->input('tag_name'),
         ]);
-        return redirect()->back()->with('success', 'Tag created successfully');
+        notify()->success('Tag created successfully');
+
+        return redirect()->back();
     }
 
     /**
@@ -44,6 +46,9 @@ class TagController extends Controller
     public function show(Tag $tag)
     {
         //
+        $tag = Tag::findOrFail($tag->id);
+        return view('tags.show', compact('tag'));
+        
     }
 
     /**
@@ -52,6 +57,8 @@ class TagController extends Controller
     public function edit(Tag $tag)
     {
         //
+        $tag = Tag::findOrFail($tag->id);
+        return view('tags.edit', compact('tag'));
     }
 
     /**
@@ -60,6 +67,9 @@ class TagController extends Controller
     public function update(Request $request, Tag $tag)
     {
         //
+        $tag->update(['tag_name' => $request->input('tag_name')]);
+        notify()->success('Tag updated successfully');
+        return redirect()->back();
     }
 
     /**
@@ -68,5 +78,7 @@ class TagController extends Controller
     public function destroy(Tag $tag)
     {
         //
+        $tag->delete();
+        notify()->success('Tag deleted successfully');
     }
 }
