@@ -19,16 +19,16 @@ Route::prefix('listings')->group(function(){
     Route::post('/store', [ListingController::class, 'store'])->name('listings.store');
 
     // Show a specific listing
-    Route::get('/listings/{listing}', [ListingController::class, 'show'])->name('listings.show');
+    Route::get('/{listing}', [ListingController::class, 'show'])->name('listings.show');
 
     // Show form to edit specific listing
-    Route::get('/{id}/edit', [ListingController::class, 'edit'])->name('listings.edit');
+    Route::get('/{listing}/edit', [ListingController::class, 'edit'])->name('listings.edit');
 
     // Update specific listing
-    Route::put('/{id}', [ListingController::class, 'update'])->name('listing.update');
+    Route::put('/{listing}', [ListingController::class, 'update'])->name('listings.update');
 
     // Delete specific listing
-    Route::delete('/{id}', [ListingController::class, 'destroy'])->name('listings.destroy');
+    Route::delete('/{listing}', [ListingController::class, 'destroy'])->name('listings.destroy');
 });
 
 Route::prefix('tags')->group(function(){

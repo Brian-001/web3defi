@@ -7,6 +7,7 @@ use App\Models\Listing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\StoreListingRequest;
+use App\Http\Requests\UpdateListingRequest;
 
 class ListingController extends Controller
 {
@@ -86,14 +87,39 @@ class ListingController extends Controller
     public function edit(Listing $listing)
     {
         //
+        $tags = Tag::all();
+        $listing = Listing::findOrFail($listing->id);
+        return view('listings.edit', compact('listing', 'tags'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Listing $listing)
+    public function update(UpdateListingRequest $request, Listing $listing)
     {
         //
+        $listingLogoPath = $listing->listing_logo;
+
+        //Handle file upload if an image was provided
+        if($request->hasFile('listing_logo') && $request->file('listing_logo')->isValid())
+        {
+            $listingLogoPath = $request->file('listing_logo')->store('logos', 'public');
+        }
+        $listing->update([
+            'listing_title' => $request->input('listing_title'),
+            'company_description' => $request->input('company_description'),
+            'job_description' => $request->input('job_description'),
+            'job_roles' => $request->input('job_roles'),
+            'additional_info' => $request->input('additional_info'),
+            'tags' => json_encode($request->input('tags')),
+            'location' => $request->input('location'),
+            'salary' => $request->input('min_salary') . ' to ' . $request->input('max_salary'),
+            'job_type' => $request->input('job_type'),
+            'listing_logo' => $listingLogoPath,
+        ]);
+        notify()->success('Job updated successfully');
+        return redirect()->route('listings.show', $listing->id);
+        
     }
 
     /**
@@ -102,5 +128,6 @@ class ListingController extends Controller
     public function destroy(Listing $listing)
     {
         //
+        $listing->delete();
     }
 }

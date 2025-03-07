@@ -66,7 +66,7 @@
                     <p class="text-white text-sm md:tracking-wider">{{$listing->location}}</p>
                 </div>
                 <div class="mx-4 mb-4">
-                    <h2 class="text-cyan-300">Salary</h2>
+                    <h2 class="text-cyan-300">Estimated Salary</h2>
                     <p class="text-white text-sm md:tracking-wider"><span class="font-semibold text-white">$ </span>{{$listing->salary}} <span class="font-semibold text-white"> K</span></p>
                 </div>
             </div>
@@ -77,7 +77,9 @@
             <div class="flex items-center justify-center mx-4 mb-4">
                 <a href="{{route('apply.form', $listing)}}" class="bg-cyan-300 text-gray-700 font-semibold rounded-lg px-3 py-1.5 hover:bg-cyan-500 hover:text-white">Apply</a>
             </div>
-            
+            <div class="flex items-center justify-start mx-4 mb-4">
+                <a href="{{route('listings.edit', $listing)}}" class="bg-green-400 text-white font-semibold rounded-lg px-3 py-1.5 hover:bg-green-500">Edit</a>
+            </div>
         </div>
 
     </div>
