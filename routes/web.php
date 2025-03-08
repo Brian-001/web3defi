@@ -56,3 +56,19 @@ Route::prefix('tags')->group(function(){
 // Job Application
 Route::get('/apply/{listing}', [JobApplicationController::class, 'showJobApplicationForm'])->name('apply.form');
 Route::post('/apply/{listing}', [JobApplicationController::class, 'submitApplication'])->name('apply.submit');
+
+Route::get('/dashboard', function () {
+    return view('dashboard.index');
+})->name('dashboard.index');
+
+Route::get('/dashboard/profile', function () {
+    return view('dashboard.profile');
+})->name('dashboard.profile');
+
+Route::get('/dashboard/settings', function () {
+    return view('dashboard.settings');
+})->name('dashboard.settings');
+
+Route::get('/dashboard/user-management', function () {
+    return view('dashboard.user-management');
+})->name('dashboard.user-management');

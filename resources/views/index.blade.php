@@ -23,6 +23,9 @@
             <div class="mb-4 bg-slate-600 py-4 hover:drop-shadow-md nav-link">
                 <a href="#" class="text-white hover:text-cyan-300">Contact</a>
             </div>
+            <div class="mb-4 bg-slate-600 py-4 hover:drop-shadow-md nav-link">
+                <a href="{{route('dashboard.index')}}" class="text-white hover:text-cyan-300">Dashboard</a>
+            </div>
             <div class="mt-8">
                 @if (Auth::check())
                     <a href="{{route('logout')}}" 

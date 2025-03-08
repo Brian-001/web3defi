@@ -13,16 +13,16 @@
                 </div>
             </div>
             
-            <div class="flex items-center justify-center">
+            <div class="flex items-center justify-center mb-6">
                 <h1 class="text-xl md:text-3xl text-cyan-400 mt-10">{{ $listing->listing_title}}</h1>
             </div>
             <div class="mx-4 mb-4">
                 <h2 class="text-cyan-300">Company description</h2>
-                <p class="text-white text-sm md:text-base tracking-wider">{{$listing->company_description}}</p>
+                <p class="text-slate-200 text-sm md:text-base tracking-wider">{{$listing->company_description}}</p>
             </div>
             <div class="mx-4 mb-4">
                 <h2 class="text-cyan-300">Job Description</h2>
-                <p class="text-white text-sm md:text-base md:tracking-wider">{{$listing->job_description}}</p>
+                <p class="text-slate-200 text-sm md:text-base md:tracking-wider">{{$listing->job_description}}</p>
             </div>
 
             <div class="mx-4 mb-4">
@@ -30,21 +30,21 @@
                 @if(!empty($listing->formatted_job_roles) && is_array($listing->formatted_job_roles))
                     <ul class="ml-6 space-y-3">
                         @foreach($listing->formatted_job_roles as $jobRole)
-                            <li class="text-white text-sm md:text-base md:tracking-wide flex items-start">
+                            <li class="text-slate-200 text-sm md:text-base md:tracking-wide flex items-start">
                                 <span class="text-cyan-300 mr-2">•</span>
                                 <span>{{ $jobRole }}</span>
                             </li>
                         @endforeach
                     </ul>
                 @else
-                    <p class="text-white text-sm italic">No job roles available.</p>
+                    <p class="text-slate-200 text-sm italic">No job roles available.</p>
                 @endif
             </div>
             {{-- Additional Information (Conditional) --}}
             @if (!empty($listing->additional_info))
             <div class="mb-4 mx-4 flex flex-col w-full">
                 <h3 class="text-cyan-300 mb-2">Additional Information</h3>
-                <div class="text-white text-sm md:text-base md:tracking-wide bg-slate-600 p-2 rounded-lg">
+                <div class="text-slate-200 text-sm md:text-base md:tracking-wide bg-slate-600 p-2 rounded-lg">
                     {{ $listing->additional_info }}
                 </div>
             </div>
@@ -63,22 +63,22 @@
             <div class="grid grid-cols-1 md:grid-cols-2">
                 <div class="mx-4 mb-4">
                     <h2 class="text-cyan-300">Location</h2>
-                    <p class="text-white text-sm md:tracking-wider">{{$listing->location}}</p>
+                    <p class="text-slate-200 text-sm md:tracking-wider">{{$listing->location}}</p>
                 </div>
                 <div class="mx-4 mb-4">
                     <h2 class="text-cyan-300">Estimated Salary</h2>
-                    <p class="text-white text-sm md:tracking-wider"><span class="font-semibold text-white">$ </span>{{$listing->salary}} <span class="font-semibold text-white"> K</span></p>
+                    <p class="text-slate-200 text-sm md:tracking-wider"><span class="font-semibold text-white">$ </span>{{$listing->salary}} <span class="font-semibold text-white"> K</span></p>
                 </div>
             </div>
             <div class="mx-4 mb-4">
                 <h2 class="text-cyan-300">Job Type</h2>
-                <p class="text-white text-sm md:tracking-wider">{{$listing->job_type}}</p>
+                <p class="text-slate-200 text-sm md:tracking-wider">{{$listing->job_type}}</p>
             </div>
             <div class="flex items-center justify-center mx-4 mb-4">
                 <a href="{{route('apply.form', $listing)}}" class="bg-cyan-300 text-gray-700 font-semibold rounded-lg px-3 py-1.5 hover:bg-cyan-500 hover:text-white">Apply</a>
             </div>
             <div class="flex items-center justify-start mx-4 mb-4">
-                <a href="{{route('listings.edit', $listing)}}" class="bg-green-400 text-white font-semibold rounded-lg px-3 py-1.5 hover:bg-green-500">Edit</a>
+                <a href="{{route('listings.edit', $listing)}}" class="bg-emerald-500 text-white font-semibold rounded-lg px-3 py-1.5 hover:bg-emerald-600">Edit</a>
             </div>
         </div>
 
