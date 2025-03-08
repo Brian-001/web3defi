@@ -37,6 +37,15 @@
                        class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.user-management') ? 'bg-gray-700 font-medium' : '' }} transition-colors duration-150">
                        User Management
                     </a>
+                    <a href="{{ route('dashboard.job-management') }}" 
+                       class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.job-management') ? 'bg-gray-700 font-medium' : '' }} transition-colors duration-150">
+                       Job Management
+                    </a>
+                    <a href="{{ route('dashboard.applicant-management') }}" 
+                       class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.applicant-management') ? 'bg-gray-700 font-medium' : '' }} transition-colors duration-150">
+                       Applicant Management
+                    </a>
+                    
                 </nav>
             </div>
 

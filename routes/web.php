@@ -72,3 +72,15 @@ Route::get('/dashboard/settings', function () {
 Route::get('/dashboard/user-management', function () {
     return view('dashboard.user-management');
 })->name('dashboard.user-management');
+
+Route::get('/dashboard/job-management', function () {
+    return view('dashboard.job-management');
+})->name('dashboard.job-management');
+
+Route::get('/dashboard/applicant-management', function () {
+    return view('dashboard.applicant-management');
+})->name('dashboard.applicant-management');
+
+Route::get('/dashboard/reports', function () {
+    return view('dashboard.reports');
+})->name('dashboard.reports');
