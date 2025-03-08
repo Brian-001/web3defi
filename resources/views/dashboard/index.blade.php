@@ -77,7 +77,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
         <div class="bg-white p-6 rounded-lg shadow">
             <h3 class="text-lg font-bold mb-2">User's Bar Chart</h3>
-            <canvas id="jobsChart"></canvas>
+            <canvas id="usersChart"></canvas>
         </div>
         <div class="bg-white p-6 rounded-lg shadow">
             <h3 class="text-lg font-bold mb-2">Jobs Line Chart</h3>
@@ -85,7 +85,15 @@
         </div>
         <div class="bg-white p-6 rounded-lg shadow">
             <h3 class="text-lg font-bold mb-2">Job Categories Pie Chart</h3>
-            <canvas id="usersChart"></canvas>
+            <canvas id="jobsChart"></canvas>
         </div>
     </div>
+    @push('scripts')
+    <script>
+        const usersChart = new Chart(
+            document.getElementById('usersChart'),
+            config
+        );
+    </script>
+    @endpush
 @endsection
