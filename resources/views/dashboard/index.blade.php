@@ -90,10 +90,52 @@
     </div>
     @push('scripts')
     <script>
-        const usersChart = new Chart(
-            document.getElementById('usersChart'),
-            config
-        );
+        const userStats = @json($userStats);
+
+        const ctx = document.getElementById('usersChart').getContext('2d');
+        const usersChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(userStats), // ['admin', 'employers', 'employees']
+                datasets: [{
+                    label: 'Number of Users',
+                    data: Object.values(userStats),
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'User Count'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'User Roles'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false // Hide legend
+                    }
+                }
+            }
+        });
     </script>
     @endpush
 @endsection
