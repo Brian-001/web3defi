@@ -24,8 +24,31 @@ class DashboardController extends Controller
             };
             return [$roleName => $item->total];
         });
-        
-        return view('dashboard.index', compact('userStats'));
+
+        //Listings per day line chart
+        $listingsPerDay = Listing::select(
+            DB::raw('DATE(created_at) as date'),
+            DB::raw('COUNT(*) as count')
+        )
+        ->where('created_at', '>=', now()->subDays(7)) // Last 7 days
+        ->groupBy('date')
+        ->orderBy('date', 'asc')
+        ->pluck('count', 'date');
+
+        //List per week line chart
+        $listingsPerWeek = Listing::select(
+            DB::raw("strftime('%Y%W', created_at) as week"),
+            DB::raw('COUNT(*) as count')
+        )
+        ->where('created_at', '>=', now()->subWeeks(4))// Last 4 weeks
+        ->groupBy('week')
+        ->orderBy('week', 'asc')
+        ->pluck('count', 'week');
+        return view('dashboard.index', [
+            'userStats' => $userStats,
+            'listingsPerDay' => $listingsPerDay,
+            'listingsPerWeek' => $listingsPerWeek,
+        ]);
     }
 
     public function getUsersManagementData()

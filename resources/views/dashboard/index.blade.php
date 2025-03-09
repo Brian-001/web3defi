@@ -81,7 +81,7 @@
         </div>
         <div class="bg-white p-6 rounded-lg shadow">
             <h3 class="text-lg font-bold mb-2">Jobs Line Chart</h3>
-            <canvas id="applicantsChart"></canvas>  
+            <canvas id="listingsChart"></canvas>  
         </div>
         <div class="bg-white p-6 rounded-lg shadow">
             <h3 class="text-lg font-bold mb-2">Job Categories Pie Chart</h3>
@@ -134,6 +134,44 @@
                         display: false // Hide legend
                     }
                 }
+            }
+        });
+
+    </script>
+    <script>
+        const listingsPerDay = @json($listingsPerDay);
+        const listingsPerWeek = @json($listingsPerWeek);
+    
+        const ctxListings = document.getElementById('listingsChart').getContext('2d');
+        const listingsChart = new Chart(ctxListings, {
+            type: 'line',
+            data: {
+                labels: Object.keys(listingsPerDay), // Daily dates
+                datasets: [
+                    {
+                        label: 'Listings Per Day',
+                        data: Object.values(listingsPerDay),
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        fill: false,
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Listings Per Week',
+                        data: Object.values(listingsPerWeek), // Weekly counts
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        fill: false,
+                        tension: 0.1
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: { beginAtZero: true, title: { display: true, text: 'Number of Listings' } },
+                    x: { title: { display: true, text: 'Time (Days)' } }
+                },
+                plugins: { legend: { display: true } }
             }
         });
     </script>
