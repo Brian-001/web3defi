@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Listing;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -44,17 +45,64 @@ class DashboardController extends Controller
         ->groupBy('week')
         ->orderBy('week', 'asc')
         ->pluck('count', 'week');
+
+        //Job type pie chart
+        $listingsByJobType = Listing::select(
+            'job_type',
+            DB::raw('COUNT(*) as count')
+        )
+        ->groupBy('job_type')
+        ->pluck('count', 'job_type');
+
         return view('dashboard.index', [
             'userStats' => $userStats,
             'listingsPerDay' => $listingsPerDay,
             'listingsPerWeek' => $listingsPerWeek,
-        ]);
+            'listingsByJobType' => $listingsByJobType,
+        ]);  
     }
 
     public function getUsersManagementData()
     {
-        $users = User::all();
-        return view('dashboard.user-management', compact('users'));
+        // $users = User::all();
+        //Fetch users with role name
+        $users = User::select('users.id', 'users.name', 'users.email', 'users.user_status', 'role.name as role_name')
+        ->join('roles', 'users.role_id', '=', 'roles.id')
+        ->get();
+
+        //Available status for the dropdown
+        $statuses = ['Active', 'Suspended', 'Pending'];
+
+        //Fetch available roles from roles table
+        $roles = Role::pluck('name')->all();
+
+        return view('dashboard.user-management', compact('users', 'statuses', 'roles'));
+    }
+
+    public function updateUserStatus(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $request->validate([
+            'user_status' => 'required|in:Active,Suspended,Pending',
+        ]);
+        $user->update(['user_status' =>$request->user_status]);
+
+        notify()->success('User status updated successfully');
+
+        return redirect()->route('dashboard.user-management');
+    }
+
+    public function updateUserRole(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $request->validate([
+            'role_id' => 'required|exists:roles,id',
+        ]);
+        $user->update(['role_id' => $request->role_id]);
+
+        notify()->success('User role updated successfully');
+
+        return redirect()->route('dashboard.user-management');
     }
 
     public function getJobsManagementData()

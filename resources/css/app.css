@@ -37,3 +37,9 @@ grid-auto-rows: minmax(70px, auto);
     transform: translateY(-20px);
     opacity: 0;
 }
+
+
+.chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+}

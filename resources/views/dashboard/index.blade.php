@@ -74,18 +74,25 @@
         </div>
     </div>
     <!-- charts -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
+    <!-- charts -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
         <div class="bg-white p-6 rounded-lg shadow">
             <h3 class="text-lg font-bold mb-2">User's Bar Chart</h3>
-            <canvas id="usersChart"></canvas>
+            <div class="chart-container grid-height">
+                <canvas id="usersChart"></canvas>
+            </div>
         </div>
         <div class="bg-white p-6 rounded-lg shadow">
             <h3 class="text-lg font-bold mb-2">Jobs Line Chart</h3>
-            <canvas id="listingsChart"></canvas>  
+            <div class="chart-container grid-height">
+                <canvas id="listingsChart" class="grid-height"></canvas>
+            </div>
         </div>
         <div class="bg-white p-6 rounded-lg shadow">
             <h3 class="text-lg font-bold mb-2">Job Categories Pie Chart</h3>
-            <canvas id="jobsChart"></canvas>
+            <div class="chart-container">
+                <canvas id="jobTypeChart"></canvas>
+            </div>
         </div>
     </div>
     @push('scripts')
@@ -119,6 +126,7 @@
                         beginAtZero: true,
                         title: {
                             display: true,
+                            padding: 20,
                             text: 'User Count'
                         }
                     },
@@ -132,6 +140,10 @@
                 plugins: {
                     legend: {
                         display: false // Hide legend
+                    },
+                    title: {
+                        display: true,
+                        text: 'Distribution of Users'
                     }
                 }
             }
@@ -169,9 +181,55 @@
             options: {
                 scales: {
                     y: { beginAtZero: true, title: { display: true, text: 'Number of Listings' } },
-                    x: { title: { display: true, text: 'Time (Days)' } }
+                    x: { title: { display: true, text: 'Time (Days)'} }
                 },
-                plugins: { legend: { display: true } }
+                plugins: { 
+                    legend: { 
+                        display: true 
+                    },
+                    title: {
+                        display: true,
+                        text: 'Distribution of Job Types'
+                    }
+                }
+            }
+        });
+    </script>
+    <!-- Job Type Pie Chart -->
+    <script>
+        const listingsByJobType = @json($listingsByJobType);
+        const ctxJobType = document.getElementById('jobTypeChart').getContext('2d');
+        const jobTypeChart = new Chart(ctxJobType, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(listingsByJobType), // e.g., ['Full-time', 'Part-time', 'Contract']
+                datasets: [{
+                    label: 'Job Type Distribution',
+                    data: Object.values(listingsByJobType), // e.g., [10, 5, 3]
+                    backgroundColor: [
+                        'rgba(255, 206, 86, 0.6)',  // Yellow
+                        'rgba(75, 192, 192, 0.6)',  // Teal
+                        'rgba(255, 159, 64, 0.6)'   // Orange
+                    ],
+                    borderColor: [
+                        
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        position: 'bottom', // Place legend at the top
+                    },
+                    title: {
+                        display: true,
+                        text: 'Distribution of Job Types'
+                    }
+                }
             }
         });
     </script>
