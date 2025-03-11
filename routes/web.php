@@ -92,6 +92,8 @@ Route::prefix('dashboard')->group(function()
     Route::get('/profile', [DashboardController::class, 'getProfile'])->name('dashboard.profile');
     Route::get('/settings', [DashboardController::class, 'getSetting'])->name('dashboard.settings');
     Route::get('/user-management', [DashboardController::class, 'getUsersManagementData'])->name('dashboard.user-management');
+    Route::patch('/users/{id}/status', [DashboardController::class, 'updateUserStatus'])->name('dashboard.update-status');
+    Route::patch('/users/{id}/role', [DashboardController::class, 'updateUserRole'])->name('dashboard.update-role');
     Route::get('/job-management', [DashboardController::class, 'getJobsManagementData'])->name('dashboard.job-management');
     Route::get('/applicant-management', [DashboardController::class, 'getApplicantsManagementData'])->name('dashboard.applicant-management');
     Route::get('/reports', [DashboardController::class, 'getReports'])->name('dashboard.reports');

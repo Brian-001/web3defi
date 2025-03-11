@@ -66,7 +66,7 @@ class DashboardController extends Controller
     {
         // $users = User::all();
         //Fetch users with role name
-        $users = User::select('users.id', 'users.name', 'users.email', 'users.user_status', 'role.name as role_name')
+        $users = User::select('users.id', 'users.name', 'users.email', 'users.user_status', 'roles.name as role_name')
         ->join('roles', 'users.role_id', '=', 'roles.id')
         ->get();
 
@@ -82,6 +82,7 @@ class DashboardController extends Controller
     public function updateUserStatus(Request $request, $id)
     {
         $user = User::findOrFail($id);
+        
         $request->validate([
             'user_status' => 'required|in:Active,Suspended,Pending',
         ]);
