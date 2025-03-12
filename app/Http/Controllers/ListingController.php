@@ -7,25 +7,27 @@ use App\Models\Listing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Routing\Controller as BaseController;
 use App\Http\Requests\StoreListingRequest;
 use App\Http\Requests\UpdateListingRequest;
 
-class ListingController extends Controller
+class ListingController extends BaseController
 {
     /**
      * Display a listing of the resource.
      */
 
-    //  public function __construct()
-    //  {
-    //     $this->middleware('auth')->except('index', 'show');
-    //  }
+     public function __construct()
+     {
+        $this->middleware('auth')->except('index', 'show');
+     }
     public function index()
     {
         //
         $listings = Listing::all();
+        $tags = Tag::limit(3)->get();
 
-        return view('index', compact('listings'));
+        return view('index', compact('listings', 'tags'));
     }
 
     /**

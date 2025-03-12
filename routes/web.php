@@ -26,7 +26,7 @@ Route::prefix('listings')->group(function(){
     Route::get('/{listing}/edit', [ListingController::class, 'edit'])->name('listings.edit');
 
     // Update specific listing
-    // Route::put('/{listing}', [ListingController::class, 'update'])->name('listings.update');
+    Route::put('/{listing}', [ListingController::class, 'update'])->name('listings.update');
 
     // Delete specific listing
     Route::delete('/{listing}', [ListingController::class, 'destroy'])->name('listings.destroy');
@@ -76,10 +76,10 @@ Route::middleware(['auth'])->group(function()
     Route::patch('/listings/{id}/status', [DashboardController::class, 'updateListingStatus'])->name('dashboard.update-listing-status');
 
     //CRUD for listing
-    Route::get('/listings/create', [ListingController::class, 'create'])->name('listings.create');
-    Route::post('/listings/store', [ListingController::class, 'store'])->name('listings.store');
-    Route::get('/listings/{listing}/edit', [ListingController::class, 'edit'])->name('listings.edit');
-    Route::put('/listings/{listing}', [ListingController::class, 'update'])->name('listings.update');
-    Route::delete('/listings/{listing}', [ListingController::class, 'destroy'])->name('listings.destroy');
+    // Route::get('/listings/create', [ListingController::class, 'create'])->name('listings.create');
+    // Route::post('/listings/store', [ListingController::class, 'store'])->name('listings.store');
+    // Route::get('/listings/{listing}/edit', [ListingController::class, 'edit'])->name('listings.edit');
+    // Route::put('/listings/{listing}', [ListingController::class, 'update'])->name('listings.update');
+    // Route::delete('/listings/{listing}', [ListingController::class, 'destroy'])->name('listings.destroy');
 
 });

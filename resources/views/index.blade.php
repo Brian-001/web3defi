@@ -114,10 +114,38 @@
                                 $tagIds = json_decode($listing->tags, true) ?? [];
                                 // Fetch the tags from the database
                                 $tags = App\Models\Tag::whereIn('id', $tagIds)->pluck('tag_name')->toArray();
+                                // Limit the number of tags to 3 for medium screens and above
+                                $limitedTags = array_slice($tags, 0, 3);
+                                // Limit the number of tags to 1 for small screens
+                                $limitedTagsSm = array_slice($tags, 0, 1);
+                                // Calculate the number of remaining tags
+                                $remainingTagsCount = count($tags) - count($limitedTagsSm); // For small screens
+                                $remainingTagsCountMd = count($tags) - count($limitedTags); // For medium screens and above
                             @endphp
-                            @foreach ($tags as $tag)
-                                <div class="bg-white text-slate-700 text-sm px-2 py-0.5 rounded-full">{{ $tag }}</div>
-                            @endforeach
+                        
+                            <!-- Show 1 tag and "+X more" on small screens -->
+                            <div class="sm:hidden flex space-x-2">
+                                @foreach ($limitedTagsSm as $tag)
+                                    <div class="bg-white text-slate-700 text-sm px-2 py-0.5 rounded-full">{{ $tag }}</div>
+                                @endforeach
+                        
+                                <!-- Show "+X more" if there are more than 1 tag -->
+                                @if ($remainingTagsCount > 0)
+                                    <div class="bg-white text-slate-700 text-sm px-2 py-0.5 rounded-full">+{{ $remainingTagsCount }} more</div>
+                                @endif
+                            </div>
+                        
+                            <!-- Show 3 tags and "+X more" on medium screens and above -->
+                            <div class="hidden sm:flex space-x-2">
+                                @foreach ($limitedTags as $tag)
+                                    <div class="bg-white text-slate-700 text-sm px-2 py-0.5 rounded-full">{{ $tag }}</div>
+                                @endforeach
+                        
+                                <!-- Show "+X more" if there are more than 3 tags -->
+                                @if ($remainingTagsCountMd > 0)
+                                    <div class="bg-white text-slate-700 text-sm px-2 py-0.5 rounded-full">+{{ $remainingTagsCountMd }} more</div>
+                                @endif
+                            </div>
                         </div>
                         <div class="flex mt-2 space-x-4">
                             <div>

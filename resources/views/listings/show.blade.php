@@ -49,7 +49,7 @@
                 </div>
             </div>
             @endif
-            <div class="flex mt-2 mb-4 mx-4 space-x-2 overflow-hidden">
+            <div class="flex mt-2 mb-4 mx-4 gap-4 flex-wrap">
                 @php
                     // Decode the JSON string into an array of tag IDs
                     $tagIds = json_decode($listing->tags, true) ?? [];
@@ -57,7 +57,7 @@
                     $tags = App\Models\Tag::whereIn('id', $tagIds)->pluck('tag_name')->toArray();
                 @endphp
                 @foreach ($tags as $tag)
-                    <div class="bg-white text-slate-700 text-sm px-2 py-0.5 rounded-full">{{ $tag }}</div>
+                    <div class="bg-white text-slate-700 text-xs md:text-sm px-1 md:px-2 py-0.5 rounded-md md:rounded-full">{{ $tag }}</div>
                 @endforeach
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2">
