@@ -66,7 +66,7 @@ class DashboardController extends Controller
     {
         // $users = User::all();
         //Fetch users with role name
-        $users = User::select('users.id', 'users.name', 'users.email', 'users.user_status', 'roles.name as role_name')
+        $users = User::select('users.id', 'users.name', 'users.email', 'users.user_status', 'roles.name as role_name', 'users.created_at', 'users.updated_at')
         ->join('roles', 'users.role_id', '=', 'roles.id')
         ->get();
 
@@ -108,8 +108,33 @@ class DashboardController extends Controller
 
     public function getJobsManagementData()
     {
-        $listings =Listing::all();
-        return view('dashboard.job-management', compact('listings'));
+        $listings = Listing::select(
+            'listings.id',
+            'listings.listing_title',
+            'users.name as posted_by',
+            'listings.job_type as listing_type',
+            'listings.created_at',
+            'listings.listing_status'
+        )
+        ->join('users', 'listings.user_id', '=', 'users.id')
+        ->get();
+
+        $statuses = ['active', 'closed']; //for the dropdown
+        return view('dashboard.job-management', compact('listings', 'statuses'));
+    }
+
+    //Add method to update listing status
+    public function updateListingStatus(Request $request, $id)
+    {
+        $listing = Listing::findOrFail($id);
+        $request->validate([
+            'listing_status' => 'required|in:Active,Closed',
+        ]);
+        $listing->update(['listing_status' => $request->listing_status]);
+
+        notify()->success('Listing status updated successfully');
+
+        return redirect()->route('dashboard.job-management');
     }
 
     public function getApplicantsManagementData()

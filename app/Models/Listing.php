@@ -21,7 +21,9 @@ class Listing extends Model
         'location', 
         'salary', 
         'job_type',
-        'listing_logo'
+        'listing_logo',
+        'listing_status',
+        'user_id'
     ];
 
     public function getCreatedAtFormattedAttribute()
@@ -52,5 +54,10 @@ class Listing extends Model
         $jobRoles = array_map('trim', $jobRoles);
 
         return $jobRoles;
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

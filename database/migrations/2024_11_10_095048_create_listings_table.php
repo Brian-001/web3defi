@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('listings', function (Blueprint $table) {
             $table->id();
             $table->string('listing_title');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->text('company_description')->nullable();
             $table->text('job_description');
             $table->text('job_roles');
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->string('location');
             $table->string('salary');
             $table->string('job_type');
+            $table->enum('listing_status', ['active', 'closed'])->default('active');
             $table->string('listing_logo')->nullable();
             $table->timestamps();
         });

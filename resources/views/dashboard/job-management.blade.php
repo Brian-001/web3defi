@@ -8,25 +8,25 @@
         <table class="w-full">
             <thead>
                 <tr class="border-b border-gray-300">
-                    <th class="py-2 px-4 text-left">Job Title</th>
-                    <th class="py-2 px-4 text-left">Employer</th>
-                    <th class="py-2 px-4 text-left">Category</th>
+                    <th class="py-2 px-4 text-left">Listing Title</th>
+                    <th class="py-2 px-4 text-left">Posted by</th>
+                    <th class="py-2 px-4 text-left">Listing Type</th>
                     <th class="py-2 px-4 text-left">Posted Date</th>
                     <th class="py-2 px-4 text-left">Status</th>
                     <th class="py-2 px-4 text-left">Action</th>
                 </tr>
             </thead>
             <tbody>
-                
-                <tr class="border-b border-gray-200">
-                    <td class="py-2 px-4">Solana Developer</td>
-                    <td class="py-2 px-4">Acme Inc.</td>
-                    <td class="py-2 px-4">web3</td>
-                    <td class="py-2 px-4">2021-01-01 12:00:00</td>
-                    <td class="py-2 px-4">Active</td>
-                    <td class="py-2 px-4">Edit</td>
-                </tr>
-                
+                @foreach ($listings as $listing)
+                    <tr class="border-b border-gray-200">
+                        <td class="py-2 px-4">{{ $listing->listing_title }}</td>
+                        <td class="py-2 px-4"> {{ $listing->posted_by }}</td>
+                        <td class="py-2 px-4">Remote</td>
+                        <td class="py-2 px-4">2021-01-01 12:00:00</td>
+                        <td class="py-2 px-4">Active/Closed</td>
+                        <td class="py-2 px-4">Edit</td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>

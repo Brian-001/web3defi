@@ -6,6 +6,7 @@ use App\Models\Tag;
 use App\Models\Listing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreListingRequest;
 use App\Http\Requests\UpdateListingRequest;
 
@@ -64,6 +65,8 @@ class ListingController extends Controller
             'salary' => $request->input('min_salary') . ' to ' . $request->input('max_salary'),
             'job_type' => $request->input('job_type'),
             'listing_logo'=> $listingLogoPath,
+            'user_id' => Auth::user()->id,
+            'listing_status' => 'active', // Default status
         ]);
 
         notify()->success('Job created successfully');

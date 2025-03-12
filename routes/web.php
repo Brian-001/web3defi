@@ -58,44 +58,17 @@ Route::prefix('tags')->group(function(){
 Route::get('/apply/{listing}', [JobApplicationController::class, 'showJobApplicationForm'])->name('apply.form');
 Route::post('/apply/{listing}', [JobApplicationController::class, 'submitApplication'])->name('apply.submit');
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard.index');
-// })->name('dashboard.index');
-
-// Route::get('/dashboard/profile', function () {
-//     return view('dashboard.profile');
-// })->name('dashboard.profile');
-
-// Route::get('/dashboard/settings', function () {
-//     return view('dashboard.settings');
-// })->name('dashboard.settings');
-
-// Route::get('/dashboard/user-management', function () {
-//     return view('dashboard.user-management');
-// })->name('dashboard.user-management');
-
-// Route::get('/dashboard/job-management', function () {
-//     return view('dashboard.job-management');
-// })->name('dashboard.job-management');
-
-// Route::get('/dashboard/applicant-management', function () {
-//     return view('dashboard.applicant-management');
-// })->name('dashboard.applicant-management');
-
-// Route::get('/dashboard/reports', function () {
-//     return view('dashboard.reports');
-// })->name('dashboard.reports');
-
-Route::prefix('dashboard')->group(function()
+Route::middleware(['auth'])->group(function()
 {
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
-    Route::get('/profile', [DashboardController::class, 'getProfile'])->name('dashboard.profile');
-    Route::get('/settings', [DashboardController::class, 'getSetting'])->name('dashboard.settings');
-    Route::get('/user-management', [DashboardController::class, 'getUsersManagementData'])->name('dashboard.user-management');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('/dashboard/profile', [DashboardController::class, 'getProfile'])->name('dashboard.profile');
+    Route::get('/dashboard/settings', [DashboardController::class, 'getSetting'])->name('dashboard.settings');
+    Route::get('/dashboard/user-management', [DashboardController::class, 'getUsersManagementData'])->name('dashboard.user-management');
     Route::patch('/users/{id}/status', [DashboardController::class, 'updateUserStatus'])->name('dashboard.update-status');
     Route::patch('/users/{id}/role', [DashboardController::class, 'updateUserRole'])->name('dashboard.update-role');
-    Route::get('/job-management', [DashboardController::class, 'getJobsManagementData'])->name('dashboard.job-management');
-    Route::get('/applicant-management', [DashboardController::class, 'getApplicantsManagementData'])->name('dashboard.applicant-management');
-    Route::get('/reports', [DashboardController::class, 'getReports'])->name('dashboard.reports');
+    Route::get('/dashboard/job-management', [DashboardController::class, 'getJobsManagementData'])->name('dashboard.job-management');
+    Route::put('/dashboard/job-management/{id}/status', [DashboardController::class, 'updateListingStatus'])->name('dashboard.update-listing-status');
+    Route::get('/dashboard/applicant-management', [DashboardController::class, 'getApplicantsManagementData'])->name('dashboard.applicant-management');
+    Route::get('/dashboard/reports', [DashboardController::class, 'getReports'])->name('dashboard.reports');
 
 });

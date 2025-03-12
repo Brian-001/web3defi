@@ -49,8 +49,8 @@
                                 </select>
                             </form>
                         </td>
-                        <td class="py-2 px-4">{{ $user->created_at }}</td>
-                        <td class="py-2 px-4">{{ $user->updated_at }}</td>
+                        <td class="py-2 px-4">{{ $user->created_at->format('d-m-Y') }}</td>
+                        <td class="py-2 px-4">{{ $user->updated_at->format('d-m-Y') }}</td>
                     </tr>
                 @endforeach
             </tbody>
