@@ -3,7 +3,11 @@
 @section('title', 'Job Management')
 @section('content')
 <div class="bg-white p-6 rounded-lg shadow">
-    <h2 class="text-2xl font-bold mb-4">Welcome to Job management</h2>
+    <div class="flex items-center justify-between">
+        <h2 class="text-2xl font-bold mb-4">Welcome to Job management</h2>
+        <a href="{{ route('listings.create') }}" class="bg-cyan-300 text-slate-700 px-6 py-2 rounded-md hover:bg-cyan-500 hover:text-white">Create Job</a>
+    </div>
+    
     <div class="mx-auto my-4">
         <table class="w-full">
             <thead>
@@ -22,7 +26,7 @@
                         <td class="py-2 px-4">{{ $listing->listing_title }}</td>
                         <td class="py-2 px-4"> {{ $listing->posted_by }}</td>
                         <td class="py-2 px-4">{{ $listing->listing_type }}</td>
-                        <td class="py-2 px-4">{{ $listing->created_at->format('d-m-Y') }}</td>
+                        <td class="py-2 px-4 flex flex-col text-sm">{{ $listing->created_at->format('d/m/Y H:i') }}</td>
                         <td class="py-2 px-4">
                             <form action="{{ route('dashboard.update-listing-status', $listing->id) }}" method="POST" class="inline" >
                                 @csrf

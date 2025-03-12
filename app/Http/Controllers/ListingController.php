@@ -15,6 +15,11 @@ class ListingController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    //  public function __construct()
+    //  {
+    //     $this->middleware('auth')->except('index', 'show');
+    //  }
     public function index()
     {
         //
@@ -29,9 +34,14 @@ class ListingController extends Controller
     public function create()
     {
         //
+        if(!Auth::check())
+        {
+            return redirect()->route('login');
+        }
+        $listings = Listing::all();
         $tags = Tag::all();
         // dd($tags);
-        return view('listings.create', compact('tags'));
+        return view('listings.create', compact('listings', 'tags'));
     }
 
     /**
