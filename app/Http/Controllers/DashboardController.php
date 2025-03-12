@@ -128,7 +128,7 @@ class DashboardController extends Controller
     {
         $listing = Listing::findOrFail($id);
         $request->validate([
-            'listing_status' => 'required|in:Active,Closed',
+            'listing_status' => 'required|in:active,closed',
         ]);
         $listing->update(['listing_status' => $request->listing_status]);
 

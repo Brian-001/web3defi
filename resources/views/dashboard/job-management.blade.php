@@ -21,10 +21,29 @@
                     <tr class="border-b border-gray-200">
                         <td class="py-2 px-4">{{ $listing->listing_title }}</td>
                         <td class="py-2 px-4"> {{ $listing->posted_by }}</td>
-                        <td class="py-2 px-4">Remote</td>
-                        <td class="py-2 px-4">2021-01-01 12:00:00</td>
-                        <td class="py-2 px-4">Active/Closed</td>
-                        <td class="py-2 px-4">Edit</td>
+                        <td class="py-2 px-4">{{ $listing->listing_type }}</td>
+                        <td class="py-2 px-4">{{ $listing->created_at->format('d-m-Y') }}</td>
+                        <td class="py-2 px-4">
+                            <form action="{{ route('dashboard.update-listing-status', $listing->id) }}" method="POST" class="inline" >
+                                @csrf
+                                @method('PATCH')
+                                <select name="listing_status" class="border rounded py-1 px-8" onchange="this.form.submit()">
+                                    @foreach ($statuses as $status)
+                                        <option value="{{ $status }}" {{ $listing->listing_status === $status ? 'selected' : '' }} class="text-left">
+                                            {{ ucfirst($status) }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </form>
+                        </td>
+                        <td class="py-2 px-4 flex space-x-2">
+                            <a href="{{ route('listings.edit', $listing->id) }}" class="text-white bg-emerald-500 hover:bg-emerald-700 py-1 px-2 rounded-md">Edit</a>
+                            <form action="{{ route('listings.destroy', $listing->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-white bg-red-500 hover:bg-red-700 py-1 px-2 rounded-md">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

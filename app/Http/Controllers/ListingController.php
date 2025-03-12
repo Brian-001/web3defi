@@ -71,7 +71,7 @@ class ListingController extends Controller
 
         notify()->success('Job created successfully');
 
-        return redirect()->back();
+        return redirect()->route('dashboard.job-management');
     }
 
     /**
@@ -121,7 +121,7 @@ class ListingController extends Controller
             'listing_logo' => $listingLogoPath,
         ]);
         notify()->success('Job updated successfully');
-        return redirect()->route('listings.show', $listing->id);
+        return redirect()->route('dashboard.job-management');
         
     }
 
@@ -132,5 +132,7 @@ class ListingController extends Controller
     {
         //
         $listing->delete();
+        notify()->success('Job deleted successfully');
+        return redirect()->route('dashboard.job-management');
     }
 }

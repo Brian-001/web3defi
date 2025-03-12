@@ -1,8 +1,8 @@
-@extends('layouts.app-layouts')
+@extends('layouts.dashboard')
 
 @section('content')
-<div class="grid grid-cols-1 items-center justify-center mb-10 bg-slate-700">
-    <div class="p-6 rounded-lg shadow-lg w-full md:w-1/2 mt-10 md:mx-auto h-full">
+<div class="grid grid-cols-1 items-center justify-center mb-10 bg-slate-700 rounded-md">
+    <div class="p-6 rounded-lg shadow-lg w-full mt-10 md:mx-auto h-full">
         <form action="{{route('listings.update', $listing->id)}}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
