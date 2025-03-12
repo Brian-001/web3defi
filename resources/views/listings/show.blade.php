@@ -75,11 +75,11 @@
                 <p class="text-slate-200 text-sm md:tracking-wider">{{$listing->job_type}}</p>
             </div>
             <div class="flex items-center justify-center mx-4 mb-4">
-                <a href="{{route('apply.form', $listing)}}" class="bg-cyan-300 text-gray-700 font-semibold rounded-lg px-3 py-1.5 hover:bg-cyan-500 hover:text-white">Apply</a>
+                <a href="{{route('apply.form', $listing)}}" class="bg-cyan-300 text-gray-700 font-semibold rounded-lg py-3 w-1/2 flex items-center justify-center text-center hover:bg-cyan-500 hover:text-white">Apply</a>
             </div>
-            <div class="flex items-center justify-start mx-4 mb-4">
+            {{-- <div class="flex items-center justify-start mx-4 mb-4">
                 <a href="{{route('listings.edit', $listing)}}" class="bg-emerald-500 text-white font-semibold rounded-lg px-3 py-1.5 hover:bg-emerald-600">Edit</a>
-            </div>
+            </div> --}}
         </div>
 
     </div>
