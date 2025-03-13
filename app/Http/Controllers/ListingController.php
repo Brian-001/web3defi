@@ -25,7 +25,7 @@ class ListingController extends BaseController
     {
         //
         $listings = Listing::all();
-        $tags = Tag::limit(3)->get();
+        $tags = Tag::all();
 
         return view('index', compact('listings', 'tags'));
     }

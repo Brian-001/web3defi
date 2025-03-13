@@ -19,7 +19,7 @@
                     <h1 class="text-lg text-cyan-500 mb-4 place-items-center">Create job</h1>
                 </div>
                 <div class="flex">
-                    <a href="{{ route('dashboard.job-management') }}" class="flex gap-1 hover:gap-2"><x-icons.arrow-uturn class="text-white"/> <span class="text-slate-700 font-semibold"> Back</span></a>
+                    <a href="{{ route('dashboard.job-management') }}" class="flex gap-1 hover:gap-2"><x-icons.arrow-uturn class="text-slate-700"/> <span class="text-slate-700 font-semibold"> Back</span></a>
                 </div>
             </div>
 

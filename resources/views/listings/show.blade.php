@@ -6,7 +6,7 @@
             <div class="flex items-center justify-between flex-wrap">
                 <a href="/" class="flex  gap-4">
                     <span class="text-white order-2">Back</span> 
-                    <x-icons.arrow-uturn class="w-6 h-6 order-1" />
+                    <x-icons.arrow-uturn class="w-6 h-6 order-1 text-white" />
                 </a>
                 <div class="flex">
                     <p class="text-sm text-gray-200 opacity-50"><span>Posted: </span>{{ $listing->created_at_formatted }}</p>
