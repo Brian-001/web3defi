@@ -19,18 +19,20 @@
                 </tr>
             </thead>
             <tbody>
-                
-                <tr class="border-b border-gray-200">
-                    <td class="py-2 px-4">Solana Developer</td>
-                    <td class="py-2 px-4">John Doe</td>
-                    <td class="py-2 px-4">2021-01-01 12:00:00</td>
-                    <td class="py-2 px-4">View</td>
-                    <td class="py-2 px-4">Active</td>
-                    <td class="py-2 px-4">Send Email</td>
-                    <td class="py-2 px-4">View Resume</td>
-                    
-                </tr>
-                
+                @foreach ($applicants as $applicant)
+                    <tr class="border-b border-gray-200">
+                        <td class="py-2 px-4">Hello User</td>
+                        <td class="py-2 px-4">{{$applicant->name}}</td>
+                        <td class="py-2 px-4">{{$applicant->created_at->format('d M Y')}}</td>
+                        <td class="py-2 px-4"><a href="{{ route('listings.show', $applicant->listing_id) }}">View</a></td>
+                        <td class="py-2 px-4">Active</td>
+                        <td class="py-2 px-4"><a href="#" class="bg-gray-200 px-2 py-1 rounded-md hover:shadow-md">Send Email</a></td>
+                        <td class="py-2 px-4 flex items-center gap-2">
+                            <x-icons.document class="text-gray-500 " />
+                            <a href="{{ asset('storage/' . $applicant->resume_path) }}" target="_blank" class="hover:underline">View Resume</a>
+                        </td>
+                    </tr>
+                @endforeach                
             </tbody>
         </table>
     </div>

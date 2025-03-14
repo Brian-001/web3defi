@@ -33,7 +33,7 @@
                         <td class="py-2 px-4">{{ $listing->listing_title }}</td>
                         <td class="py-2 px-4"> {{ $listing->posted_by }}</td>
                         <td class="py-2 px-4">{{ $listing->listing_type }}</td>
-                        <td class="py-2 px-4 flex flex-col text-sm">{{ $listing->created_at->format('d/m/Y H:i') }}</td>
+                        <td class="py-2 px-4 flex flex-col text-sm">{{ $listing->created_at->format('d M Y H:i') }}</td>
                         <td class="py-2 px-4">
                             <form action="{{ route('dashboard.update-listing-status', $listing->id) }}" method="POST" class="inline" >
                                 @csrf

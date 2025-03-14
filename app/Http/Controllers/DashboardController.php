@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JobApplication;
 use App\Models\User;
 use App\Models\Listing;
 use App\Models\Role;
@@ -137,10 +138,15 @@ class DashboardController extends Controller
         return redirect()->route('dashboard.job-management');
     }
 
+    public function getSingleListing(Listing $listing){
+        return view('dashboard.single-listing', compact('listing'));
+    }
     public function getApplicantsManagementData()
     {
         
-        return view('dashboard.applicant-management');
+        $applicants = JobApplication::all();
+        
+        return view('dashboard.applicant-management', compact('applicants'));
     }
 
     public function getSetting()

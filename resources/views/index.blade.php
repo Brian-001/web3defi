@@ -70,13 +70,13 @@
         <div x-show="tab === 'tab1'" class="p-4">
             <!-- Content for Tab 1 -->
             <p class="text-white">Web3 Jobs</p>
-            <a href="{{route('listings.create')}}" class="text-white">Create Listing</a>
+            
             
         </div>
         <div x-show="tab === 'tab2'" class="p-4">
             <!-- Content for Tab 2 -->
             <p class="text-white">Trending Jobs</p>
-            <a href="{{route('tags.create')}}" class="text-white">Create tag</a>
+            
         </div>
         <div x-show="tab === 'tab3'" class="p-4">
             <!-- Content for Tab 3 -->
