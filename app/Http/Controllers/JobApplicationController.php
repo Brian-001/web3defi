@@ -15,9 +15,7 @@ class JobApplicationController extends Controller
 
     public function showJobApplicationForm(Listing $listing)
     {
-        return view('job_application.form', [
-            'listing' => $listing,
-        ]);
+        return view('job_application.form', ['listing' => $listing]);
     }
 
     public function submitApplication(Request $request, Listing $listing)

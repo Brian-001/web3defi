@@ -9,5 +9,15 @@ class JobApplication extends Model
 {
     use HasFactory;
     
-    protected $fillable = ['listing_id' ,'name', 'email', 'resume_path'];
+    protected $fillable = ['listing_id', 'user_id', 'name', 'email', 'resume_path'];
+
+    public function listing()
+    {
+        return $this->belongsTo(Listing::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

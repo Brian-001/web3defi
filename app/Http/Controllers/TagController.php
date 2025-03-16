@@ -38,7 +38,7 @@ class TagController extends Controller
         ]);
         notify()->success('Tag created successfully');
 
-        return redirect()->back();
+        return redirect()->route('tags.create');
     }
 
     /**

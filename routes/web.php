@@ -75,11 +75,8 @@ Route::middleware(['auth'])->group(function()
     // Update listing status
     Route::patch('/listings/{id}/status', [DashboardController::class, 'updateListingStatus'])->name('dashboard.update-listing-status');
 
-    //CRUD for listing
-    // Route::get('/listings/create', [ListingController::class, 'create'])->name('listings.create');
-    // Route::post('/listings/store', [ListingController::class, 'store'])->name('listings.store');
-    // Route::get('/listings/{listing}/edit', [ListingController::class, 'edit'])->name('listings.edit');
-    // Route::put('/listings/{listing}', [ListingController::class, 'update'])->name('listings.update');
-    // Route::delete('/listings/{listing}', [ListingController::class, 'destroy'])->name('listings.destroy');
+    Route::get('/dashboard/single-listing/{listing}', [DashboardController::class, 'getSingleListing'])->name('dashboard.single-listing');
+
+    
 
 });

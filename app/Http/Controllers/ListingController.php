@@ -36,10 +36,6 @@ class ListingController extends BaseController
     public function create()
     {
         //
-        if(!Auth::check())
-        {
-            return redirect()->route('login');
-        }
         $listings = Listing::all();
         $tags = Tag::all();
         // dd($tags);
