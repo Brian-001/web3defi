@@ -43,3 +43,24 @@ grid-auto-rows: minmax(70px, auto);
     width: 100% !important;
     height: 100% !important;
 }
+
+/* Handles Email */
+.email-options {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    padding: 10px;
+    display: none;
+    z-index: 1000;
+}
+.email-options a {
+    display: block;
+    padding: 5px;
+    text-decoration: none;
+    color: #333;
+}
+.email-options a:hover {
+    background: #f0f0f0;
+}

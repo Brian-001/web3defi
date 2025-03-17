@@ -64,4 +64,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function hasRole($roleName)
+    {
+        return $this->role->name === $roleName;
+    }
 }

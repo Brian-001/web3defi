@@ -26,7 +26,7 @@
                         <td class="py-2 px-4">{{$applicant->created_at->format('d M Y')}}</td>
                         <td class="py-2 px-4"><a href="{{ route('dashboard.single-listing', $applicant->listing->id) }}">View</a></td>
                         <td class="py-2 px-4">Active</td>
-                        <td class="py-2 px-4"><a href="mailto:{{ $applicant->email }}" class="bg-gray-200 px-2 py-1 rounded-md hover:shadow-md">Send Email</a></td>
+                        <td class="py-2 px-4"><a href="#" class="email-link bg-gray-200 px-2 py-1 rounded-md hover:shadow-md" data-email = "{{ $applicant->email }}">Send Email</a></td>
                         <td class="py-2 px-4 flex items-center gap-2">
                             <x-icons.document class="text-gray-500 " />
                             <a href="{{ asset('storage/' . $applicant->resume_path) }}" target="_blank" class="hover:underline">View Resume</a>
