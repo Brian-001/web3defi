@@ -6,9 +6,9 @@
 <div class="grid grid-cols-1 gap-4 items-center justify-center mt-10">
     <div class="bg-slate-600 p-6 rounded-lg shadow-lg w-full md:w-1/2 mt-10  md:mx-auto h-full">
         <div class="flex items-center justify-between flex-wrap">
-            <a href="/" class="flex  gap-4">
+            <a href="{{ route('listings.show', $listing->id) }}" class="flex  gap-4">
                 <span class="text-white order-2">Back</span> 
-                <x-icons.arrow-uturn class="w-6 h-6 order-1" />
+                <x-icons.arrow-uturn class="w-6 h-6 order-1 text-white" />
             </a>
         </div>
         <div class=" flex items-center justify-center mt-10 mb-10">

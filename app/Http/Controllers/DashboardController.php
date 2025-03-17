@@ -110,7 +110,7 @@ class DashboardController extends Controller
 
     public function getJobsManagementData()
     {
-        $listings = Listing::select(
+        $query = Listing::select(
             'listings.id',
             'listings.listing_title',
             'users.name as posted_by',
@@ -119,9 +119,13 @@ class DashboardController extends Controller
             'listings.listing_status'
         )
 
-        ->join('users', 'listings.user_id', '=', 'users.id')
-        ->where('listings.user_id', Auth::user()->id)
-        ->get();
+        ->join('users', 'listings.user_id', '=', 'users.id');
+
+        if (Auth::user()->role_id !== 1) { // 1 = Admin
+            $query->where('listings.user_id', Auth::user()->id);
+        }
+        
+        $listings = $query->get();
 
 
         $statuses = ['active', 'closed']; //for the dropdown
@@ -155,22 +159,16 @@ class DashboardController extends Controller
     }
     public function getApplicantsManagementData()
     {
-        
-        // $applicants = JobApplication::select(
-        //     'job_applications.id',
-        //     'job_applications.name',
-        //     'job_applications.email',
-        //     'job_applications.resume_path',
-        //     'job_applications.created_at',
-        //     'listings.listing_title'
-        // )
-        // ->join('listings', 'job_applications.listing_id', '=', 'listings.id')
-        // ->get();
-        $applicants = JobApplication::with('listing')
-        ->whereHas('listing', function ($query){
-            $query->where('user_id', Auth::user()->id);
-        })
-        ->get();
+        //Fetch all job applications with their associated listings
+        $query = JobApplication::with('listing');
+
+        //Restrict access to listings  if user is not admin
+        if (Auth::user()->role_id !== 1){
+            $query->whereHas('listing', function ($subQuery){
+                $subQuery->where('user_id', Auth::user()->id);
+            });
+        }
+        $applicants = $query->get();
         
         return view('dashboard.applicant-management', compact('applicants'));
     }
