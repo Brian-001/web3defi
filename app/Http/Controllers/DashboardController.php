@@ -146,16 +146,23 @@ class DashboardController extends Controller
         return redirect()->route('dashboard.job-management');
     }
 
-    public function getSingleListing(Listing $listing){
+    public function getSingleListing(JobApplication $applicant){
 
-        //Load the listing with its associated job applications
-        $listing = Listing::with('jobApplications')->findOrFail($listing->id);
+        $user = Auth::user();
 
-        //Restrict access to the listing if it's not associated with the current user and remove if user is admin
-        if (Auth::user()->role_id === 2 && $listing->user_id !== Auth::user()->id) { 
-            abort(403, 'You can only view your own listings.');
+        $listing = Listing::with(['jobApplications', 'user'])->findOrFail($applicant->listing_id);
+
+        //Restrict Employers to their own listings and allow Admin to view all listings
+        if (!$user->hasRole('Admin') && $listing->user_id  !==$user->id){
+            abort(403, 'You can only view your own listings');
         }
-        return view('dashboard.single-listing', compact('listing'));
+        // if ($user->role_id !== 1 && $listing->user_id !== $user->id){
+        //     abort(403, 'You can only view your own listings');
+        // }
+
+        //Pass bot the listing and specific applicant to the view
+        
+        return view('dashboard.single-listing', compact('listing', 'applicant'));
     }
     public function getApplicantsManagementData()
     {

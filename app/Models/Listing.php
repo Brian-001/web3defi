@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Models\JobApplication;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -56,6 +57,10 @@ class Listing extends Model
         return $jobRoles;
     }
 
+    public function jobApplications()
+    {
+        return $this->hasMany(JobApplication::class);
+    }
     public function user()
     {
         return $this->belongsTo(User::class);

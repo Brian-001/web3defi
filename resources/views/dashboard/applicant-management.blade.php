@@ -24,7 +24,7 @@
                         <td class="py-2 px-4">{{$applicant->listing->listing_title}}</td>
                         <td class="py-2 px-4">{{$applicant->name}}</td>
                         <td class="py-2 px-4">{{$applicant->created_at->format('d M Y')}}</td>
-                        <td class="py-2 px-4"><a href="{{ route('dashboard.single-listing', $applicant->listing->id) }}">View</a></td>
+                        <td class="py-2 px-4"><a href="{{ route('dashboard.single-listing', $applicant->id) }}">View</a></td>
                         <td class="py-2 px-4">Active</td>
                         <td class="py-2 px-4"><a href="#" class="email-link bg-gray-200 px-2 py-1 rounded-md hover:shadow-md" data-email = "{{ $applicant->email }}">Send Email</a></td>
                         <td class="py-2 px-4 flex items-center gap-2">
