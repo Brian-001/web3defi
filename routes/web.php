@@ -74,9 +74,7 @@ Route::middleware(['auth'])->group(function()
 
     // Update listing status
     Route::patch('/listings/{id}/status', [DashboardController::class, 'updateListingStatus'])->name('dashboard.update-listing-status');
-
-    Route::get('/dashboard/single-listing/{applicant}', [DashboardController::class, 'getSingleListing'])->name('dashboard.single-listing');
-
     
-
+    //Display single listing associated with a specific applicant
+    Route::get('/dashboard/single-listing/{applicant}', [DashboardController::class, 'getSingleListing'])->name('dashboard.single-listing');
 });

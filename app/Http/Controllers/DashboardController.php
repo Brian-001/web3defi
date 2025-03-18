@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JobApplication;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Listing;
-use App\Models\Role;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\JobApplication;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -146,10 +147,11 @@ class DashboardController extends Controller
         return redirect()->route('dashboard.job-management');
     }
 
-    public function getSingleListing(JobApplication $applicant){
+    public function getSingleListing(JobApplication $applicant, Listing $listing){
 
         $user = Auth::user();
 
+        Log::info('Listing Data:', $listing->toArray());
         $listing = Listing::with(['jobApplications', 'user'])->findOrFail($applicant->listing_id);
 
         //Restrict Employers to their own listings and allow Admin to view all listings

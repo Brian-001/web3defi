@@ -1,28 +1,67 @@
 @extends('layouts.dashboard')
 
-@section('title', 'View Listing')
+@section('title', 'View Job Listing')
 
 @section('content')
 <div class="bg-white p-6 rounded-lg shadow">
     <h2 class="text-2xl font-bold mb-4">{{ $listing->listing_title }}</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+    <div class="grid mx-auto">
         <div>
-            <p><strong>Company Description:</strong> {{ $listing->company_description ?? 'N/A' }}</p>
-            <p><strong>Job Description:</strong> {{ $listing->job_description }}</p>
-            <p><strong>Job Roles:</strong> {{ $listing->job_roles }}</p>
-            <p><strong>Location:</strong> {{ $listing->location }}</p>
-            <p><strong>Salary:</strong> {{ $listing->salary }}</p>
-            <p><strong>Job Type:</strong> {{ $listing->job_type }}</p>
-            <p><strong>Status:</strong> {{ ucfirst($listing->listing_status) }}</p>
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <div>
+                    @if ($listing->listing_logo)
+                        <img src="{{ asset('storage/' . $listing->listing_logo) }}" alt="Logo" class="w-20 h-20 md:w-28 md:h-28 object-cover rounded-full border">
+                    @else
+                        <p>No logo available</p>
+                    @endif
+                </div>
+                <div class="grid grid-cols-1 gap-2">
+                    <p class="font-semibold">Company Description</p>
+                    <p class="text-sm md:text-base md:text-tracking-wide">{{ $listing->company_description ?? 'N/A' }}</p>
+                </div>
+                <div class="grid grid-cols-1 gap-1">
+                    <p class="font-semibold">Job Description</p>
+                    <p class="text-sm md:text-base md:text-tracking-wide">{{ $listing->job_description }}</p>
+                </div>
+                <div class="grid grid-cols-1 gap-2">
+                    <p class="font-semibold">Job Roles</p>
+                    {{-- <p>{{ $listing->job_roles }}</p> --}}
+                    @if (!empty($listing->formatted_job_roles) && is_array($listing->formatted_job_roles))
+                        <ul class="ml-6 space-y-3">
+                            @foreach ($listing->formatted_job_roles as $jobRole )
+                                <div class="text-sm md:text-base md:text-tracking-wide flex items-start">
+                                    <span class="font-semibold mr-2">.</span>
+                                    <span>{{ $jobRole }}</span>
+                                </div>
+                            @endforeach
+                        </ul>
+                        
+                    @endif
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <div>
+                        <p class="font-semibold">Location</p>
+                        <p class="text-sm md:text-base md:text-tracking-wide">{{ $listing->location }}</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold">Status</p>
+                        <p class="text-sm md:text-base md:text-tracking-wide">{{ ucfirst($listing->listing_status) }}</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <div class="grid grid-cols-1 gap-2">
+                        <p class="font-semibold">Estimated Salary ($)</p>
+                        <p class="text-sm md:text-base md:text-tracking-wide">{{ $listing->salary }} K</p>
+                    </div>
+                    <div class="grid grid-cols-1 gap-2">
+                        <p class="font-semibold">Job Type</p>
+                        <p class="text-sm md:text-base md:text-tracking-wide">{{ $listing->job_type }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-            @if ($listing->listing_logo)
-                <img src="{{ asset('storage/' . $listing->listing_logo) }}" alt="Logo" class="w-32 h-32 object-cover rounded-full border">
-            @else
-                <p>No logo available</p>
-            @endif
-        </div>
+        
     </div>
 
     <h3 class="text-xl font-semibold mb-4">Applications</h3>
