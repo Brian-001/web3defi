@@ -20,14 +20,14 @@
             <tbody>
                 @foreach($users as $user)
                     <tr class="border-b border-gray-200">
-                        <td class="py-2 px-4">{{ $user->name }}</td>
-                        <td class="py-2 px-4">{{ $user->email }}</td>
-                        <td class="py-2 px-4">{{ $user->role_name }}</td>
-                        <td class="py-2 px-4">
+                        <td class="whitespace-nowrap px-4">{{ $user->name }}</td>
+                        <td class="whitespace-nowrap px-4">{{ $user->email }}</td>
+                        <td class="whitespace-nowrap px-4">{{ $user->role->name }}</td>
+                        <td class="whitespace-nowrap px-4">
                             <form action="{{ route('dashboard.update-role', $user->id) }}" method="POST" class="inline">
                                 @csrf
                                 @method('PATCH')
-                                <select name="role_id" class="border rounded py-1 px-8" onchange="this.form.submit()">
+                                <select name="role_id" class="border-none py-1 px-8 outline-none focus:ring-0" onchange="this.form.submit()">
                                     @foreach (\App\Models\Role::all() as $role)
                                         <option value="{{ $role->id }}" {{ $user->role_name === $role->name ? 'selected' : '' }}>
                                             {{ ucfirst($role->name) }}
@@ -36,11 +36,11 @@
                                 </select>
                             </form>
                         </td>
-                        <td class="py-2 px-4">
+                        <td class="whitespace-nowrap px-4">
                             <form action="{{ route('dashboard.update-status', $user->id) }}" method="POST" class="inline">
                                 @csrf
                                 @method('PATCH')
-                                <select name="user_status" class="border rounded py-1 px-8" onchange="this.form.submit()">
+                                <select name="user_status" class="border-none py-1 px-2 outline-none focus:ring-0" onchange="this.form.submit()">
                                     @foreach ($statuses as $status)
                                         <option value="{{ $status }}" {{ $user->user_status === $status ? 'selected' : '' }}>
                                             {{ $status }}
@@ -49,8 +49,8 @@
                                 </select>
                             </form>
                         </td>
-                        <td class="py-2 px-4">{{ $user->created_at->format('d M Y') }}</td>
-                        <td class="py-2 px-4">{{ $user->updated_at->format('d M Y') }}</td>
+                        <td class="whitespace-nowrap px-4">{{ $user->created_at->format('d M Y') }}</td>
+                        <td class="whitespace-nowrap px-4">{{ $user->updated_at->format('d M Y') }}</td>
                     </tr>
                 @endforeach
             </tbody>

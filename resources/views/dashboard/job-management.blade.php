@@ -12,34 +12,32 @@
             <a href="{{ route('tags.create') }}" class="bg-gray-200 text-slate-700 px-6 py-2 rounded-md hover:bg-slate-700 hover:text-white">Create Tag</a>
             <a href="{{ route('tags.index') }}" class="bg-gray-400 text-slate-700 px-6 py-2 rounded-md hover:bg-slate-700 hover:text-white">View Tags</a>
         </div>
-        
-        
     </div>
     
     <div class="mx-auto my-4">
         <table class="w-full">
             <thead>
                 <tr class="border-b border-gray-300">
-                    <th class="py-2 px-4 text-left">Listing Title</th>
-                    <th class="py-2 px-4 text-left">Posted by</th>
-                    <th class="py-2 px-4 text-left">Listing Type</th>
-                    <th class="py-2 px-4 text-left">Posted Date</th>
-                    <th class="py-2 px-4 text-left">Status</th>
-                    <th class="py-2 px-4 text-left">Action</th>
+                    <th class="whitespace-nowrap text-left px-4">Listing Title</th>
+                    <th class="whitespace-nowrap text-left px-4">Posted by</th>
+                    <th class="whitespace-nowrap text-left px-4">Listing Type</th>
+                    <th class="whitespace-nowrap text-left px-4">Posted Date</th>
+                    <th class="whitespace-nowrap text-left px-4">Status</th>
+                    <th class="whitespace-nowrap text-left px-4">Action</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($listings as $listing)
                     <tr class="border-b border-gray-200">
-                        <td class="py-2 px-4">{{ $listing->listing_title }}</td>
-                        <td class="py-2 px-4"> {{ $listing->posted_by }}</td>
-                        <td class="py-2 px-4">{{ $listing->listing_type }}</td>
-                        <td class="py-2 px-4 flex flex-col text-sm">{{ $listing->created_at->format('d M Y H:i') }}</td>
-                        <td class="py-2 px-4">
+                        <td class="whitespace-nowrap px-4">{{ $listing->listing_title }}</td>
+                        <td class="whitespace-nowrap px-4"> {{ $listing->user->name}}</td>
+                        <td class="whitespace-nowrap px-4">{{ $listing->job_type }}</td>
+                        <td class="whitespace-nowrap px-4 flex flex-col text-sm">{{ $listing->created_at->format('d M Y H:i') }}</td>
+                        <td class="whitespace-nowrap px-4">
                             <form action="{{ route('dashboard.update-listing-status', $listing->id) }}" method="POST" class="inline" >
                                 @csrf
                                 @method('PATCH')
-                                <select name="listing_status" class="border rounded py-1 px-8" onchange="this.form.submit()">
+                                <select name="listing_status" class="border-none py-1 px-8 outline-none focus:ring-0" onchange="this.form.submit()">
                                     @foreach ($statuses as $status)
                                         <option value="{{ $status }}" {{ $listing->listing_status === $status ? 'selected' : '' }} class="text-left">
                                             {{ ucfirst($status) }}
@@ -48,7 +46,7 @@
                                 </select>
                             </form>
                         </td>
-                        <td class="py-2 px-4 flex space-x-2">
+                        <td class="whitespace-nowrap flex px-4 gap-2">
                             <a href="{{ route('listings.edit', $listing->id) }}" class="text-white bg-emerald-500 hover:bg-emerald-700 py-1 px-2 rounded-md">Edit</a>
                             <form action="{{ route('listings.destroy', $listing->id) }}" method="POST" class="inline">
                                 @csrf

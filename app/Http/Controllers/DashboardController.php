@@ -10,85 +10,92 @@ use App\Models\JobApplication;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
 {
     //
     public function index()
     {
+        //Cache user stats for 10 minutes to reduce DB queries
         //Users Bar chart
-        $userStats = User::select('role_id', DB::raw('count(*) as total'))
-        ->groupBy('role_id')
-        ->get()
-        ->mapWithKeys(function ($item){
-            $roleName = match($item->role_id){
-                1 => 'Admin',
-                2 => 'Employer',
-                3 => 'Employee',
-            };
-            return [$roleName => $item->total];
+        $userStats = Cache::remember('user_stats', 600, function() {
+            return User::select('role_id', DB::raw('count(*) as total'))
+            ->groupBy('role_id')
+            ->pluck('total', 'role_id')
+            ->mapWithKeys(function ($total, $roleId){
+                return [match($roleId) {
+                    1 => 'Admin',
+                    2 => 'Employer',
+                    3 => 'Employee',
+                } => $total];
+            });
         });
 
-        //Listings per day line chart
-        $listingsPerDay = Listing::select(
-            DB::raw('DATE(created_at) as date'),
-            DB::raw('COUNT(*) as count')
-        )
-        ->where('created_at', '>=', now()->subDays(7)) // Last 7 days
-        ->groupBy('date')
-        ->orderBy('date', 'asc')
-        ->pluck('count', 'date');
+        //Cache listings per Day for 10 minutes
+        $listingsPerDay = Cache::remember('listings_per_day', 600, function() {
+            return Listing::select(
+                DB::raw("DATE(created_at) as date"), 
+                DB::raw('COUNT(*) as count')
+            )
+            ->where('created_at', '>=', now()->subDays(7))
+            ->groupBy('date') 
+            ->orderBy('date', 'asc')
+            ->pluck('count', 'date');
+        });
+        
+        //Cache listings per week for 10 minutes
+        $listingsPerWeek = Cache::remember('listings_per_week', 600, function() {
+            return Listing::select(
+                DB::raw("strftime('%Y-%W', created_at) as week"), // SQLite-compatible week format
+                DB::raw('COUNT(*) as count')
+            )
+            ->where('created_at', '>=', now()->subWeeks(4))
+            ->groupBy(DB::raw("strftime('%Y-%W', created_at)")) // Group by the same expression
+            ->orderBy('week', 'asc')
+            ->pluck('count', 'week');
+        });
 
-        //List per week line chart
-        $listingsPerWeek = Listing::select(
-            DB::raw("strftime('%Y%W', created_at) as week"),
-            DB::raw('COUNT(*) as count')
-        )
-        ->where('created_at', '>=', now()->subWeeks(4))// Last 4 weeks
-        ->groupBy('week')
-        ->orderBy('week', 'asc')
-        ->pluck('count', 'week');
 
         //Job type pie chart
-        $listingsByJobType = Listing::select(
-            'job_type',
-            DB::raw('COUNT(*) as count')
-        )
-        ->groupBy('job_type')
-        ->pluck('count', 'job_type');
+        //Cache job type stats for 10 minutes
+        $listingsByJobType = Cache::remember('listings_by_job_type', 600, function() {
+            return Listing::select('job_type', DB::raw('COUNT(*) as count'))
+            ->groupBy('job_type')
+            ->pluck('count', 'job_type');
+        });
 
-        return view('dashboard.index', [
-            'userStats' => $userStats,
-            'listingsPerDay' => $listingsPerDay,
-            'listingsPerWeek' => $listingsPerWeek,
-            'listingsByJobType' => $listingsByJobType,
-        ]);  
+
+        return view('dashboard.index', compact('userStats', 'listingsPerDay', 'listingsPerWeek', 'listingsByJobType'));  
     }
 
     public function getUsersManagementData()
     {
-        // $users = User::all();
-        //Fetch users with role name
-        $users = User::select('users.id', 'users.name', 'users.email', 'users.user_status', 'roles.name as role_name', 'users.created_at', 'users.updated_at')
-        ->join('roles', 'users.role_id', '=', 'roles.id')
+        //Use Eloquent with relationship instead of join for cleaner code and eager loading
+        $users = User::with('role')
+        ->select('id', 'name', 'email', 'user_status', 'created_at', 'updated_at', 'role_id') // Specify columns explicitly
         ->paginate(10);
 
         //Available status for the dropdown
         $statuses = ['Active', 'Suspended', 'Pending'];
 
         //Fetch available roles from roles table
-        $roles = Role::pluck('name')->all();
+        $roles = Cache::remember('roles_list', 1440, function() { //Cache roles for 24 hours
+            return Role::pluck('name')->all();
+        });
 
         return view('dashboard.user-management', compact('users', 'statuses', 'roles'));
     }
 
     public function updateUserStatus(Request $request, $id)
     {
+        //Use route model binding to fetch the user
         $user = User::findOrFail($id);
         
         $request->validate([
             'user_status' => 'required|in:Active,Suspended,Pending',
         ]);
+
         $user->update(['user_status' =>$request->user_status]);
 
         notify()->success('User status updated successfully');
@@ -98,11 +105,13 @@ class DashboardController extends Controller
 
     public function updateUserRole(Request $request, $id)
     {
+        //Use route model binding
         $user = User::findOrFail($id);
         $request->validate([
-            'role_id' => 'required|exists:roles,id',
+            'role_name' => 'required|exists:roles,name', // validate by name intead of id
         ]);
-        $user->update(['role_id' => $request->role_id]);
+        $role = Role::where('name', $request->role_name)->firstOrFail();
+        $user->update(['role_id' => $role->id]);
 
         notify()->success('User role updated successfully');
 
@@ -111,24 +120,14 @@ class DashboardController extends Controller
 
     public function getJobsManagementData()
     {
-        $query = Listing::select(
-            'listings.id',
-            'listings.listing_title',
-            'users.name as posted_by',
-            'listings.job_type as listing_type',
-            'listings.created_at',
-            'listings.listing_status'
-        )
-
-        ->join('users', 'listings.user_id', '=', 'users.id');
-
-        if (Auth::user()->role_id !== 1) { // 1 = Admin
-            $query->where('listings.user_id', Auth::user()->id);
-        }
+        $user = Auth::user();
+        $query = Listing::with('user') //Eager load user relationship
+        ->select('id', 'listing_title', 'job_type', 'created_at', 'listing_status', 'user_id'); // Only needed columns
         
+        if(!$user->hasRole('Admin')){
+            $query->where('user_id', $user->id);
+        }
         $listings = $query->paginate(10);
-
-
         $statuses = ['active', 'closed']; //for the dropdown
         return view('dashboard.job-management', compact('listings', 'statuses'));
     }
@@ -151,8 +150,9 @@ class DashboardController extends Controller
 
         $user = Auth::user();
 
-        Log::info('Listing Data:', $listing->toArray());
-        $listing = Listing::with(['jobApplications', 'user'])->findOrFail($applicant->listing_id);
+        $listing = Listing::with(['jobApplications', 'user'])
+        ->select('id', 'listing_title', 'user_id', 'job_type', 'listing_status', 'created_at') //Limit Columns
+        ->findOrFail($applicant->listing_id);
 
         //Restrict Employers to their own listings and allow Admin to view all listings
         if (!$user->hasRole('Admin') && $listing->user_id  !==$user->id){
@@ -165,13 +165,16 @@ class DashboardController extends Controller
     }
     public function getApplicantsManagementData()
     {
-        //Fetch all job applications with their associated listings
-        $query = JobApplication::with('listing');
-
-        //Restrict access to listings  if user is not admin
-        if (Auth::user()->role_id !== 1){
-            $query->whereHas('listing', function ($subQuery){
-                $subQuery->where('user_id', Auth::user()->id);
+        $user = Auth::user();
+        $query = JobApplication::with(['listing' => function($q){
+            //Nested eager loading
+            $q->select('id', 'listing_title', 'user_id', 'listing_status');
+        }])
+        ->select('id', 'listing_id', 'name', 'email', 'created_at'); //Limit job application columns
+        
+        if(!$user->hasRole('Admin')) {
+            $query->whereHas('listing', function($subQuery) use ($user){
+                $subQuery->where('user_id', $user->id);
             });
         }
         $applicants = $query->paginate(10);
