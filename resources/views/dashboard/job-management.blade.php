@@ -10,6 +10,7 @@
         <div class="flex gap-2">
             <a href="{{ route('listings.create') }}" class="bg-cyan-300 text-slate-700 px-6 py-2 rounded-md hover:bg-cyan-500 hover:text-white">Create Job</a>
             <a href="{{ route('tags.create') }}" class="bg-gray-200 text-slate-700 px-6 py-2 rounded-md hover:bg-slate-700 hover:text-white">Create Tag</a>
+            <a href="{{ route('tags.index') }}" class="bg-gray-400 text-slate-700 px-6 py-2 rounded-md hover:bg-slate-700 hover:text-white">View Tags</a>
         </div>
         
         

@@ -32,10 +32,14 @@ class TagController extends Controller
     public function store(Request $request)
     {
         //
-        $selectedTagsIds = $request->input('tags', []);
-        Tag::create([
+        $request->validate([
+            'tag_name' => 'required|string|max:255|unique:tags,tag_name',
+        ]);
+        
+        Tag::firstOrCreate([
             'tag_name' => $request->input('tag_name'),
         ]);
+
         notify()->success('Tag created successfully');
 
         return redirect()->route('tags.create');
