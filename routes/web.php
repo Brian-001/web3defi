@@ -42,16 +42,16 @@ Route::prefix('tags')->group(function(){
     Route::post('/store', [TagController::class, 'store'])->name('tags.store');
 
     // Show a specific tag
-    Route::get('/{id}', [TagController::class, 'show'])->name('tags.show');
+    Route::get('/{tag}', [TagController::class, 'show'])->name('tags.show');
 
     // Show form to edit specific tag
-    Route::get('/{id}/edit', [TagController::class, 'edit'])->name('tags.edit');
+    Route::get('/{tag}/edit', [TagController::class, 'edit'])->name('tags.edit');
 
     // Update specific tag
-    Route::put('/{id}', [TagController::class, 'update'])->name('tags.update');
+    Route::put('/{tag}', [TagController::class, 'update'])->name('tags.update');
 
     // Delete specific tag
-    Route::delete('/{id}', [TagController::class, 'destroy'])->name('tags.destroy');
+    Route::delete('/{tag}', [TagController::class, 'destroy'])->name('tags.destroy');
 });
 
 // Job Application

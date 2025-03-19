@@ -73,6 +73,7 @@ class TagController extends Controller
     {
         //
         $tag->update(['tag_name' => $request->input('tag_name')]);
+        
         notify()->success('Tag updated successfully');
         return redirect()->back();
     }
