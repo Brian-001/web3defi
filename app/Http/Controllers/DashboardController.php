@@ -71,7 +71,7 @@ class DashboardController extends Controller
         //Fetch users with role name
         $users = User::select('users.id', 'users.name', 'users.email', 'users.user_status', 'roles.name as role_name', 'users.created_at', 'users.updated_at')
         ->join('roles', 'users.role_id', '=', 'roles.id')
-        ->get();
+        ->paginate(10);
 
         //Available status for the dropdown
         $statuses = ['Active', 'Suspended', 'Pending'];
@@ -126,7 +126,7 @@ class DashboardController extends Controller
             $query->where('listings.user_id', Auth::user()->id);
         }
         
-        $listings = $query->get();
+        $listings = $query->paginate(10);
 
 
         $statuses = ['active', 'closed']; //for the dropdown
@@ -158,9 +158,6 @@ class DashboardController extends Controller
         if (!$user->hasRole('Admin') && $listing->user_id  !==$user->id){
             abort(403, 'You can only view your own listings');
         }
-        // if ($user->role_id !== 1 && $listing->user_id !== $user->id){
-        //     abort(403, 'You can only view your own listings');
-        // }
 
         //Pass bot the listing and specific applicant to the view
         
@@ -177,7 +174,7 @@ class DashboardController extends Controller
                 $subQuery->where('user_id', Auth::user()->id);
             });
         }
-        $applicants = $query->get();
+        $applicants = $query->paginate(10);
         
         return view('dashboard.applicant-management', compact('applicants'));
     }

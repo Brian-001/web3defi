@@ -32,5 +32,9 @@
             </tbody>
         </table>
     </div>
+    {{-- Add pagination links --}}
+    <div class="flex items-center justify-center">
+        {{ $tags->links('pagination::tailwind') }}
+    </div>
 </div>
 @endsection

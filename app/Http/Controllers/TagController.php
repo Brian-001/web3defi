@@ -13,7 +13,7 @@ class TagController extends Controller
     public function index()
     {
         //Diplay all tags
-        $tags = Tag::all();
+        $tags = Tag::paginate(10);
         return view('tags.index', compact('tags'));
     }
 
@@ -73,7 +73,7 @@ class TagController extends Controller
     {
         //
         $tag->update(['tag_name' => $request->input('tag_name')]);
-        
+
         notify()->success('Tag updated successfully');
         return redirect()->back();
     }

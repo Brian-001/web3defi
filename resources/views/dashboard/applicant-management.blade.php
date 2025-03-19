@@ -12,7 +12,7 @@
                     <th class="py-2 px-4 text-left">Listing Title</th>
                     <th class="py-2 px-4 text-left">Applicant Name</th>
                     <th class="py-2 px-4 text-left">Application Date</th>
-                    <th class="py-2 px-4 text-left">Action</th>
+                    <th class="py-2 px-4 text-left">Job Applied</th>
                     <th class="py-2 px-4 text-left">Status</th>
                     <th class="py-2 px-4 text-left">Contact</th>
                     <th class="py-2 px-4 text-left">Resume</th>
@@ -35,6 +35,11 @@
                 @endforeach                
             </tbody>
         </table>
+    </div>
+
+    {{-- Add pagination links --}}
+    <div class="flex items-center justify-center">
+        {{ $applicants->links('pagination::tailwind') }}
     </div>
 </div>
 
