@@ -35,22 +35,22 @@
                        class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.settings') ? 'bg-gray-700 font-medium' : '' }} transition-colors duration-150">
                        Settings
                     </a>
-                    @if (Auth::user()->role_id === 1)
+                    @if (Auth::user()->hasRole('Admin'))
                         <a href="{{ route('dashboard.user-management') }}" 
                         class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.user-management') ? 'bg-gray-700 font-medium' : '' }} transition-colors duration-150">
                         User Management
                         </a>
                     @endif
-                    
-                    <a href="{{ route('dashboard.job-management') }}" 
-                       class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.job-management') ? 'bg-gray-700 font-medium' : '' }} transition-colors duration-150">
-                       Job Management
-                    </a>
-                    <a href="{{ route('dashboard.applicant-management') }}" 
-                       class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.applicant-management') ? 'bg-gray-700 font-medium' : '' }} transition-colors duration-150">
-                       Applicant Management
-                    </a>
-                    
+                    @if (Auth::user()->hasRole('Admin') ||Auth::user()->hasRole('Employer'))
+                        <a href="{{ route('dashboard.job-management') }}" 
+                            class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.job-management') ? 'bg-gray-700 font-medium' : '' }} transition-colors duration-150">
+                            Job Management
+                        </a>
+                        <a href="{{ route('dashboard.applicant-management') }}" 
+                            class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.applicant-management') ? 'bg-gray-700 font-medium' : '' }} transition-colors duration-150">
+                            Applicant Management
+                        </a>
+                    @endif
                 </nav>
             </div>
 

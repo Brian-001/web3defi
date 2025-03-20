@@ -29,7 +29,7 @@
                                 @method('PATCH')
                                 <select name="role_id" class="border-none py-1 px-8 outline-none focus:ring-0" onchange="this.form.submit()">
                                     @foreach (\App\Models\Role::all() as $role)
-                                        <option value="{{ $role->id }}" {{ $user->role_name === $role->name ? 'selected' : '' }}>
+                                        <option value="{{ $role->id }}" {{ $user->role->name === $role->name ? 'selected' : '' }}>
                                             {{ ucfirst($role->name) }}
                                         </option>
                                     @endforeach
