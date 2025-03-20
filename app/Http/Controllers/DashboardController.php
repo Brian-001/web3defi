@@ -77,7 +77,7 @@ class DashboardController extends Controller
         ->paginate(10);
 
         //Available status for the dropdown
-        $statuses = ['Active', 'Suspended', 'Pending'];
+        $statuses = ['active', 'suspended', 'pending'];
 
         //Fetch available roles from roles table
         $roles = Cache::remember('roles_list', 1440, function() { //Cache roles for 24 hours
@@ -93,7 +93,7 @@ class DashboardController extends Controller
         $user = User::findOrFail($id);
         
         $request->validate([
-            'user_status' => 'required|in:Active,Suspended,Pending',
+            'user_status' => 'required|in:active,suspended,pending',
         ]);
 
         $user->update(['user_status' =>$request->user_status]);
@@ -151,7 +151,7 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         $listing = Listing::with(['jobApplications', 'user'])
-        ->select('id', 'listing_title', 'user_id', 'job_type', 'listing_status', 'created_at') //Limit Columns
+        ->select('id', 'listing_title', 'company_description', 'job_description', 'job_roles', 'user_id', 'job_type', 'salary', 'location', 'listing_status', 'listing_logo', 'created_at') //Limit Columns
         ->findOrFail($applicant->listing_id);
 
         //Restrict Employers to their own listings and allow Admin to view all listings
@@ -170,7 +170,7 @@ class DashboardController extends Controller
             //Nested eager loading
             $q->select('id', 'listing_title', 'user_id', 'listing_status');
         }])
-        ->select('id', 'listing_id', 'name', 'email', 'created_at'); //Limit job application columns
+        ->select('id', 'listing_id', 'name', 'email', 'created_at', 'resume_path'); //Limit job application columns
         
         if(!$user->hasRole('Admin')) {
             $query->whereHas('listing', function($subQuery) use ($user){

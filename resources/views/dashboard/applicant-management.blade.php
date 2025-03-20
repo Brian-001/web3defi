@@ -3,44 +3,86 @@
 @section('title', 'Applicant Management')
 
 @section('content')
-<div class="bg-white p-6 rounded-lg shadow">
-    <h2 class="text-2xl font-bold mb-4">Applicants management</h2>
-    <div class="mx-auto my-4">
-        <table class="w-full">
-            <thead>
-                <tr class="border-b border-gray-300">
-                    <th class="py-2 px-4 text-left">Listing Title</th>
-                    <th class="py-2 px-4 text-left">Applicant Name</th>
-                    <th class="py-2 px-4 text-left">Application Date</th>
-                    <th class="py-2 px-4 text-left">Job Applied</th>
-                    <th class="py-2 px-4 text-left">Status</th>
-                    <th class="py-2 px-4 text-left">Contact</th>
-                    <th class="py-2 px-4 text-left">Resume</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($applicants as $applicant)
-                    <tr class="border-b border-gray-200">
-                        <td class="py-2 px-4">{{$applicant->listing->listing_title}}</td>
-                        <td class="py-2 px-4">{{$applicant->name}}</td>
-                        <td class="py-2 px-4">{{$applicant->created_at->format('d M Y')}}</td>
-                        <td class="py-2 px-4"><a href="{{ route('dashboard.single-listing', $applicant->id) }}" class="hover:underline">View</a></td>
-                        <td class="py-2 px-4">Active</td>
-                        <td class="py-2 px-4"><a href="#" class="email-link bg-gray-200 px-2 py-1 rounded-md hover:shadow-md" data-email = "{{ $applicant->email }}">Send Email</a></td>
-                        <td class="py-2 px-4 flex items-center gap-2">
-                            <x-icons.document class="text-gray-500 " />
-                            <a href="{{ asset('storage/' . $applicant->resume_path) }}" target="_blank" class="hover:underline">View Resume</a>
-                        </td>
-                    </tr>
-                @endforeach                
-            </tbody>
-        </table>
-    </div>
+<div class="container mx-auto px-4 py-8">
+    <div class="bg-white p-6 rounded-xl shadow-lg">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-800">Applicant Management</h2>
+            <span class="text-sm text-gray-500">Total Applicants: {{ $applicants->total() }}</span>
+        </div>
 
-    {{-- Add pagination links --}}
-    <div class="flex items-center justify-center">
-        {{ $applicants->links('pagination::tailwind') }}
+        <!-- Table -->
+        <div class="overflow-x-auto">
+            <table class="w-full table-auto border-collapse">
+                <thead>
+                    <tr class="bg-gray-100 text-gray-700 text-xs font-semibold uppercase tracking-wide border-b border-gray-200">
+                        <th class="py-2 px-2 text-left">Listing Title</th>
+                        <th class="py-2 px-2 text-left">Applicant</th>
+                        <th class="py-2 px-2 text-left">Applied On</th>
+                        <th class="py-2 px-2 text-left">Job</th>
+                        <th class="py-2 px-2 text-left">Status</th>
+                        <th class="py-2 px-2 text-left">Contact</th>
+                        <th class="py-2 px-2 text-left">Resume</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600">
+                    @forelse ($applicants as $applicant)
+                        <tr class="hover:bg-gray-50 transition-colors duration-150 border-b border-gray-200">
+                            <td class="py-2 px-2 whitespace-nowrap text-sm">{{ $applicant->listing->listing_title }}</td>
+                            <td class="py-2 px-2 whitespace-nowrap text-sm">{{ $applicant->name }}</td>
+                            <td class="py-2 px-2 whitespace-nowrap text-sm">{{ $applicant->created_at->format('d M Y') }}</td>
+                            <td class="py-2 px-2 whitespace-nowrap text-sm">
+                                <a href="{{ route('dashboard.single-listing', $applicant->id) }}" 
+                                   class="text-cyan-600 hover:text-cyan-800 hover:underline transition-colors duration-200">
+                                    View
+                                </a>
+                            </td>
+                            <td class="py-2 px-2 whitespace-nowrap text-sm">
+                                <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full {{ $applicant->status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
+                                    {{ ucfirst($applicant->status ?? 'active') }}
+                                </span>
+                            </td>
+                            <td class="py-2 px-2 whitespace-nowrap text-sm">
+                                <a href="#" 
+                                   class="email-link bg-gray-200 text-gray-700 px-2 py-1 rounded-md hover:bg-gray-300 hover:text-gray-900 transition-colors duration-200" 
+                                   data-email="{{ $applicant->email }}">
+                                    Email
+                                </a>
+                            </td>
+                            <td class="py-2 px-2 whitespace-nowrap text-sm flex items-center gap-2">
+                                <x-icons.document class="text-gray-500"/>
+                                <a href="{{ asset('storage/' . $applicant->resume_path) }}" 
+                                   target="_blank" 
+                                   class="text-cyan-600 hover:text-cyan-800 hover:underline transition-colors duration-200">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="py-2 px-2 text-center text-gray-500 text-sm">No applicants found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-4 flex items-center justify-center">
+            {{ $applicants->links('pagination::tailwind') }}
+        </div>
     </div>
 </div>
 
+{{-- @push('scripts')
+<script>
+    document.querySelectorAll('.email-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const email = link.getAttribute('data-email');
+            window.location.href = `mailto:${email}`;
+        });
+    });
+</script>
+@endpush --}}
 @endsection
