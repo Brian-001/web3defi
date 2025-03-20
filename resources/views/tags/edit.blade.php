@@ -1,38 +1,58 @@
 @extends('layouts.dashboard')
 
 @section('title', 'Edit Tag')
+
 @section('content')
-<div class="flex items-center justify-center">
-    <form action="{{route('tags.update', $tag->id)}}" method="POST" class="shadow-lg p-6 rounded-lg w-full max-w-lg">
-        @csrf
-        @method('PUT')
-        <div class="flex items-center justify-between">
-            <h1 class="text-2xl text-slate-700 font-semibold mb-4 place-items-center">Edit Tag</h1>
-            <a href="{{ route('tags.index') }}" class="flex  gap-4">
-                <span class="text-slate-700 order-2">Back</span> 
-                <x-icons.arrow-uturn class="w-6 h-6 order-1 text-slate-700" />
+<div class="container mx-auto px-4 py-8">
+    <div class="bg-white p-6 rounded-xl shadow-lg max-w-lg mx-auto">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Edit Tag</h1>
+            <a href="{{ route('tags.index') }}" 
+               class="flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-cyan-600 transition-colors duration-200">
+                <x-icons.arrow-uturn />
+                Back to Tags
             </a>
         </div>
-        
 
-        {{-- Flash message for success --}}
+        <!-- Success Message -->
         @if (session('success'))
-            <div class="mt-4 bg-green-200 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                {{ session('success')}}
+            <div class="mb-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-r-lg" role="alert">
+                {{ session('success') }}
             </div>
         @endif
-        <div class="mb-4 flex flex-col">
-            <label for="tag_name" class="font-semibold mb-2">Tag Name <span class="text-sm text-red-500">*</span></label>
-            <input type="text" name="tag_name" id="tag_name" value="{{old('tag_name', $tag->tag_name)}}" class="focus:outline-none focus:ring-2 focus:ring-cyan-300 rounded-lg p-2"
-            placeholder="JavaScript, PHP, Python, etc." autocomplete="off" required>
-            @error('tag_name')
-                <span class="text-red-500 text-sm">{{$message}}</span>
-            @enderror
-        </div>
-                
-        <div>
-            <button type="submit" class="bg-cyan-300 text-slate-700 px-2 py-1.5 rounded-md">Update Tag</button>
-        </div>
-    </form> 
-</div> 
+
+        <!-- Form -->
+        <form action="{{ route('tags.update', $tag->id) }}" method="POST" class="space-y-6">
+            @csrf
+            @method('PUT')
+
+            <!-- Tag Name -->
+            <div class="space-y-2">
+                <label for="tag_name" class="block text-sm font-semibold text-gray-800">
+                    Tag Name <span class="text-red-500">*</span>
+                </label>
+                <input type="text" name="tag_name" id="tag_name" value="{{ old('tag_name', $tag->tag_name) }}" 
+                       placeholder="e.g., JavaScript, PHP, Python" 
+                       class="w-full p-2 text-sm text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500" 
+                       autocomplete="off" required>
+                @error('tag_name')
+                    <span class="text-red-500 text-xs">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-end gap-4">
+                <a href="{{ route('tags.index') }}" 
+                   class="bg-gray-500 text-white text-sm font-semibold px-6 py-2 rounded-md hover:bg-gray-600 transition-colors duration-200">
+                    Cancel
+                </a>
+                <button type="submit" 
+                        class="bg-cyan-500 text-white text-sm font-semibold px-6 py-2 rounded-md hover:bg-cyan-600 transition-colors duration-200">
+                    Update Tag
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection

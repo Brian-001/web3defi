@@ -1,204 +1,189 @@
 @extends('layouts.dashboard')
 
-@section('content')
+@section('title', 'Edit Job Listing')
 
-<div class="grid grid-cols-1 items-center justify-center mb-10 bg-white rounded-lg p-6">
-    <div class="p-6 rounded-lg shadow-lg w-full mt-10 md:mx-auto h-full">
-        <form action="{{route('listings.update', $listing->id)}}" method="POST" enctype="multipart/form-data">
+@section('content')
+<div class="container mx-auto px-4 py-8">
+    <div class="bg-white p-6 rounded-xl shadow-lg">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Edit Job Listing</h1>
+            <a href="{{ route('dashboard.job-management') }}" 
+               class="flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-cyan-600 transition-colors duration-200">
+                <x-icons.arrow-uturn />
+                Back to Jobs
+            </a>
+        </div>
+
+        <!-- Success Message -->
+        @if (session('success'))
+            <div class="mb-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-r-lg" role="alert">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <!-- Form -->
+        <form action="{{ route('listings.update', $listing->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @method('PUT')
-            {{-- Flash message for success --}}
-            @if (session('success'))
-                <div class="mt-4 bg-green-200 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                    {{ session('success')}}
-                </div>
-            @endif
 
-            {{-- Form title --}}
-            <div class="flex items-center justify-between mb-10">
-                <div>
-                    <h1 class="text-lg text-cyan-500 mb-4 place-items-center">Edit job</h1>
-                </div>
-                <div class="flex">
-                    <a href="{{ route('dashboard.job-management') }}" class="flex gap-1 hover:gap-2"><x-icons.arrow-uturn class="text-white"/> <span class="text-slate-700 font-semibold"> Back</span></a>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-0 md:mb-10 shadow-md">
-
-                {{-- Job Title --}}
-                <div class="mb-4 flex flex-col px-6 py-4">
-                    <label for="listing_title" class="font-semibold mb-2">Job Title <span class="text-sm text-red-500">*</span></label>
-                    <input type="text" name="listing_title" id="listing_title" value="{{old('listing_title', $listing->listing_title)}}" class="text-slate-700 focus:outline-none rounded-lg p-2 border-b" autocomplete="off" required>
+            <!-- Job Title and Location -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label for="listing_title" class="block text-sm font-semibold text-gray-800">Job Title <span class="text-red-500">*</span></label>
+                    <input type="text" name="listing_title" id="listing_title" value="{{ old('listing_title', $listing->listing_title) }}" 
+                           class="w-full p-2 text-sm text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500" 
+                           autocomplete="off" required>
                     @error('listing_title')
-                        <span class="text-red-500 text-sm">{{$message}}</span>
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
-
-                {{-- Location --}}
-                <div class="mb-4 flex flex-col px-6 py-4">
-                    <label for="location" class="font-semibold mb-2">Location<span class="text-sm text-red-500">*</span></label>
-                    <input type="text" name="location" id="location" value="{{old('location', $listing->location)}}" placeholder="City, Country" 
-                    class="text-slate-700 rounded-lg p- focus:outline-none">
+                <div class="space-y-2">
+                    <label for="location" class="block text-sm font-semibold text-gray-800">Location <span class="text-red-500">*</span></label>
+                    <input type="text" name="location" id="location" value="{{ old('location', $listing->location) }}" 
+                           placeholder="City, Country" 
+                           class="w-full p-2 text-sm text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500" required>
                     @error('location')
-                        <span class="text-red-500 text-sm">{{$message}}</span>
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
-
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-0 md:mb-10 shadow-md">
-                {{-- Company Description --}}
-                <div class="mb-4 flex flex-col mr-4 w-full px-6 py-4">
-                    <label for="company_description" class="font-semibold mb-2">Company Description</label>
-                    <textarea name="company_description" id="company_description" cols="30" rows="5" 
-                    placeholder="Summarised information about the company" class="text-slate-700 focus:outline-none h-32 resize-none p-2 rounded-lg">{{old('company_description', $listing->company_description)}}</textarea>
+            <!-- Descriptions -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label for="company_description" class="block text-sm font-semibold text-gray-800">Company Description</label>
+                    <textarea name="company_description" id="company_description" rows="4" 
+                              placeholder="Summarized company info" 
+                              class="w-full p-2 text-sm text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500 resize-none">{{ old('company_description', $listing->company_description) }}</textarea>
                     @error('company_description')
-                        <span class="text-red-500 text-sm">{{$message}}</span>
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
-    
-                {{-- Job Description --}}
-                <div class="mb-4 flex flex-col w-full px-6 py-4">
-                    <label for="job_description" class="font-semibold mb-2">Job Description<span class="text-sm text-red-500">*</span></label>
-                    <textarea name="job_description" id="job_description" cols="30" rows="5" placeholder="Enter job description" class="text-slate-700 focus:outline-none h-32 resize-none p-2 rounded-lg">{{old('job_description', $listing->job_description)}}</textarea>
+                <div class="space-y-2">
+                    <label for="job_description" class="block text-sm font-semibold text-gray-800">Job Description <span class="text-red-500">*</span></label>
+                    <textarea name="job_description" id="job_description" rows="4" 
+                              placeholder="Enter job description" 
+                              class="w-full p-2 text-sm text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500 resize-none" required>{{ old('job_description', $listing->job_description) }}</textarea>
                     @error('job_description')
-                        <span class="text-red-500 text-sm">{{$message}}</span>
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
-            
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-0 md:mb-10 shadow-md">
-                {{-- Job Roles --}}
-                <div class="mb-4 flex flex-col mr-4 w-full px-6 py-4">
-                    <label for="job_roles" class="font-semibold mb-2">Job Roles<span class="text-sm text-red-500">*</span></label>
-                    <textarea name="job_roles" id="job_roles" cols="30" rows="5" placeholder="Rememeber to include fullstops after every statement" class="text-slate-700 focus:outline-none h-32 resize-none p-2 rounded-lg">{{old('job_roles', $listing->job_roles)}}</textarea>
+            <!-- Roles and Additional Info -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label for="job_roles" class="block text-sm font-semibold text-gray-800">Job Roles <span class="text-red-500">*</span></label>
+                    <textarea name="job_roles" id="job_roles" rows="4" 
+                              placeholder="Use full stops after each role (e.g., 'Develop features. Test code.')" 
+                              class="w-full p-2 text-sm text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500 resize-none" required>{{ old('job_roles', $listing->job_roles) }}</textarea>
                     @error('job_roles')
-                        <span class="text-red-500 text-sm">{{$message}}</span>
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
-                
-                {{-- Additional Information --}}
-                <div class="mb-4 flex flex-col w-full px-6 py-4">
-                    <label for="additional_info" class="font-semibold mb-2">Additional Information</label>
-                    <textarea name="additional_info" id="additional_info" cols="30" rows="5" placeholder="More info about job e.g., Benefits, Holidays" class="text-slate-700 focus:outline-none h-32 resize-none p-2 rounded-lg">{{old('additional_info', $listing->additional_info)}}</textarea>
+                <div class="space-y-2">
+                    <label for="additional_info" class="block text-sm font-semibold text-gray-800">Additional Information</label>
+                    <textarea name="additional_info" id="additional_info" rows="4" 
+                              placeholder="Benefits, holidays, etc." 
+                              class="w-full p-2 text-sm text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500 resize-none">{{ old('additional_info', $listing->additional_info) }}</textarea>
                     @error('additional_info')
-                        <span class="text-red-500 text-sm">{{$message}}</span>
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-0 md:mb-10 shadow-md">
-                {{-- Tags --}}
-                <div class="mb-4 flex flex-col px-6 py-4">
-                    <label for="tags" class="font-semibold mb-2">Tags<span class="text-sm text-red-500">*</span></label>
-                    <div class="rounded-lg p-4 max-h-40 overflow-y-auto">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <!-- Tags and Job Type -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label for="tags" class="block text-sm font-semibold text-gray-800">Tags <span class="text-red-500">*</span></label>
+                    <div class="max-h-40 overflow-y-auto p-2 border rounded-md bg-gray-50">
+                        <div class="grid grid-cols-2 gap-2">
                             @foreach ($tags as $tag)
-                                <label class="flex items-center space-x-2 text-slate-700 cursor-pointer">
-                                    <input 
-                                        type="checkbox" 
-                                        name="tags[]" 
-                                        value="{{ $tag->id }}" 
-                                        class="form-checkbox p-2 h-5 w-5 text-cyan-300 border-slate-500 rounded"
-                                        {{ in_array($tag->id, old('tags', $listing->tags ? json_decode($listing->tags, true) : [])) ? 'checked' : '' }}
-                                    >
-                                    <span class="font-semibold">{{ $tag->tag_name }}</span>
+                                <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                                    <input type="checkbox" name="tags[]" value="{{ $tag->id }}" 
+                                           class="h-4 w-4 text-cyan-500 border-gray-300 rounded focus:ring-cyan-500"
+                                           {{ in_array($tag->id, old('tags', $listing->tags ? json_decode($listing->tags, true) : [])) ? 'checked' : '' }}>
+                                    <span>{{ $tag->tag_name }}</span>
                                 </label>
                             @endforeach
                         </div>
                     </div>
                     @error('tags')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
                     @enderror
                 </div>
-
-               {{-- Job Type --}}
-               <div class="mb-4 flex flex-col px-6 py-4">
-                    <label for="job_type" class= "font-semibold mb-2">Job Type<span class="text-sm text-red-500">*</span></label> 
-                    <select name= "job_type" id= "job_type"  class= "font-semibold text-slate-700 rounded-lg p-2 focus:outline-none">
-                        <option value="" class="text-gray-200" disabled selected>--Select Job Type--</option>
-                        <option value= "onsite" {{ old('job_type', $listing->job_type) == 'onsite' ? 'selected' : '' }} class="text-slate-700">On-site</option> 
-                        <option value= "remote" {{ old('job_type', $listing->job_type) == 'remote' ? 'selected' : '' }} class="text-slate-700">Remote</option> 
-                        <option value= "hybrid" {{ old('job_type', $listing->job_type) == 'hybrid' ? 'selected' : '' }} class="text-slate-700">Hybrid</option> 
+                <div class="space-y-2">
+                    <label for="job_type" class="block text-sm font-semibold text-gray-800">Job Type <span class="text-red-500">*</span></label>
+                    <select name="job_type" id="job_type" 
+                            class="w-full p-2 text-sm text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500" required>
+                        <option value="" disabled {{ old('job_type', $listing->job_type) ? '' : 'selected' }}>-- Select Job Type --</option>
+                        <option value="onsite" {{ old('job_type', $listing->job_type) === 'onsite' ? 'selected' : '' }}>On-site</option>
+                        <option value="remote" {{ old('job_type', $listing->job_type) === 'remote' ? 'selected' : '' }}>Remote</option>
+                        <option value="hybrid" {{ old('job_type', $listing->job_type) === 'hybrid' ? 'selected' : '' }}>Hybrid</option>
                     </select>
                     @error('job_type')
-                        <span class="text-red-500 text-sm">{{$message}}</span>
-                    @enderror 
-                </div> 
+                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
-    
-            
-    
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 shadow-md">
-                 {{--Salary placeholder--}}
-                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 mb-4 px-6 py-4">
-                    <div class="flex flex-col">
-                        {{-- Salary --}}
-                        <label for="min_salary" class="font-semibold mb-2">Estimated Salary (USD)<span class="text-sm text-red-500">*</span></label>
-                        <div class="flex flex-col md:flex-row gap-4"> {{-- Changed to flex-col for small screens and flex-row for medium and larger screens --}}
-                            {{-- Minimum Salary --}}
-                            <div class="flex flex-col w-full"> {{-- Use w-full to ensure full width on small screens --}}
-                                <label for="min_salary" class="text-sm font-medium mb-2">Minimum Salary<span class="text-sm text-red-500">*</span></label>
-                                <input type="number" name="min_salary" id="min_salary" min=0
-                                value="{{ old('min_salary', $listing->salary ? explode(' to ', $listing->salary)[0] : '') }}" 
-                                 class="text-slate-700 rounded-lg p-2 focus:outline-none" required>
-                                @error('min_salary')
-                                    <span class="text-red-500 text-sm">{{$message}}</span>
-                                @enderror
-                            </div>
-                            {{-- Maximum Salary --}}
-                            <div class="flex flex-col w-full"> {{-- Use w-full to ensure full width on small screens --}}
-                                <label for="max_salary" class="text-sm font-medium mb-2">Maximum Salary<span class="text-sm text-red-500">*</span></label>
-                                <input type="number" name="max_salary" min="0" id="max_salary" 
-                                value="{{ old('max_salary', $listing->salary ? explode(' to ', $listing->salary)[1] : '') }}"
-                                 class="text-slate-700 rounded-lg p-2 focus:outline-none" required>
-                                @error('max_salary')
-                                    <span class="text-red-500 text-sm">{{$message}}</span>
-                                @enderror
-                            </div>
-                        </div>
+
+            <!-- Salary -->
+            <div class="space-y-2">
+                <label class="block text-sm font-semibold text-gray-800">Estimated Salary (USD) <span class="text-red-500">*</span></label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label for="min_salary" class="block text-xs font-medium text-gray-600">Minimum Salary</label>
+                        <input type="number" name="min_salary" id="min_salary" min="0" 
+                               value="{{ old('min_salary', $listing->salary ? explode(' to ', $listing->salary)[0] : '') }}" 
+                               class="w-full p-2 text-sm text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500" required>
+                        @error('min_salary')
+                            <span class="text-red-500 text-xs">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="space-y-2">
+                        <label for="max_salary" class="block text-xs font-medium text-gray-600">Maximum Salary</label>
+                        <input type="number" name="max_salary" id="max_salary" min="0" 
+                               value="{{ old('max_salary', $listing->salary ? explode(' to ', $listing->salary)[1] : '') }}" 
+                               class="w-full p-2 text-sm text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500" required>
+                        @error('max_salary')
+                            <span class="text-red-500 text-xs">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
-    
-                
             </div>
-            {{--image upload--}}
-            <div class="mb-6 px-6 py-4 bg-white rounded-lg shadow-md">
-                <div class="grid grid-cols-1 gap-4 md:items-start">
-                    <!-- Label -->
-                    <label for="listing_logo" class="block text-sm font-semibold text-gray-700 md:mt-2">
-                        Company Logo
-                    </label>
-            
-                    <!-- File Input -->
-                    <div class="mt-2">
-                        <input 
-                            type="file" 
-                            name="listing_logo" 
-                            id="listing_logo" 
-                            accept="image/*" 
-                            class="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-dashed file:border-gray-300 file:bg-gray-50 file:text-gray-700 file:cursor-pointer hover:file:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 cursor-pointer"
-                        >
-                    </div>
-            
-                    <!-- Preview Image -->
-                    <div class="mt-2 flex justify-center md:justify-start">
-                        <img 
-                            src="{{ $listing->listing_logo ? asset('storage/' . $listing->listing_logo) : asset('images/default_logo.jpg') }}" 
-                            alt="Company Logo" 
-                            class="w-16 h-16 rounded-full object-cover border border-gray-200 shadow-sm"
-                        >
-                    </div>
+
+            <!-- Logo Upload -->
+            <div class="space-y-2">
+                <label for="listing_logo" class="block text-sm font-semibold text-gray-800">Company Logo</label>
+                <div class="flex items-center gap-4">
+                    <input type="file" name="listing_logo" id="listing_logo" accept="image/*" 
+                           class="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-cyan-50 file:text-cyan-700 file:cursor-pointer hover:file:bg-cyan-100 focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                    @if ($listing->listing_logo)
+                        <img src="{{ asset('storage/' . $listing->listing_logo) }}" 
+                             alt="Current Logo" 
+                             class="w-12 h-12 rounded-full object-cover border border-gray-200 shadow-sm">
+                    @else
+                        <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 text-xs">No Logo</div>
+                    @endif
                 </div>
-            </div> 
-            <div class="px-6 py-4 flex items-center justify-center">
-                <button type="submit" class="bg-cyan-300 text-slate-700 py-2 md:py-3 w-1/2 rounded-md hover:bg-cyan-500 hover:text-white">Update Job</button>
+                @error('listing_logo')
+                    <span class="text-red-500 text-xs">{{ $message }}</span>
+                @enderror
             </div>
-            
-        </form> 
+
+            <!-- Submit Button -->
+            <div class="flex justify-end gap-4">
+                <a href="{{ route('dashboard.job-management') }}" 
+                   class="bg-gray-500 text-white text-sm font-semibold px-6 py-2 rounded-md hover:bg-gray-600 transition-colors duration-200">
+                    Cancel
+                </a>
+                <button type="submit" 
+                        class="bg-cyan-500 text-white text-sm font-semibold px-6 py-2 rounded-md hover:bg-cyan-600 transition-colors duration-200">
+                    Update Job
+                </button>
+            </div>
+        </form>
     </div>
-    
-</div> 
+</div>
 @endsection
