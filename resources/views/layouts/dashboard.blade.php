@@ -23,17 +23,17 @@
                 </div>
                 <!-- Sidebar Navigation: Menu items with hover/active states -->
                 <nav class="mt-4 space-y-1">
+                    <a href="/" 
+                       class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.profile') ? 'bg-gray-700 font-medium' : '' }} transition-colors duration-150">
+                       Back to home
+                    </a>
                     <a href="{{ route('dashboard.index') }}" 
                        class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.index') ? 'bg-gray-700 font-medium' : '' }} transition-colors duration-150">
-                       Home
+                       Dashboard
                     </a>
                     <a href="{{ route('dashboard.profile') }}" 
                        class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.profile') ? 'bg-gray-700 font-medium' : '' }} transition-colors duration-150">
                        Profile
-                    </a>
-                    <a href="{{ route('dashboard.settings') }}" 
-                       class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.settings') ? 'bg-gray-700 font-medium' : '' }} transition-colors duration-150">
-                       Settings
                     </a>
                     @if (Auth::user()->hasRole('Admin'))
                         <a href="{{ route('dashboard.user-management') }}" 

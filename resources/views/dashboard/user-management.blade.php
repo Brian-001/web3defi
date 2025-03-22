@@ -35,11 +35,11 @@
                                 <form action="{{ route('dashboard.update-role', $user->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('PATCH')
-                                    <select name="role_id" 
+                                    <select name="role_name" 
                                             class="bg-transparent text-gray-700 text-sm py-0 px-8 rounded-lg hover:text-cyan-600" 
                                             onchange="this.form.submit()">
                                         @foreach (\App\Models\Role::all() as $role)
-                                            <option value="{{ $role->id }}" {{ $user->role->name === $role->name ? 'selected' : '' }}>
+                                            <option value="{{ $role->name }}" {{ $user->role->name === $role->name ? 'selected' : '' }}>
                                                 {{ ucfirst($role->name) }}
                                             </option>
                                         @endforeach

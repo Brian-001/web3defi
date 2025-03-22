@@ -62,11 +62,11 @@ Route::middleware(['auth'])->group(function()
 {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/dashboard/profile', [DashboardController::class, 'getProfile'])->name('dashboard.profile');
-    Route::get('/dashboard/settings', [DashboardController::class, 'getSetting'])->name('dashboard.settings');
+    Route::put('/dashboard/profile', [DashboardController::class, 'updateProfile'])->name('dashboard.profile.update');
     Route::get('/dashboard/user-management', [DashboardController::class, 'getUsersManagementData'])->name('dashboard.user-management');
     // Update user status and role
     Route::patch('/users/{id}/status', [DashboardController::class, 'updateUserStatus'])->name('dashboard.update-status');
-    Route::patch('/users/{id}/role', [DashboardController::class, 'updateUserRole'])->name('dashboard.update-role');
+    Route::patch('/users/{user}/role', [DashboardController::class, 'updateUserRole'])->name('dashboard.update-role');
 
     Route::get('/dashboard/job-management', [DashboardController::class, 'getJobsManagementData'])->name('dashboard.job-management');
     Route::get('/dashboard/applicant-management', [DashboardController::class, 'getApplicantsManagementData'])->name('dashboard.applicant-management');

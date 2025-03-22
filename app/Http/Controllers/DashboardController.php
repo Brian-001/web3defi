@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
@@ -103,16 +105,17 @@ class DashboardController extends Controller
         return redirect()->route('dashboard.user-management');
     }
 
-    public function updateUserRole(Request $request, $id)
+    public function updateUserRole(Request $request, User $user)
     {
         //Use route model binding
-        $user = User::findOrFail($id);
+        // $user = User::findOrFail($id);
         $request->validate([
             'role_name' => 'required|exists:roles,name', // validate by name intead of id
         ]);
         $role = Role::where('name', $request->role_name)->firstOrFail();
         $user->update(['role_id' => $role->id]);
 
+        
         notify()->success('User role updated successfully');
 
         return redirect()->route('dashboard.user-management');
@@ -182,14 +185,48 @@ class DashboardController extends Controller
         return view('dashboard.applicant-management', compact('applicants'));
     }
 
-    public function getSetting()
-    {
-        return view('dashboard.settings');
-    }
-
     public function getProfile()
     {
-        return view('dashboard.profile');
+        $user = Auth::user();
+        return view('dashboard.profile', compact('user'));
+    }
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'current_password' => 'nullable|string|required_with:password',
+            'password' => 'nullable|string|min:8|confirmed',
+            'notify_applications' => 'boolean',
+        ]);
+
+        //update basic info
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+
+        //Handle avatar upload
+        if ($request->hasFile('avatar')){
+            if($user->avatar) {
+                //Delete previous avatar
+                Storage::delete($user->avatar);
+            }
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = $path;
+        }
+
+        if ($request->filled('current_passord')){
+            if(!Hash::check($request->input('current_password'), $user->password)){
+                return back()->withErrors(['current_password' => 'The current password is incorrect']);
+            }
+            $user->password = Hash::make($request->input('password'));
+        }
+
+        //Update notification preferences(assumes columns exixsts in users table)
+
+        return redirect()->route('dashboard.profile')->with('success', 'Profile updated successfully');
     }
 
     public function getReport()
