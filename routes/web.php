@@ -5,6 +5,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JobApplicationController;
+use App\Livewire\Counter;
 
 // Update this route to use ListingController's index method
 Route::get('/', [ListingController::class, 'index'])->name('home');
@@ -78,3 +79,6 @@ Route::middleware(['auth'])->group(function()
     //Display single listing associated with a specific applicant
     Route::get('/dashboard/single-listing/{applicant}', [DashboardController::class, 'getSingleListing'])->name('dashboard.single-listing');
 });
+
+//Livewire
+Route::get('/counter', Counter::class);

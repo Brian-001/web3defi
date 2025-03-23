@@ -1,3 +1,10 @@
+//Alpinejs
+import Alpine from 'alpinejs';
+
+window.Alpine = Alpine;
+Alpine.start();
+
+
 // Handles the email link click event and opens Gmail directly in a new tab if Gmail is likely in 
 // use (heuristic: Gmail tab open). Otherwise, it offers options via a simple prompt or defaults to mailto.
 
@@ -29,3 +36,4 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+

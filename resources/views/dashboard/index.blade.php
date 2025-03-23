@@ -112,110 +112,13 @@
             </div>
         </div>
 
+        <!-- Pass data to JS -->
         @push('scripts')
-        <!-- Chart.js -->
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
-
-        <!-- Users Bar Chart -->
-        <script>
-            const userStats = @json($userStats);
-            const ctxUsers = document.getElementById('usersChart').getContext('2d');
-            new Chart(ctxUsers, {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(userStats),
-                    datasets: [{
-                        label: 'Users',
-                        data: Object.values(userStats),
-                        backgroundColor: 'rgba(34, 211, 238, 0.6)', // Cyan-400
-                        borderColor: 'rgba(34, 211, 238, 1)',
-                        borderWidth: 1,
-                        borderRadius: 4,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: { beginAtZero: true, title: { display: true, text: 'User Count', color: '#4B5563' } },
-                        x: { title: { display: true, text: 'Roles', color: '#4B5563' } }
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        title: { display: true, text: 'User Distribution', color: '#1F2937', font: { size: 16 } }
-                    }
-                }
-            });
-        </script>
-
-        <!-- Listings Line Chart -->
-        <script>
-            const listingsPerDay = @json($listingsPerDay);
-            const ctxListings = document.getElementById('listingsChart').getContext('2d');
-            new Chart(ctxListings, {
-                type: 'line',
-                data: {
-                    labels: Object.keys(listingsPerDay),
-                    datasets: [{
-                        label: 'Job Listings',
-                        data: Object.values(listingsPerDay),
-                        borderColor: 'rgba(34, 211,-diff238, 1)',
-                        backgroundColor: 'rgba(34, 211, 238, 0.1)',
-                        fill: true,
-                        tension: 0.3,
-                        pointBackgroundColor: 'rgba(34, 211, 238, 1)',
-                        pointRadius: 4,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: { beginAtZero: true, title: { display: true, text: 'Listings', color: '#4B5563' } },
-                        x: { title: { display: true, text: 'Date (Last 7 Days)', color: '#4B5563' } }
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        title: { display: true, text: 'Jobs Over Time', color: '#1F2937', font: { size: 16 } }
-                    }
-                }
-            });
-        </script>
-
-        <!-- Job Type Pie Chart -->
-        <script>
-            const listingsByJobType = @json($listingsByJobType);
-            const ctxJobType = document.getElementById('jobTypeChart').getContext('2d');
-            new Chart(ctxJobType, {
-                type: 'pie',
-                data: {
-                    labels: Object.keys(listingsByJobType),
-                    datasets: [{
-                        label: 'Job Types',
-                        data: Object.values(listingsByJobType),
-                        backgroundColor: [
-                            'rgba(34, 211, 238, 0.6)',  // Cyan-400
-                            'rgba(16, 185, 129, 0.6)',  // Emerald-500
-                            'rgba(59, 130, 246, 0.6)',  // Blue-500
-                        ],
-                        borderColor: [
-                            'rgba(34, 211, 238, 1)',
-                            'rgba(16, 185, 129, 1)',
-                            'rgba(59, 130, 246, 1)',
-                        ],
-                        borderWidth: 1,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom', labels: { color: '#4B5563' } },
-                        title: { display: true, text: 'Job Categories', color: '#1F2937', font: { size: 16 } }
-                    }
-                }
-            });
-        </script>
+            <script>
+                window.userStats = @json($userStats);
+                window.listingsPerDay = @json($listingsPerDay);
+                window.listingsByJobType = @json($listingsByJobType);
+            </script>
         @endpush
     @endif
 </div>
