@@ -73,54 +73,11 @@ class DashboardController extends Controller
 
     public function getUsersManagementData()
     {
-        //Use Eloquent with relationship instead of join for cleaner code and eager loading
-        $users = User::with('role')
-        ->select('id', 'name', 'email', 'user_status', 'created_at', 'updated_at', 'role_id') // Specify columns explicitly
-        ->paginate(10);
-
-        //Available status for the dropdown
-        $statuses = ['active', 'suspended', 'pending'];
-
-        //Fetch available roles from roles table
-        $roles = Cache::remember('roles_list', 1440, function() { //Cache roles for 24 hours
-            return Role::pluck('name')->all();
-        });
-
-        return view('dashboard.user-management', compact('users', 'statuses', 'roles'));
+        //Pagination, search is handled using livewire component (UserManagement)
+        return view('dashboard.user-management');
     }
 
-    public function updateUserStatus(Request $request, $id)
-    {
-        //Use route model binding to fetch the user
-        $user = User::findOrFail($id);
-        
-        $request->validate([
-            'user_status' => 'required|in:active,suspended,pending',
-        ]);
-
-        $user->update(['user_status' =>$request->user_status]);
-
-        notify()->success('User status updated successfully');
-
-        return redirect()->route('dashboard.user-management');
-    }
-
-    public function updateUserRole(Request $request, User $user)
-    {
-        //Use route model binding
-        // $user = User::findOrFail($id);
-        $request->validate([
-            'role_name' => 'required|exists:roles,name', // validate by name intead of id
-        ]);
-        $role = Role::where('name', $request->role_name)->firstOrFail();
-        $user->update(['role_id' => $role->id]);
-
-        
-        notify()->success('User role updated successfully');
-
-        return redirect()->route('dashboard.user-management');
-    }
-
+    
     public function getJobsManagementData()
     {
         $user = Auth::user();

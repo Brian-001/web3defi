@@ -3,10 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Dashboard - @yield('title')</title>
+    
+    {{-- Load livewire styles first --}}
+    @livewireStyles
     @notifyCss
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/dashboard.js'])
-    @livewireStyles
+
+    {{-- Alpine --}}
+    <script src="//unpkg.com/alpinejs" defer></script>
+    
 </head>
 <body class="bg-gray-100 font-sans antialiased">
     <!-- Root container: Full height, flex layout for sidebar and main content -->
@@ -72,7 +79,13 @@
             </main>
         </div>
     </div>
-
+    <script>
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('page-changed', (page) => {
+                // Handle page changes if needed
+            });
+        });
+    </script>
     @livewireScripts
     @stack('scripts')
 </body>

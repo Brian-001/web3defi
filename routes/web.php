@@ -6,6 +6,7 @@ use App\Http\Controllers\ListingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JobApplicationController;
 use App\Livewire\Counter;
+use Livewire\Livewire;
 
 // Update this route to use ListingController's index method
 Route::get('/', [ListingController::class, 'index'])->name('home');
@@ -65,10 +66,7 @@ Route::middleware(['auth'])->group(function()
     Route::get('/dashboard/profile', [DashboardController::class, 'getProfile'])->name('dashboard.profile');
     Route::put('/dashboard/profile', [DashboardController::class, 'updateProfile'])->name('dashboard.profile.update');
     Route::get('/dashboard/user-management', [DashboardController::class, 'getUsersManagementData'])->name('dashboard.user-management');
-    // Update user status and role
-    Route::patch('/users/{id}/status', [DashboardController::class, 'updateUserStatus'])->name('dashboard.update-status');
-    Route::patch('/users/{user}/role', [DashboardController::class, 'updateUserRole'])->name('dashboard.update-role');
-
+    
     Route::get('/dashboard/job-management', [DashboardController::class, 'getJobsManagementData'])->name('dashboard.job-management');
     Route::get('/dashboard/applicant-management', [DashboardController::class, 'getApplicantsManagementData'])->name('dashboard.applicant-management');
     Route::get('/dashboard/reports', [DashboardController::class, 'getReports'])->name('dashboard.reports');
