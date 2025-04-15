@@ -78,18 +78,22 @@ class DashboardController extends Controller
     }
 
     
+    // public function getJobsManagementData()
+    // {
+    //     $user = Auth::user();
+    //     $query = Listing::with('user') //Eager load user relationship
+    //     ->select('id', 'listing_title', 'job_type', 'created_at', 'listing_status', 'user_id'); // Only needed columns
+        
+    //     if(!$user->hasRole('Admin')){
+    //         $query->where('user_id', $user->id);
+    //     }
+    //     $listings = $query->paginate(10);
+    //     $statuses = ['active', 'closed']; //for the dropdown
+    //     return view('dashboard.job-management', compact('listings', 'statuses'));
+    // }
     public function getJobsManagementData()
     {
-        $user = Auth::user();
-        $query = Listing::with('user') //Eager load user relationship
-        ->select('id', 'listing_title', 'job_type', 'created_at', 'listing_status', 'user_id'); // Only needed columns
-        
-        if(!$user->hasRole('Admin')){
-            $query->where('user_id', $user->id);
-        }
-        $listings = $query->paginate(10);
-        $statuses = ['active', 'closed']; //for the dropdown
-        return view('dashboard.job-management', compact('listings', 'statuses'));
+        return view('dashboard.job-management');
     }
 
     //Add method to update listing status
@@ -181,6 +185,7 @@ class DashboardController extends Controller
             $user->password = Hash::make($request->input('password'));
         }
 
+        
         //Update notification preferences(assumes columns exixsts in users table)
 
         return redirect()->route('dashboard.profile')->with('success', 'Profile updated successfully');
