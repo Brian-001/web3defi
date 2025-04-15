@@ -80,6 +80,7 @@ class DashboardController extends Controller
     
     public function getJobsManagementData()
     {
+        //Pagination, search is handled using livewire component (JobManagement)
         return view('dashboard.job-management');
     }
 
