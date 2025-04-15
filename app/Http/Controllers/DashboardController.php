@@ -78,19 +78,6 @@ class DashboardController extends Controller
     }
 
     
-    // public function getJobsManagementData()
-    // {
-    //     $user = Auth::user();
-    //     $query = Listing::with('user') //Eager load user relationship
-    //     ->select('id', 'listing_title', 'job_type', 'created_at', 'listing_status', 'user_id'); // Only needed columns
-        
-    //     if(!$user->hasRole('Admin')){
-    //         $query->where('user_id', $user->id);
-    //     }
-    //     $listings = $query->paginate(10);
-    //     $statuses = ['active', 'closed']; //for the dropdown
-    //     return view('dashboard.job-management', compact('listings', 'statuses'));
-    // }
     public function getJobsManagementData()
     {
         return view('dashboard.job-management');

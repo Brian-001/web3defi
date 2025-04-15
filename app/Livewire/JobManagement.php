@@ -13,7 +13,7 @@ class JobManagement extends Component
 
     public $search = '';
     public $statuses = ['active', 'closed'];
-    public $selectedStatus = 'active';
+    public $selectedStatus = [];
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -43,7 +43,11 @@ class JobManagement extends Component
             ->select('id', 'listing_title', 'job_type', 'listing_status', 'user_id', 'created_at')
             ->when($this->search, function ($query) {
                 $query->where('listing_title', 'like', '%' . $this->search . '%')
-                    ->orWhere('job_type', 'like', '%' . $this->search . '%');
+                    ->orWhere('job_type', 'like', '%' . $this->search . '%')
+                    ->orWhere('listing_status', 'like', '%' . $this->search . '%')
+                    ->orWhereHas('user', function ($query) {
+                        $query->where('name', 'like', '%' . $this->search . '%');
+                    });
         });
         $listings = $query->paginate(10);
 
