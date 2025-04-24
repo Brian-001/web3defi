@@ -86,6 +86,8 @@
 
 {{-- Body --}}
 <div class="col-span-12 mt-10 md:mt-20">
+
+    {{-- @livewire('listing-index') --}}
     <!-- Search Bar -->
     <div class="flex justify-center mx-4">
         <input type="text" 

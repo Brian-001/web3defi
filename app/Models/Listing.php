@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Models\Tag;
 use App\Models\JobApplication;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -64,5 +65,9 @@ class Listing extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'listing_tag', 'listing_id', 'tag_id');
     }
 }

@@ -23,8 +23,8 @@ class ListingController extends BaseController
      }
     public function index()
     {
-        //
-        $listings = Listing::all();
+        
+        $listings = Listing::paginate(10);
         $tags = Tag::all();
 
         return view('index', compact('listings', 'tags'));
@@ -44,12 +44,13 @@ class ListingController extends BaseController
 
     /**
      * Store a newly created resource in storage.
+     * @param \App\Http\Requests\StoreListingRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreListingRequest $request)
     {
-        // Log validated request data for debugging
-        Log::info($request->validated());
-
+        $data =  $request->validated();
+        
         //Initialize the variable for storing logo path
         $listingLogoPath = null; //Logo path for an image if at all listing_logo was not uploaded
 
@@ -61,17 +62,17 @@ class ListingController extends BaseController
         }
         // Create a new listing instance and save it to the database
         Listing::create([
-            'listing_title' => $request->input('listing_title'),
-            'company_description' => $request->input('company_description'),
-            'job_description' => $request->input('job_description'),
-            'job_roles' => $request->input('job_roles'),
-            'additional_info' => $request->input('additional_info'),
+            'listing_title' => $data['listing_title'],
+            'company_description' => $data['company_description'],
+            'job_description' => $data['job_description'],
+            'job_roles' => $data['job_roles'],
+            'additional_info' => $data['additional_info'],
             // 'tags' => $request->input('tags'),
-            'tags' => json_encode($request->input('tags')), // Store tags as JSON
-            'location' => $request->input('location'),
+            'tags' => json_encode($data['tags'] ?? []), // Store tags as JSON
+            'location' => $request->$data['location'],
             // Concatenate min and max salary into one string
-            'salary' => $request->input('min_salary') . ' to ' . $request->input('max_salary'),
-            'job_type' => $request->input('job_type'),
+            'salary' => $data['min_salary'] . ' to ' . $data['max_salary'],
+            'job_type' => $data['job_type'],
             'listing_logo'=> $listingLogoPath,
             'user_id' => Auth::user()->id,
             'listing_status' => 'active', // Default status
@@ -108,24 +109,29 @@ class ListingController extends BaseController
      */
     public function update(UpdateListingRequest $request, Listing $listing)
     {
-        //
+        $data = $request->validated();
         $listingLogoPath = $listing->listing_logo;
 
         //Handle file upload if an image was provided
         if($request->hasFile('listing_logo') && $request->file('listing_logo')->isValid())
         {
+            //Delete the old logo if it exists
+            if ($listingLogoPath) {
+                \Storage::disk('public')->delete($listingLogoPath);
+            }
+            //Store the new logo
             $listingLogoPath = $request->file('listing_logo')->store('logos', 'public');
         }
         $listing->update([
-            'listing_title' => $request->input('listing_title'),
-            'company_description' => $request->input('company_description'),
-            'job_description' => $request->input('job_description'),
-            'job_roles' => $request->input('job_roles'),
-            'additional_info' => $request->input('additional_info'),
-            'tags' => json_encode($request->input('tags')),
-            'location' => $request->input('location'),
-            'salary' => $request->input('min_salary') . ' to ' . $request->input('max_salary'),
-            'job_type' => $request->input('job_type'),
+            'listing_title' => $data['listing_title'],
+            'company_description' => $data['company_description'],
+            'job_description' => $data['job_description'],
+            'job_roles' => $data['job_roles'],
+            'additional_info' => $data['additional_info'],
+            'tags' => json_encode($data['tags'] ?? []), // Store tags as JSON
+            'location' => $data['location'],
+            'salary' => $data['min_salary'] . ' to ' . $data['max_salary'],
+            'job_type' => $data['job_type'],
             'listing_logo' => $listingLogoPath,
         ]);
         notify()->success('Job updated successfully');
