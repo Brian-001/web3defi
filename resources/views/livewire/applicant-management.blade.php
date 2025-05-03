@@ -42,7 +42,7 @@
                             </span>
                         </td>
                         <td class="py-2 px-2 whitespace-nowrap text-sm">
-                            <a href="#" 
+                            <a wire:navigate href="#" 
                                class="email-link bg-gray-200 text-gray-700 px-2 py-1 rounded-md hover:bg-gray-300 hover:text-gray-900 transition-colors duration-200" 
                                data-email="{{ $applicant->email }}">
                                 Email
@@ -50,7 +50,7 @@
                         </td>
                         <td class="py-2 px-2 whitespace-nowrap text-sm flex items-center gap-2">
                             <x-icons.document class="text-gray-500"/>
-                            <a href="{{ asset('storage/' . $applicant->resume_path) }}" 
+                            <a wire:navigate href="{{ asset('storage/' . $applicant->resume_path) }}" 
                                target="_blank" 
                                class="text-cyan-600 hover:text-cyan-800 hover:underline transition-colors duration-200">
                                 View
@@ -68,7 +68,7 @@
 
     <!-- Pagination -->
     <div class="mt-4 flex items-center justify-center">
-        {{ $applicants->links() }}
+        {{ $applicants->links('vendor.livewire.tailwind') }}
     </div>
 </div>
 

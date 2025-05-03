@@ -35,8 +35,8 @@
                                 class="bg-transparent text-gray-700 text-sm py-0 px-8 rounded-lg hover:text-cyan-600" 
                             >
                                 @foreach ($roles as $role)
-                                    <option value=" {{ $role->name }}" {{ $user->role->name === $role->name ? 'selected' : '' }}>
-                                         {{ ucfirst($user->role->name) }}
+                                    <option value=" {{ $user->role->name}}" {{ $user->role->name === $user->role->name ? 'selected' : '' }}>
+                                         {{ ucfirst($role->name) }}
                                     </option>
                                 @endforeach
                             </select>
@@ -69,6 +69,6 @@
     <!-- Pagination -->
     <div class="mt-4 flex items-center justify-center">
         {{-- {{ $users->links('pagination::tailwind') }} --}}
-        {{ $users->links() }}
+        {{ $users->links('vendor.livewire.tailwind') }}
     </div>
 </div>

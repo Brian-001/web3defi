@@ -29,26 +29,26 @@
                     <h2 class="text-2xl font-semibold tracking-tight">Dashboard</h2>
                 </div>
                 <!-- Sidebar Navigation: Menu items with hover/active states -->
-                <nav class="mt-4 space-y-1">
-                    <a href="/" class="block py-2.5 px-4 text-sm hover:bg-gray-700 transition-colors duration-150">
+                <nav class="mt-4 space-y-4">
+                    <a wire:navigate href="/" class="block py-2.5 px-4 text-sm hover:bg-gray-700 transition-colors duration-150">
                         Back to home
                     </a>
-                    <a href="{{ route('dashboard.index') }}" class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.index') ? 'bg-gray-700 font-medium' : '' }} transition-colors duration-150">
+                    <a href="{{ route('dashboard.index') }}" class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.index') ? 'bg-gray-700 rounded-r-2xl font-medium' : '' }} transition-colors duration-150">
                         Dashboard
                     </a>
-                    <a href="{{ route('dashboard.profile') }}" class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.profile') ? 'bg-gray-700 font-medium' : '' }} transition-colors duration-150">
+                    <a wire:navigate href="{{ route('dashboard.profile') }}" class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.profile') ? 'bg-gray-700 rounded-r-2xl font-medium' : '' }} transition-colors duration-150">
                         Profile
                     </a>
                     @if (Auth::user()->hasRole('Admin'))
-                        <a href="{{ route('dashboard.user-management') }}" class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.user-management') ? 'bg-gray-700 font-medium' : '' }} transition-colors duration-150">
+                        <a wire:navigate href="{{ route('dashboard.user-management') }}" class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.user-management') ? 'bg-gray-700 rounded-r-2xl font-medium' : '' }} transition-colors duration-150">
                             User Management
                         </a>
                     @endif
                     @if (Auth::user()->hasRole('Admin') || Auth::user()->hasRole('Employer'))
-                        <a href="{{ route('dashboard.job-management') }}" class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.job-management') ? 'bg-gray-700 font-medium' : '' }} transition-colors duration-150">
+                        <a wire:navigate href="{{ route('dashboard.job-management') }}" class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.job-management') ? 'bg-gray-700 rounded-r-2xl font-medium' : '' }} transition-colors duration-150">
                             Job Management
                         </a>
-                        <a href="{{ route('dashboard.applicant-management') }}" class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.applicant-management') ? 'bg-gray-700 font-medium' : '' }} transition-colors duration-150">
+                        <a wire:navigate href="{{ route('dashboard.applicant-management') }}" class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.applicant-management') ? 'bg-gray-700 rounded-r-2xl font-medium' : '' }} transition-colors duration-150">
                             Applicant Management
                         </a>
                     @endif

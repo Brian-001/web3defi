@@ -8,7 +8,7 @@
         <!-- Header -->
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Edit Job Listing</h1>
-            <a href="{{ route('dashboard.job-management') }}" 
+            <a wire:navigate href="{{ route('dashboard.job-management') }}" 
                class="flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-cyan-600 transition-colors duration-200">
                 <x-icons.arrow-uturn />
                 Back to Jobs

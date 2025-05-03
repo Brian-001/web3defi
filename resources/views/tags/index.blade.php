@@ -8,7 +8,7 @@
         <!-- Header -->
         <div class="flex items-center justify-between mb-4">
             <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Tags</h1>
-            <a href="{{ route('tags.create') }}" 
+            <a wire:navigate href="{{ route('tags.create') }}" 
                class="bg-cyan-500 text-white text-sm font-semibold px-4 py-2 rounded-md hover:bg-cyan-600 transition-colors duration-200">
                 Add New Tag
             </a>
@@ -30,7 +30,7 @@
                             <td class="py-2 px-2 text-sm">{{ $tag->id }}</td>
                             <td class="py-2 px-2 text-sm">{{ $tag->tag_name }}</td>
                             <td class="py-2 px-2 text-sm flex items-center gap-4">
-                                <a href="{{ route('tags.edit', $tag->id) }}" 
+                                <a wire:navigate href="{{ route('tags.edit', $tag->id) }}" 
                                    class="text-cyan-600 hover:text-cyan-800 hover:underline transition-colors duration-200">
                                     Edit
                                 </a>
@@ -57,7 +57,7 @@
         <!-- Pagination -->
         @if ($tags->hasPages())
             <div class="mt-4 flex items-center justify-center">
-                {{ $tags->links('pagination::tailwind') }}
+                {{ $tags->links('vendor.livewire.tailwind') }}
             </div>
         @endif
     </div>

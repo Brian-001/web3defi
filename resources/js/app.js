@@ -1,12 +1,15 @@
-//Alpinejs
-import Alpine from 'alpinejs';
-
-window.Alpine = Alpine;
-Alpine.start();
-
-
 // Handles the email link click event and opens Gmail directly in a new tab if Gmail is likely in 
 // use (heuristic: Gmail tab open). Otherwise, it offers options via a simple prompt or defaults to mailto.
+// import Alpine from 'alpinejs';
+// import intersect from '@alpinejs/intersect';
+
+// Alpine.plugin(intersect);
+// window.Alpine = Alpine;
+// Alpine.start();
+
+// document.addEventListener('livewire:navigating', () => {
+//     console.log('Livewire navigating');
+// });
 
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.email-link').forEach(link => {

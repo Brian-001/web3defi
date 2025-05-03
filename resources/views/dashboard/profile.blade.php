@@ -8,7 +8,7 @@
         <!-- Header -->
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-2xl md:text-3xl font-bold text-gray-800">Profile</h2>
-            <a href="{{ route('dashboard.index') }}" 
+            <a  href="{{ route('dashboard.index') }}" 
                class="flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-cyan-600 transition-colors duration-200">
                 <x-icons.arrow-uturn />
                 Back to Home
@@ -130,7 +130,7 @@
 
             <!-- Submit Buttons -->
             <div class="flex justify-end gap-4">
-                <a href="/" 
+                <a wire:navigate href="/" 
                    class="bg-gray-500 text-white text-sm font-semibold px-6 py-2 rounded-md hover:bg-gray-600 transition-colors duration-200">
                     Cancel
                 </a>

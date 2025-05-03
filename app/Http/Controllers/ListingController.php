@@ -19,16 +19,8 @@ class ListingController extends BaseController
 
      public function __construct()
      {
-        $this->middleware('auth')->except('index', 'show');
+        $this->middleware('auth')->except('show');
      }
-    public function index()
-    {
-        
-        $listings = Listing::paginate(10);
-        $tags = Tag::all();
-
-        return view('index', compact('listings', 'tags'));
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -36,10 +28,10 @@ class ListingController extends BaseController
     public function create()
     {
         //
-        $listings = Listing::all();
+        // $listings = Listing::all();
         $tags = Tag::all();
         // dd($tags);
-        return view('listings.create', compact('listings', 'tags'));
+        return view('listings.create', compact('tags'));
     }
 
     /**
@@ -50,6 +42,7 @@ class ListingController extends BaseController
     public function store(StoreListingRequest $request)
     {
         $data =  $request->validated();
+        Log::info('Listing data:', $data);
         
         //Initialize the variable for storing logo path
         $listingLogoPath = null; //Logo path for an image if at all listing_logo was not uploaded
@@ -69,7 +62,7 @@ class ListingController extends BaseController
             'additional_info' => $data['additional_info'],
             // 'tags' => $request->input('tags'),
             'tags' => json_encode($data['tags'] ?? []), // Store tags as JSON
-            'location' => $request->$data['location'],
+            'location' => $data['location'],
             // Concatenate min and max salary into one string
             'salary' => $data['min_salary'] . ' to ' . $data['max_salary'],
             'job_type' => $data['job_type'],
@@ -100,7 +93,7 @@ class ListingController extends BaseController
     {
         //
         $tags = Tag::all();
-        $listing = Listing::findOrFail($listing->id);
+        // $listing = Listing::findOrFail($listing->id);
         return view('listings.edit', compact('listing', 'tags'));
     }
 
@@ -127,7 +120,7 @@ class ListingController extends BaseController
             'company_description' => $data['company_description'],
             'job_description' => $data['job_description'],
             'job_roles' => $data['job_roles'],
-            'additional_info' => $data['additional_info'],
+            'additional_info' => $data['additional_info'] ?? null,
             'tags' => json_encode($data['tags'] ?? []), // Store tags as JSON
             'location' => $data['location'],
             'salary' => $data['min_salary'] . ' to ' . $data['max_salary'],

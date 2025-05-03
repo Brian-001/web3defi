@@ -7,7 +7,7 @@
             class="w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:border-transparent"
         >
     </div>
-
+    
     <!-- Table -->
     <div class="overflow-x-auto">
         <table class="w-full table-auto border-collapse">
@@ -42,15 +42,15 @@
                             </select>
                         </td>
                         <td class="py-2 px-2 whitespace-nowrap flex gap-2">
-                            <a href="{{ route('listings.edit', $listing->id) }}" 
-                               class="bg-emerald-500 text-white text-sm font-medium py-1 px-2 rounded-md hover:bg-emerald-600 transition-colors duration-200">
+                            <a wire:navigate href="{{ route('listings.edit', $listing->id) }}" 
+                               class="bg-emerald-100 text-emarald-500 text-sm font-medium py-1 px-2 rounded-lg hover:text-emerald-600 transition-colors duration-200">
                                 Edit
                             </a>
                             <form action="{{ route('listings.destroy', $listing->id) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" 
-                                        class="bg-red-500 text-white text-sm font-medium py-1 px-2 rounded-md hover:bg-red-600 transition-colors duration-200" 
+                                        class="bg-red-100 text-red-500 text-sm font-medium py-1 px-2 rounded-lg hover:text-red-600 transition-colors duration-200" 
                                         onclick="return confirm('Are you sure you want to delete this job?')">
                                     Delete
                                 </button>
@@ -68,6 +68,6 @@
 
     <!-- Pagination -->
     <div class="mt-4 flex items-center justify-center">
-        {{ $listings->links() }}
+        {{ $listings->links('vendor.livewire.tailwind') }}
     </div>
 </div>

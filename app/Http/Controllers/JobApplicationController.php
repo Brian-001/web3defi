@@ -24,6 +24,8 @@ class JobApplicationController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
+            'github' => 'required|url',
+            'linkedin' => 'required|url',
             'resume_path' => 'required|file|mimes:pdf|max:2048'
         ]);
 

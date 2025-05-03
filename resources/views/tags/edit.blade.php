@@ -8,7 +8,7 @@
         <!-- Header -->
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Edit Tag</h1>
-            <a href="{{ route('tags.index') }}" 
+            <a wire:navigate href="{{ route('tags.index') }}" 
                class="flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-cyan-600 transition-colors duration-200">
                 <x-icons.arrow-uturn />
                 Back to Tags
@@ -43,7 +43,7 @@
 
             <!-- Submit Button -->
             <div class="flex justify-end gap-4">
-                <a href="{{ route('tags.index') }}" 
+                <a wire:navigate href="{{ route('tags.index') }}" 
                    class="bg-gray-500 text-white text-sm font-semibold px-6 py-2 rounded-md hover:bg-gray-600 transition-colors duration-200">
                     Cancel
                 </a>

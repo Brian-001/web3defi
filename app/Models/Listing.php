@@ -66,8 +66,8 @@ class Listing extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class, 'listing_tag', 'listing_id', 'tag_id');
-    }
+    // public function tags()
+    // {
+    //     return $this->belongsToMany(Tag::class, 'listing_tag', 'listing_id', 'tag_id');
+    // }
 }

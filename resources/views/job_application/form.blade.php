@@ -62,6 +62,42 @@
                 </div>
             </div>
 
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <!-- Linked Url -->
+                <div class="flex flex-col">
+                    <label for="linkedin" class="text-gray-200 font-medium mb-2">
+                        LinkedIn URL <span class="text-red-400 text-sm">*</span>
+                    </label>
+                    <input type="text" 
+                           id="linkedin" 
+                           name="linkedin" 
+                           class="w-full px-4 py-2 bg-slate-900 text-gray-200 rounded-lg border border-slate-600 focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" 
+                           autocomplete="off" 
+                           value="{{ old('linkedin') }}" 
+                           required>
+                    @error('linkedin')
+                        <span class="text-sm text-red-400 mt-1">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Github URL -->
+                <div class="flex flex-col">
+                    <label for="github" class="text-gray-200 font-medium mb-2">
+                        Github URL <span class="text-red-400 text-sm">*</span>
+                    </label>
+                    <input type="url" 
+                           id="github" 
+                           name="github" 
+                           class="w-full px-4 py-2 bg-slate-900 text-gray-200 rounded-lg border border-slate-600 focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" 
+                           autocomplete="off" 
+                           value="{{ old('github') }}" 
+                           required>
+                    @error('github')
+                        <span class="text-sm text-red-400 mt-1">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
             <!-- Resume Upload -->
             <div class="flex flex-col mb-8">
                 <label for="resume_path" class="text-gray-200 font-medium mb-2">
