@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use App\Models\Tag;
+use App\Models\JobQuestion;
 use App\Models\JobApplication;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,6 +28,7 @@ class Listing extends Model
         'listing_status',
         'user_id'
     ];
+
 
     public function getCreatedAtFormattedAttribute()
     {
@@ -66,6 +68,12 @@ class Listing extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function questions()
+    {
+        return $this->hasMany(JobQuestion::class);
+    }
+
     // public function tags()
     // {
     //     return $this->belongsToMany(Tag::class, 'listing_tag', 'listing_id', 'tag_id');

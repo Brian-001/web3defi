@@ -11,16 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('job_applications', function (Blueprint $table) {
+        Schema::create('job_questions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('listing_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
-            $table->string('name');
-            $table->string('email');
-            $table->url('github');
-            $table->url('linkedin');
-            $table->string('resume_path');
-            $table->json('answers');
+            $table->string('question_text');
+            $table->string('input_type')->default('text'); // text, textarea, select, radio, checkbox
+            $table->json('options')->nullable();
+            $table->boolean('is_required')->default(false);
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('job_applications');
+        Schema::dropIfExists('job_questions');
     }
 };
