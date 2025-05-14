@@ -85,6 +85,8 @@ Route::middleware(['auth'])->group(function()
     
     //Display single listing associated with a specific applicant
     Route::get('/dashboard/single-listing/{applicant}', [DashboardController::class, 'getSingleListing'])->name('dashboard.single-listing');
+
+    Route::get('/listings/{listing}/refer', [ListingController::class, 'refer'])->name('listings.refer');
 });
 
 //Livewire

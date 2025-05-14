@@ -34,6 +34,12 @@ class ListingController extends BaseController
         return view('listings.create', compact('tags'));
     }
 
+    //Show recruiter refer form
+    public function refer(Listing $listing)
+    {
+        return view('listings.refer', compact('listing'));
+    }
+
     /**
      * Store a newly created resource in storage.
      * @param \App\Http\Requests\StoreListingRequest $request
