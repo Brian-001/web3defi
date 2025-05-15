@@ -185,7 +185,7 @@
             </div>
         </form>
 
-        Dynamic Job Questions
+        {{-- Dynamic Job Questions --}}
         <livewire:job-question-form :listing-id="$listing->id" />
     </div>
 </div>

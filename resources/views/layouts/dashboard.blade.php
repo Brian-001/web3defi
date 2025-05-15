@@ -51,6 +51,7 @@
                         <a wire:navigate href="{{ route('dashboard.applicant-management') }}" class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.applicant-management') ? 'bg-gray-700 rounded-r-2xl font-medium' : '' }} transition-colors duration-150">
                             Applicant Management
                         </a>
+                        
                     @endif
                 </nav>
             </div>

@@ -71,7 +71,7 @@ class Listing extends Model
 
     public function questions()
     {
-        return $this->hasMany(JobQuestion::class);
+        return $this->hasMany(JobQuestion::class, 'listing_id');
     }
 
     // public function tags()

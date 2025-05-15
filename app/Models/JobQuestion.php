@@ -10,8 +10,8 @@ class JobQuestion extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['
-        listing_id',
+    protected $fillable = [
+        'listing_id',
         'question_text',
         'input_type',
         'options',
@@ -25,6 +25,6 @@ class JobQuestion extends Model
 
     public function listing()
     {
-        return $this->belongsTo(Listing::class);
+        return $this->belongsTo(Listing::class, 'listing_id');
     }
 }

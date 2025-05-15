@@ -70,13 +70,21 @@ class JobQuestionForm extends Component
 
     public function save()
     {
+        if (!$this->listingId){
+            throw new \Exception('Listing ID is missing');
+        }
+        
         $this->validate();
 
         foreach($this->questions as $question) {
             JobQuestion::updateOrCreate( 
 
-                ['id' => $question['id'] ?? null, 'listing_id' => $this->listingId],
                 [
+                    'id' => $question['id'] ?? null, 
+                    'listing_id' => $this->listingId
+                ],
+                [
+                    'listing_id' => $this->listingId,
                     'question_text' => $question['question_text'],
                     'input_type' => $question['input_type'],
                     'options' => in_array($question['input_type'], ['select', 'checkbox', 'radio'])

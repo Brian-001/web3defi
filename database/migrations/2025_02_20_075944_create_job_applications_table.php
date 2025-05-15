@@ -15,12 +15,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('listing_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
-            $table->string('name');
-            $table->string('email');
-            $table->string('github');
-            $table->string('linkedin');
-            $table->string('resume_path');
-            $table->json('answers');
+            $table->string('name')->nullable();
+            $table->string('email')->nullable();
+            $table->string('github')->nullable();
+            $table->string('linkedin')->nullable();
+            $table->string('resume_path')->nullable();
+            $table->json('answers')->nullable();
+            $table->enum('application_type', ['employee', 'recruiter'])->default('employee');
+            $table->foreignId('referred_by')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
         });
     }

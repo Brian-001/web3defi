@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JobApplication;
 use App\Models\Listing;
-use Illuminate\Contracts\Support\ValidatedData;
 use Illuminate\Http\Request;
+use App\Models\JobApplication;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Redirect;
+// use Illuminate\Contracts\Support\ValidatedData;
 
 class JobApplicationController extends Controller
 {
@@ -29,19 +30,23 @@ class JobApplicationController extends Controller
             'resume_path' => 'required|file|mimes:pdf|max:2048'
         ]);
 
-        //Save listing_id
-        $validatedData['listing_id'] = $listing->id;
+        //Prepare the data for saving
+        $applicationData = [
+            'listing_id' => $listing->id,
+            'user_id' => Auth::check() ? Auth::user()->id : null, //Set user_id if authenticated
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'github' => $validatedData['github'],
+            'linkedin' => $validatedData['linkedin'],
+            'resume_path' => $request->file('resume_path')->store('resumes', 'public'),
+            'application_type' => 'employee', //Set application type to 'employee'
+            'referred_by' => null, //No referrer for direct applications
+        ];
 
-        //Save resume path
-        if($request->hasFile('resume_path')){
-            $resume_path = $request->file('resume_path')->store('resumes', 'public');
-            $validatedData['resume_path'] = $resume_path;
-        }
-        
 
         //Save application data to database
-        JobApplication::create($validatedData);
-        // dd($validatedData);
+        JobApplication::create($applicationData);
+        
         notify()->success('Your application has been submitted successfully');
         return redirect()->route('home');
     }
