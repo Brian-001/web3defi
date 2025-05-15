@@ -18,6 +18,7 @@ class RoleSeeder extends Seeder
         Role::create(['name'=> 'Admin']);
         Role::create(['name' => 'Employer']);
         Role::create(['name' => 'Employee']);
+        Role::create(['name' => 'Recruiter']);
 
         $admin = Role::where('name', 'Admin')->first();
         $admin->permissions()->sync(Permission::all());
@@ -28,6 +29,9 @@ class RoleSeeder extends Seeder
 
         $employee = Role::where('name', 'Employee')->first();
         $employee->permissions()->sync(Permission::whereIn('name', ['apply-job', 'edit-job-application', 'delete-job-application'])->get());
+
+        $recruiter = Role::where('name', 'Recruiter')->first();
+        $recruiter->permissions()->sync(Permission::whereIn('name', ['view-listings', 'refer-employee', 'view-job-applications'])->get());
     }
 
     
