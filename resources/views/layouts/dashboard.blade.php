@@ -10,6 +10,7 @@
     @livewireStyles
     @notifyCss
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/dashboard.js'])
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.x.x/dist/umd/popper.min.js"></script>
 
     {{-- Alpine --}}
     <script src="//unpkg.com/alpinejs" defer></script>
@@ -48,7 +49,7 @@
                         <a wire:navigate href="{{ route('dashboard.job-management') }}" class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.job-management') ? 'bg-gray-700 rounded-r-2xl font-medium' : '' }} transition-colors duration-150">
                             Job Management
                         </a>
-                        <a wire:navigate href="{{ route('dashboard.applicant-management') }}" class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.applicant-management') ? 'bg-gray-700 rounded-r-2xl font-medium' : '' }} transition-colors duration-150">
+                        <a wire:navigate href="{{ route('dashboard.applicant-management') }}" class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.applicant-management') ? 'bg-gray-700 rounded-r-2xl md:font-medium' : '' }} transition-colors duration-150">
                             Applicant Management
                         </a>
                         

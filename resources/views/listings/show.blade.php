@@ -91,11 +91,19 @@
             </div>
 
             <!-- Apply Button -->
-            <div class="mt-10 text-center">
+            <div class="mt-10 text-center space-x-4">
                 <a href="{{ route('apply.form', $listing) }}" 
-                   class="inline-block bg-cyan-400 text-gray-900 font-semibold text-lg px-8 py-3 rounded-lg hover:bg-cyan-300 transition-colors duration-200 shadow-md">
+                    class="inline-block bg-cyan-400 text-gray-900 font-semibold text-lg px-8 py-3 rounded-lg hover:bg-cyan-300 transition-colors duration-200 shadow-md">
                     Apply Now
                 </a>
+                @auth
+                    @if ( auth()->user()->hasRole('Recruiter') || auth()->user()->hasRole('Admin'))
+                        <a href="{{ route('listings.refer', $listing) }}" 
+                        class="inline-block bg-green-500 text-white font-semibold text-lg px-8 py-3 rounded-lg hover:bg-green-600 transition-colors duration-200 shadow-md">
+                            Refer Candidate
+                        </a>
+                    @endif
+                @endauth
             </div>
 
             

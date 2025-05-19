@@ -37,7 +37,7 @@ class JobApplication extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function referredBy()
+    public function referrer()
     {
         return $this->belongsTo(User::class, 'referred_by');
     }

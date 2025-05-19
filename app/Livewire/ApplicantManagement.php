@@ -26,21 +26,40 @@ class ApplicantManagement extends Component
 
     public function render()
     {
-        $query = JobApplication::with(['listing' => function($query){
-            $query->select('id', 'listing_title', 'user_id', 'listing_status');
-        }])
-        ->select('id', 'listing_id', 'name', 'created_at', 'resume_path', 'status')
+        $query = JobApplication::with([
+            'listing' => function ($query) {
+                $query->select('id', 'listing_title', 'user_id', 'listing_status');
+            },
+            'referrer' => function ($query) {
+                $query->select('id', 'name'); // Load only necessary fields for referrer
+            }
+        ])
+        ->select([
+            'id',
+            'listing_id',
+            'name',
+            'email',
+            'github',
+            'linkedin',
+            'resume_path',
+            'status',
+            'referred_by',
+            'created_at'
+        ])
         ->when($this->search, function ($query) {
             $searchTerm = '%' . $this->search . '%';
             $query->where('name', 'like', $searchTerm)
-            ->orWhere('email', 'like', $searchTerm)
-            ->orWhereHas('listing', function ($query) use ($searchTerm){
-                $query->where('listing_title', 'like', $searchTerm);
-            });
-        });
+                  ->orWhere('email', 'like', $searchTerm)
+                  ->orWhereHas('listing', function ($query) use ($searchTerm) {
+                      $query->where('listing_title', 'like', $searchTerm);
+                  });
+        })
+        ->whereHas('listing') // Ensure only applications with valid listings
+        ->orderBy('created_at', 'desc');
 
         $applicants = $query->paginate(10);
 
         return view('livewire.applicant-management', compact('applicants'));
     }
+
 }

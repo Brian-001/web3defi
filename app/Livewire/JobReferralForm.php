@@ -4,12 +4,13 @@ namespace App\Livewire;
 
 use App\Models\Listing;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use App\Models\JobApplication;
 use Illuminate\Support\Facades\Auth;
 
 class JobReferralForm extends Component
 {
-    {
+    
     use WithFileUploads;
 
     public $listingId;

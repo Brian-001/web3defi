@@ -13,13 +13,16 @@
         <table class="w-full table-auto border-collapse">
             <thead>
                 <tr class="bg-gray-100 text-gray-700 text-xs font-semibold uppercase tracking-wide border-b border-gray-200">
-                    <th class="py-2 px-2 text-left">Listing Title</th>
+                    <th class="py-2 px-2 text-left">Job Title</th>
                     <th class="py-2 px-2 text-left">Applicant</th>
+                    <th class="py-2 px-2 text-left">Github</th>
+                    <th class="py-2 px-2 text-left">Linkedin</th>
                     <th class="py-2 px-2 text-left">Applied On</th>
                     <th class="py-2 px-2 text-left">Job</th>
                     <th class="py-2 px-2 text-left">Status</th>
                     <th class="py-2 px-2 text-left">Contact</th>
                     <th class="py-2 px-2 text-left">Resume</th>
+                    <th class="py-2 px-2 text-left">Referred by:</th>
                 </tr>
             </thead>
             <tbody class="text-gray-600">
@@ -27,6 +30,33 @@
                     <tr class="hover:bg-gray-50 transition-colors duration-150 border-b border-gray-200">
                         <td class="py-2 px-2 whitespace-nowrap text-sm">{{ $applicant->listing->listing_title }}</td>
                         <td class="py-2 px-2 whitespace-nowrap text-sm">{{ $applicant->name }}</td>
+                        <td class="py-2 px-2 text-sm">
+                            @if ($applicant->github)
+                                <div class="flex items-center gap-2">
+                                    <a href="{{ $applicant->github }}" target="_blank" class="text-cyan-600 hover:text-cyan-800 hover:underline transition-colors duration-200 truncate max-w-[150px] md:max-w-[200px]">
+                                        <span class="block md:hidden">{{ parse_url($applicant->github, PHP_URL_HOST) }}</span>
+                                        <span class="hidden md:block">{{ Str::limit($applicant->github, 30) }}</span>
+                                    </a>
+                                    <x-icons.clipboard-document :data-url="$applicant->github" />
+                                </div>
+                            @else
+                                <span class="text-gray-500">N/A</span>
+                            @endif
+                        </td>
+                        <td class="py-2 px-2 text-sm">
+                            @if ($applicant->linkedin)
+                                <div class="flex items-center gap-2">
+                                    <a href="{{ $applicant->linkedin }}" target="_blank" class="text-cyan-600 hover:text-cyan-800 hover:underline transition-colors duration-200 truncate max-w-[150px] md:max-w-[200px]">
+                                        <span class="block md:hidden">{{ parse_url($applicant->linkedin, PHP_URL_HOST) }}</span>
+                                        <span class="hidden md:block">{{ Str::limit($applicant->linkedin, 30) }}</span>
+                                    </a>
+                                    <x-icons.clipboard-document :data-url="$applicant->linkedin" />
+                                </div>
+                            @else
+                                <span class="text-gray-500">N/A</span>
+                            @endif
+                        </td>
+                        
                         <td class="py-2 px-2 whitespace-nowrap text-sm">
                             {{ $applicant->created_at ? $applicant->created_at->format('d M Y') : 'N/A' }}
                         </td>
@@ -56,6 +86,14 @@
                                 View
                             </a>
                         </td>
+                        <td class="py-2 px-2 whitespace-nowrap text-sm">
+                            @if ($applicant->referrer)
+                                {{ $applicant->referrer->name }}
+                            @else
+                                <span class="text-gray-700">Direct</span>
+                            @endif
+
+                        </td>
                     </tr>
                 @empty
                     <tr>
@@ -72,14 +110,14 @@
     </div>
 </div>
 
-{{-- @push('scripts')
-<script>
-    document.querySelectorAll('.email-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const email = link.getAttribute('data-email');
-            window.location.href = `mailto:${email}`;
+@push('scripts')
+    <script>
+        document.querySelectorAll('.email-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const email = link.getAttribute('data-email');
+                window.location.href = `mailto:${email}`;
+            });
         });
-    });
-</script>
-@endpush --}}
+    </script>
+@endpush
