@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Listing;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\JobApplication;
@@ -12,6 +13,8 @@ class ApplicantManagement extends Component
     use WithPagination;
 
     public $search = '';
+
+    protected $paginationTheme = 'tailwind';
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -26,6 +29,7 @@ class ApplicantManagement extends Component
 
     public function render()
     {
+        
         $query = JobApplication::with([
             'listing' => function ($query) {
                 $query->select('id', 'listing_title', 'user_id', 'listing_status');

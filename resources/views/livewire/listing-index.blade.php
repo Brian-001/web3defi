@@ -174,7 +174,7 @@
             <h2 class="text-3xl md:text-4xl text-cyan-300 font-bold tracking-tight">About Us</h2>
         </div>
         
-        <div class="grid grid-cols-1  gap-6">
+        <div class="grid grid-cols-1 gap-6">
             <div class="bg-slate-700 p-6">
                 {{-- <h3 class="text-xl text-cyan-300 font-semibold mb-4">Responsible AI Principles</h3> --}}
                 <p class="text-gray-300 text-base leading-relaxed">
@@ -196,13 +196,17 @@
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Socials -->
-            <div class="bg-slate-600 p-4 rounded-lg shadow-md">
-                <h3 class="text-cyan-300 font-semibold text-lg mb-3">Our Socials</h3>
-                <div class="flex flex-col space-y-2">
-                    <a href="https://www.linkedin.com/company/web3defi/" target="_blank" class="text-cyan-300 text-base hover:text-cyan-400 transition-colors duration-200 ease-in-out">LinkedIn</a>
-                    <a href="https://twitter.com/web3defi" target="_blank" class="text-cyan-300 text-base hover:text-cyan-400 transition-colors duration-200 ease-in-out">Twitter (X)</a>
-                    <a href="mailto:contact@karanjabrian.com" class="text-cyan-300 text-base hover:text-cyan-400 transition-colors duration-200 ease-in-out">Email</a>
+            <div class="p-4 rounded-lg">
+
+                <div class="flex justify-center mx-auto bg-slate-700 h-max w-1/2 rounded shadow-md py-10">
+                    <div class="flex flex-col space-y-4">
+                        <h3 class="text-cyan-300 font-semibold text-lg space-y-2">Our Socials</h3>
+                        <a href="https://www.linkedin.com/company/web3defi/" target="_blank" class="text-white text-base transition-colors duration-200 ease-in-out">LinkedIn</a>
+                        <a href="https://twitter.com/web3defi" target="_blank" class="text-white text-base transition-colors duration-200 ease-in-out">Twitter (X)</a>
+                        <a href="mailto:contact@karanjabrian.com" class="text-white text-base transition-colors duration-200 ease-in-out">Email</a>
+                    </div>
                 </div>
+                
             </div>
             
             <!-- Contact Form -->

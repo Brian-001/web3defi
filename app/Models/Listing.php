@@ -62,7 +62,7 @@ class Listing extends Model
 
     public function jobApplications()
     {
-        return $this->hasMany(JobApplication::class);
+        return $this->hasMany(JobApplication::class, 'listing_id');
     }
     public function user()
     {

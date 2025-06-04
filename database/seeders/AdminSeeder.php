@@ -19,7 +19,7 @@ class AdminSeeder extends Seeder
         User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
-            'password' => bcrypt('admin12345678'),
+            'password' => bcrypt('greg12345678'),
             'role_id' => Role::getRoleIdByName('Admin'),
         ]);
     }

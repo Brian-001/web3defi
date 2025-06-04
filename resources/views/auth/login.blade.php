@@ -35,16 +35,16 @@
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                     <input type="password" id="password" name="password" required class="mt-1 p-2 w-full rounded-md border border-slate-500 focus:ring-slate-700">
                 </div>
-                <div class="flex items-center justify-between">
-                    <button type="submit" class="bg-slate-500 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded">Login</button>
-                    
-                    <a href="{{route('register')}}">Create a new account?</a>
+                <div class="flex items-center justify-between mb-6">
+                    <button type="submit" class="bg-slate-500 hover:bg-slate-700 text-white font-bold py-2 px-4 w-full rounded">Login</button>
                 </div>
-                {{-- @if (Route::has('password.request'))
-                    <div class="mt-4 mb-2 flex items-center justify-center">
-                        <a href="{{route('password.request')}}" class="text-cyan-500 hover:underline">Forgot Password?</a>
-                    </div>   
-                @endif --}}
+
+                <div class = "flex items-center justify-center gap-4 mb-4">
+                    <a class="text-xs md:text-sm hover:underline" href="{{route('register')}}">Create a new account?</a>
+                    @if (Route::has('password.request'))
+                        <a class="text-xs md:text-sm hover:underline" href="{{route('password.request')}}">Forgot Password?</a>
+                    @endif
+                </div>
             </form>
         </div>
     </div>
