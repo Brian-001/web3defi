@@ -16,7 +16,7 @@ class User extends Authenticatable
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
-    use TwoFactorAuthenticatable;
+    // use TwoFactorAuthenticatable;
     
 
     /**
@@ -30,6 +30,8 @@ class User extends Authenticatable
         'password',
         'role_id',
         'user_status',
+        'notify_applications',
+        'profile_photo_path',
     ];
 
     /**
@@ -64,7 +66,19 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
+            'notify_applications' => 'boolean',
         ];
+    }
+    public function updateProfilePhoto($photo)
+    {
+        // Delete existing photo if it exists
+        if ($this->profile_photo_path) {
+            Storage::disk('public')->delete($this->profile_photo_path);
+        }
+
+        // Store new photo
+        $path = $photo->store('profile-photos', 'public');
+        $this->forceFill(['profile_photo_path' => $path])->save();
     }
     public function role()
     {

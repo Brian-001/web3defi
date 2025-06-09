@@ -10,9 +10,10 @@ use App\Models\JobApplication;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
 class DashboardController extends Controller
 {
@@ -139,44 +140,12 @@ class DashboardController extends Controller
         $user = Auth::user();
         return view('dashboard.profile', compact('user'));
     }
-    public function updateProfile(Request $request)
+    public function updateProfile(Request $request, UpdatesUserProfileInformation $updater)
     {
-        $user = Auth::user();
+        $updater->update($request->user(), $request->all());
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'current_password' => 'nullable|string|required_with:password',
-            'password' => 'nullable|string|min:8|confirmed',
-            'notify_applications' => 'boolean',
-        ]);
-
-        //update basic info
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-
-        //Handle avatar upload
-        if ($request->hasFile('avatar')){
-            if($user->avatar) {
-                //Delete previous avatar
-                Storage::delete($user->avatar);
-            }
-            $path = $request->file('avatar')->store('avatars', 'public');
-            $user->avatar = $path;
-        }
-
-        if ($request->filled('current_passord')){
-            if(!Hash::check($request->input('current_password'), $user->password)){
-                return back()->withErrors(['current_password' => 'The current password is incorrect']);
-            }
-            $user->password = Hash::make($request->input('password'));
-        }
-
-        
-        //Update notification preferences(assumes columns exixsts in users table)
-
-        return redirect()->route('dashboard.profile')->with('success', 'Profile updated successfully');
+        return redirect()->route('dashboard.profile')
+            ->with('success', 'Profile updated successfully.');
     }
 
     public function getReport()

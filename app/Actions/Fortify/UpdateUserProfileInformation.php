@@ -20,21 +20,29 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'avatar' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'notify_applications' => ['nullable', 'boolean'],
         ])->validateWithBag('updateProfileInformation');
 
-        if (isset($input['photo'])) {
-            $user->updateProfilePhoto($input['photo']);
+        //Prepare Data to update
+        $updateData = [
+            'name' => $input['name'],
+            'email' => $input['email'],
+            'notify_applications' => isset($input['notify_applications']) ? (bool) $input['notify_applications'] : false,
+        ];
+
+        //Handle Avatar Upload
+        if (isset($input['avatar']) && $input['avatar']) {
+            $user->updateProfilePhoto($input['avatar']);
+            $updateData['profile_photo_path'] = $user->profile_photo_path; //Ensure the path is updated
         }
 
+        //Check if the email has changed and if the user must verify their email
         if ($input['email'] !== $user->email &&
             $user instanceof MustVerifyEmail) {
-            $this->updateVerifiedUser($user, $input);
+            $this->updateVerifiedUser($user, $updateData);
         } else {
-            $user->forceFill([
-                'name' => $input['name'],
-                'email' => $input['email'],
-            ])->save();
+            $user->forceFill($updateData)->save();
         }
     }
 
@@ -48,6 +56,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         $user->forceFill([
             'name' => $input['name'],
             'email' => $input['email'],
+            'notify_applications' => $input['notify_applications'],
             'email_verified_at' => null,
         ])->save();
 

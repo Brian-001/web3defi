@@ -9,8 +9,6 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JobApplicationController;
-use App\Http\Controllers\TwoFactorChallengeController;
-use App\Http\Controllers\TwoFactorAuthenticationController;
 
 // Update this route to use ListingController's index method
 // Blade view
@@ -89,13 +87,6 @@ Route::middleware(['auth'])->group(function()
     Route::get('/dashboard/single-listing/{applicant}', [DashboardController::class, 'getSingleListing'])->name('dashboard.single-listing');
 
     Route::get('/listings/{listing}/refer', [ListingController::class, 'refer'])->name('listings.refer');
-
-    //Custom 2FA Routes
-    Route::get('/two-factor-challenge', [TwoFactorChallengeController::class, 'show'])->name('two-factor.login');
-    Route::post('/two-factor-challenge', [TwoFactorChallengeController::class, 'store']);
-    Route::delete('/user/two-factor-authentication', [TwoFactorAuthenticationController::class, 'destroy'])
-    ->middleware('auth')
-    ->name('two-factor.disable');
 });
 
 //Livewire
