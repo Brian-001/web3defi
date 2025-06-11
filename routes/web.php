@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TwoFactorController;
 use App\Http\Controllers\JobApplicationController;
 
 // Update this route to use ListingController's index method
@@ -87,7 +88,15 @@ Route::middleware(['auth'])->group(function()
     Route::get('/dashboard/single-listing/{applicant}', [DashboardController::class, 'getSingleListing'])->name('dashboard.single-listing');
 
     Route::get('/listings/{listing}/refer', [ListingController::class, 'refer'])->name('listings.refer');
+
+
+    //Two Factor Authentication
+    // Route::post('/two-factor-authentication', [TwoFactorController::class, 'enable'])->name('two-factor.enable');
+    // Route::post('/two-factor/confirm', [TwoFactorController::class, 'confirm'])->name('two-factor.confirm');
+    // Route::delete('/two-factor-authentication', [TwoFactorController::class, 'disable'])->name('two-factor.disable');
 });
+// routes/web.php (temporary)
+Route::get('/test-log', fn () => Log::debug('Test log') && 'Logged');
 
 //Livewire
 Route::get('/counter', Counter::class);

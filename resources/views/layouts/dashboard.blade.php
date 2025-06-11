@@ -40,12 +40,12 @@
                     <a wire:navigate href="{{ route('dashboard.profile') }}" class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.profile') ? 'bg-gray-700 rounded-r-2xl font-medium' : '' }} transition-colors duration-150">
                         Profile
                     </a>
-                    @if (Auth::user()->hasRole('Admin'))
+                    @if (Auth::check() && Auth::user()->hasRole('Admin'))
                         <a wire:navigate href="{{ route('dashboard.user-management') }}" class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.user-management') ? 'bg-gray-700 rounded-r-2xl font-medium' : '' }} transition-colors duration-150">
                             User Management
                         </a>
                     @endif
-                    @if (Auth::user()->hasRole('Admin') || Auth::user()->hasRole('Employer'))
+                    @if (Auth::check() && (Auth::user()->hasRole('Admin') || Auth::user()->hasRole('Employer')))
                         <a wire:navigate href="{{ route('dashboard.job-management') }}" class="block py-2.5 px-4 text-sm hover:bg-gray-700 {{ Route::is('dashboard.job-management') ? 'bg-gray-700 rounded-r-2xl font-medium' : '' }} transition-colors duration-150">
                             Job Management
                         </a>
