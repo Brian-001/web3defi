@@ -173,7 +173,21 @@
             @endif
 
             <!-- Show Recovery Codes -->
-            @if ($recoveryCodes = json_decode(decrypt(auth()->user()->two_factor_recovery_codes), true))
+            @php
+                $recoveryCodes = [];
+
+                try {
+                    $encrypted = auth()->user()->two_factor_recovery_codes;
+
+                    if (!empty($encrypted)) {
+                        $recoveryCodes = json_decode(decrypt($encrypted), true) ?? [];
+                    }
+                } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+                    $recoveryCodes = [];
+                }
+            @endphp
+
+            @if (!empty($recoveryCodes))
                 <div x-data="{ copied: false }" class="mt-6 space-y-4">
                     <p class="text-sm font-medium text-gray-700">Recovery Codes:</p>
 
@@ -186,17 +200,28 @@
                     </div>
 
                     <div class="flex items-center gap-3 mt-2">
-                        <!-- Copy Button -->
-                        <button @click="
-                            const codes = [...document.querySelectorAll('#recovery-codes-list div')].map(el => el.textContent).join('\n');
-                            navigator.clipboard.writeText(codes).then(() => copied = true);
-                            setTimeout(() => copied = false, 2000);
-                        "
+                        <!-- ✅ Copy All Button -->
+                        <button
+                            @click="
+                                const codes = [...document.querySelectorAll('#recovery-codes-list div')]
+                                    .map(el => el.textContent).join('\n');
+                                navigator.clipboard.writeText(codes).then(() => copied = true);
+                                setTimeout(() => copied = false, 2000);
+                            "
                             class="px-4 py-2 text-sm bg-sky-600 text-white rounded hover:bg-sky-700 transition">
-                            Copy All
+                            📋 Copy All
                         </button>
 
-                        <!-- Feedback Toast -->
+                        <!-- ✅ Optional: Regenerate (You may implement this later) -->
+                        <!-- <form method="POST" action="{{ url('/user/two-factor-recovery-codes') }}">
+                            @csrf
+                            <button type="submit"
+                                class="px-4 py-2 text-sm bg-yellow-500 text-white rounded hover:bg-yellow-600 transition">
+                                🔄 Regenerate
+                            </button>
+                        </form> -->
+
+                        <!-- ✅ Copied Feedback -->
                         <div x-show="copied" x-transition class="text-sm text-green-600">
                             ✅ Copied to clipboard!
                         </div>
