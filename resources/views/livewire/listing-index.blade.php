@@ -1,80 +1,95 @@
 <div>
-    <div wire:init class="grid grid-cols-12 gap-2 max-w-7xl mx-auto mt-10">
-        <!-- Navigation Sidebar -->
-        <div class="bg-slate-700 col-span-12 md:col-span-2 row-span-6 shadow-lg relative" x-data="{ showNav: false }" wire:ignore>
-            <div class="absolute top-0 right-4 cursor-pointer md:hidden" @click="showNav = !showNav">
-                <svg x-show="!showNav" class="h-6 w-6 transition-transform duration-700" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 6H20M4 12H20M4 18H20" stroke="#CBD5E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <div wire:init class="grid grid-cols-12 gap-4 max-w-7xl mx-auto mt-10 px-4">
+    
+        <!-- Sidebar Navigation -->
+        <aside class="bg-slate-700 col-span-12 md:col-span-2 shadow-lg rounded-lg p-4 relative" x-data="{ showNav: false }" wire:ignore>
+            <!-- Mobile Toggle -->
+            <button class="absolute top-4 right-4 md:hidden text-slate-200" @click="showNav = !showNav" aria-label="Toggle Navigation">
+                <svg x-show="!showNav" class="h-6 w-6" fill="none" viewBox="0 0 24 24">
+                    <path stroke="#CBD5E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
-                <svg x-show="showNav" class="h-6 w-6 transition-transform duration-700" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M6 6L18 18M6 18L18 6" stroke="#CBD5E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <svg x-show="showNav" class="h-6 w-6" fill="none" viewBox="0 0 24 24">
+                    <path stroke="#CBD5E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M6 18L18 6" />
                 </svg>
-            </div>
-            <nav class="grid p-4 text-center md:block" :class="{ 'hidden': !showNav && window.innerWidth < 768 }">
-                <div class="mb-4 mt-4 bg-slate-600 py-4 hover:drop-shadow-md cursor-pointer nav-link">
-                    <a wire:navigate href="{{ route('home') }}" class="text-white hover:text-cyan-300">Home</a>
-                </div>
-                <div class="mb-4 bg-slate-600 py-4 hover:drop-shadow-md nav-link">
-                    <a wire:navigate.prefetch href="{{ route('home') }}#projects" class="text-white hover:text-cyan-300">Jobs</a>
-                </div>
-                <div class="mb-4 bg-slate-600 py-4 hover:drop-shadow-md nav-link">
-                    <a wire:navigate.prefetch href="{{ route('home') }}#about" class="text-white hover:text-cyan-300">About</a>
-                </div>
-                <div class="mb-4 bg-slate-600 py-4 hover:drop-shadow-md nav-link">
-                    <a wire:navigate.prefetch href="{{ route('home') }}#contact" class="text-white hover:text-cyan-300">Contact</a>
-                </div>
-                @if (Auth::check())
-                    <div class="mb-4 bg-slate-600 py-4 hover:drop-shadow-md nav-link">
-                        <a href="{{ route('dashboard.index') }}" class="text-white hover:text-cyan-300">Dashboard</a>
-                    </div>
-                @endif
-                <div class="mt-8">
-                    @if (Auth::check())
-                        <a wire:navigate href="{{ route('logout') }}" 
-                           class="text-gray-800 bg-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
-                            @csrf
-                        </form>
+            </button>
+
+            <!-- Links -->
+            <nav :class="{ 'hidden': !showNav && window.innerWidth < 768 }" class="space-y-4 mt-10 md:mt-0">
+                @php
+                    $links = [
+                        ['label' => 'Home', 'href' => route('home')],
+                        ['label' => 'Jobs', 'href' => route('home') . '#projects'],
+                        ['label' => 'About', 'href' => route('home') . '#about'],
+                        ['label' => 'Contact', 'href' => route('home') . '#contact'],
+                    ];
+                @endphp
+
+                @foreach ($links as $link)
+                    <a wire:navigate.prefetch href="{{ $link['href'] }}"
+                    class="block bg-slate-600 text-white text-center py-3 rounded-md hover:bg-slate-500 transition">
+                    {{ $link['label'] }}
+                    </a>
+                @endforeach
+
+                @auth
+                    <a href="{{ route('dashboard.index') }}"
+                    class="block bg-slate-600 text-white text-center py-3 rounded-md hover:bg-slate-500 transition">
+                        Dashboard
+                    </a>
+                @endauth
+
+                <div class="pt-6 space-y-2">
+                    @auth
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">@csrf</form>
+                        <a href="{{ route('logout') }}"
+                        class="block bg-gray-300 text-gray-900 text-center py-2 rounded-md hover:bg-gray-400 transition"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
                     @else
-                        <a wire:navigate.prefetch href="{{ route('login') }}" class="text-gray-800 bg-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Login</a>
-                        <a wire:navigate.prefetch href="{{ route('register') }}" class="text-gray-800 bg-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Register</a>
-                    @endif
+                        <a wire:navigate href="{{ route('login') }}"
+                        class="block bg-gray-300 text-gray-900 text-center py-2 rounded-md hover:bg-gray-400 transition">
+                            Login
+                        </a>
+                        <a wire:navigate href="{{ route('register') }}"
+                        class="block bg-gray-300 text-gray-900 text-center py-2 rounded-md hover:bg-gray-400 transition">
+                            Register
+                        </a>
+                    @endauth
                 </div>
             </nav>
-        </div>
-    
+        </aside>
+
         <!-- Hero Section -->
-        <div class="col-span-12 md:col-span-7 row-span-6 shadow-lg rounded-md relative">
-            <div class="relative">
-                <img src="{{ asset('images/web3v5.webp') }}" class="w-full h-full object-cover rounded-md" alt="Photo">
-            </div>
-            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-slate-900/90 flex flex-col justify-center">
-                <h1 class="text-2xl md:text-3xl text-cyan-300 p-4 text-center font-bold">Web3Defi</h1>
-                <p class="text-gray-200 text-sm md:text-base lg:text-xl leading-relaxed text-center mt-2 max-w-2xl mx-auto">
-                    Discover opportunities in Web3, DeFi, and beyond. Connect with 
-                    innovative projects and top talent in the decentralized world
+        <section class="col-span-12 md:col-span-7 relative shadow-lg rounded-lg overflow-hidden">
+            <img src="{{ asset('images/web3v5.webp') }}" alt="Web3 Background" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-slate-900/90 flex flex-col justify-center text-center px-4">
+                <h1 class="text-cyan-300 text-2xl md:text-4xl font-bold mb-4">Web3Defi</h1>
+                <p class="text-gray-200 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed">
+                    Discover opportunities in Web3, DeFi, and beyond. Connect with innovative projects and top talent in the decentralized world.
                 </p>
             </div>
-        </div>
-    
+        </section>
+
         <!-- Tabs Section -->
-        <div class="col-span-12 md:col-span-3 row-span-6 shadow-lg rounded-md relative" x-data="{ tab: 'tab1' }" wire:ignore>
-            <div class="flex justify-around p-4 bg-slate-600 text-white">
-                <button @click="tab = 'tab1'" :class="{ 'text-cyan-300': tab === 'tab1' }">Web3 Jobs</button>
-                <button @click="tab = 'tab2'" :class="{ 'text-cyan-300': tab === 'tab2' }">Trending Jobs</button>
-                <button @click="tab = 'tab3'" :class="{ 'text-cyan-300': tab === 'tab3' }">Skills</button>
+        <aside class="col-span-12 md:col-span-3 shadow-lg rounded-lg bg-slate-700 text-white" x-data="{ tab: 'tab1' }" wire:ignore>
+            <div class="flex justify-between md:justify-around bg-slate-600 px-4 py-2 rounded-t-md">
+                <button @click="tab = 'tab1'" :class="{ 'text-cyan-300 font-semibold': tab === 'tab1' }">Web3 Jobs</button>
+                <button @click="tab = 'tab2'" :class="{ 'text-cyan-300 font-semibold': tab === 'tab2' }">Trending</button>
+                <button @click="tab = 'tab3'" :class="{ 'text-cyan-300 font-semibold': tab === 'tab3' }">Skills</button>
             </div>
-            <div x-show="tab === 'tab1'" class="p-4">
-                <p class="text-white">Explore the latest Web3 job opportunities.</p>
+            <div class="p-4">
+                <template x-if="tab === 'tab1'">
+                    <p>Explore the latest Web3 job opportunities.</p>
+                </template>
+                <template x-if="tab === 'tab2'">
+                    <p>Discover trending jobs in the industry.</p>
+                </template>
+                <template x-if="tab === 'tab3'">
+                    <p>Learn about in-demand skills for the future of work.</p>
+                </template>
             </div>
-            <div x-show="tab === 'tab2'" class="p-4">
-                <p class="text-white">Discover trending jobs in the industry.</p>
-            </div>
-            <div x-show="tab === 'tab3'" class="p-4">
-                <p class="text-white">Learn about in-demand skills.</p>
-            </div>
-        </div>
+        </aside>
     
         <!-- Listings Section -->
         <div class="col-span-12 mt-10 md:mt-20">
@@ -245,24 +260,60 @@
     </section>
 
     {{-- Footer Section --}}
-    <section>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 h-max bg-slate-800 rounded-t-lg md:rounded-t-2xl py-4">
-            <div class="p-4">
-                <h3 class="text-cyan-300 text-xl font-semibold">Web3Defi</h3>
-                <p class="text-white">We operate fully remote, should there be any concern, complement feel free to reach out to us via our email address. Thanks!</p>
-                
+    <section class="bg-slate-800 text-white py-8 rounded-t-2xl">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <!-- Brand + Message -->
+            <div>
+                <h3 class="text-cyan-300 text-2xl font-bold mb-2">Web3Defi</h3>
+                <p class="text-gray-300 text-sm leading-relaxed">
+                    We operate fully remote. Should you have any concerns or compliments, feel free to reach out via our email. Thanks!
+                </p>
             </div>
-            <div class="p-4">
-                <h3 class="text-gray-300 font-semibold">Quicklinks</h3>
-                <ul class="text-white">
-                    <li>Jobs</li>
-                    <li>About</li>
-                    <li>Contact</li>
+
+            <!-- Quick Links -->
+            <div>
+                <h3 class="text-gray-200 text-lg font-semibold mb-3">Quick Links</h3>
+                <ul class="space-y-2 text-sm">
+                    <li>
+                        <a href="#" class="hover:text-cyan-400 transition">Jobs</a>
+                    </li>
+                    <li>
+                        <a href="#" class="hover:text-cyan-400 transition">About</a>
+                    </li>
+                    <li>
+                        <a href="#" class="hover:text-cyan-400 transition">Contact</a>
+                    </li>
                 </ul>
             </div>
-            <div class="p-4">
-                <h3 class="text-gray-300 font-semibold">Socials</h3>
+
+            <!-- Newsletter -->
+            <div>
+                <h3 class="text-gray-200 text-lg font-semibold mb-3">Subscribe to Our Weekly Newsletter</h3>
+                <form class="flex flex-col sm:flex-row items-center gap-2">
+                    <input
+                        type="email"
+                        placeholder="Your email"
+                        class="w-full px-4 py-2 text-sm text-gray-900 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:outline-none"
+                        required
+                    >
+                    <button
+                        type="submit"
+                        class="px-4 py-2 text-sm font-medium bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition"
+                    >
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Bottom Note -->
+        <div class=" flex items-center justify-center text-center space-x-4 text-gray-500 text-xs mt-6">
+            <div class="flex items-center justify-start"><p>Built with ❤️by Brian Karanja.</p></div>
+            <div class="flex items-center justify-end">
+                &copy; {{ date('Y') }} Web3Defi. All rights reserved.
             </div>
         </div>
     </section>
+
 </div>

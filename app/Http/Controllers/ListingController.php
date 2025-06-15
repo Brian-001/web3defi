@@ -17,6 +17,16 @@ class ListingController extends BaseController
      * Display a listing of the resource.
      */
 
+    // public function index()
+    // {
+    //     // Fetch all listings from the database
+    //     $listings = Listing::where('listing_status', 'active')->get();
+    //     Log::info('All Listings:', $listings->toArray());
+        
+    //     // Return the view with the listings data
+    //     return view('listings.index', compact('listings'));
+    // }
+
      public function __construct()
      {
         $this->middleware('auth')->except('show');

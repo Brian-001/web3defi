@@ -31,6 +31,7 @@ class DashboardController extends Controller
                     1 => 'Admin',
                     2 => 'Employer',
                     3 => 'Employee',
+                    4 => 'Recruiter',
                 } => $total];
             });
         });

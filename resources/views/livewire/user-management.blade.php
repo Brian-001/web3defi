@@ -35,7 +35,7 @@
                                 class="bg-transparent text-gray-700 text-sm py-0 px-8 rounded-lg hover:text-cyan-600" 
                             >
                                 @foreach ($roles as $role)
-                                    <option value=" {{ $user->role->name}}" {{ $user->role->name === $user->role->name ? 'selected' : '' }}>
+                                    <option value="{{ $role->name}}">
                                          {{ ucfirst($role->name) }}
                                     </option>
                                 @endforeach
@@ -48,7 +48,7 @@
                                 class="bg-transparent text-gray-700 text-sm py-0 px-6 rounded-lg hover:text-cyan-600"
                             >
                                 @foreach ($statuses as $status)
-                                    <option value="{{ $status }}" {{ $user->user_status === $status ? 'selected' : '' }}>
+                                    <option value="{{ $status }}">
                                         {{ ucfirst($status) }}
                                     </option>
                                 @endforeach

@@ -30,6 +30,7 @@ class UserManagement extends Component
         $this->roles = Cache::remember('role_list', 1440, function() {
             return Role::all();
         });
+        
     }
 
     public function updatingSearch()
@@ -39,15 +40,26 @@ class UserManagement extends Component
 
     public function updateRole($userId)
     {
-        $user = User::findOrFail($userId);
-        $user->update([
-            'role_id' => Role::where('name', $this->selectedRole[$userId])->first()->id
-        ]);
+        // $user = User::findOrFail($userId);
+        // $user->update([
+        //     'role_id' => Role::where('name', $this->selectedRole[$userId])->first()->id
+        // ]);
 
-        $this->dispatch('notify',
-            type: 'success',
-            message: 'User role updated successfully!' 
-        );
+        // $this->dispatch('notify',
+        //     type: 'success',
+        //     message: 'User role updated successfully!' 
+        // );
+
+        $role = Role::where('name', $this->selectedRole[$userId])->first();
+        if ($role){
+            User::where('id', $userId)->update([
+                'role_id' => $role->id
+            ]);
+            $this->dispatch('notify',
+                type: 'success',
+                message: 'User role updated successfully!'
+            );
+        }
     }
 
     public function updateStatus($userId)
@@ -75,7 +87,7 @@ class UserManagement extends Component
             })
             ->paginate(10);
 
-        //Initialize selected values
+        //Initialize selected role and status for each user
         foreach($users as $user){
             if(!isset($this->selectedRole[$user->id])) {
                 $this->selectedRole[$user->id] = $user->role->name;
