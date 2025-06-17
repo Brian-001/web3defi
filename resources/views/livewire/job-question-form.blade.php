@@ -1,77 +1,86 @@
-<div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
-    <h2 class="text-2xl font-bold mb-6">Add Questions for Job Listing</h2>
-
-    @if (session()->has('message'))
-        <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
-            {{ session('message') }}
-        </div>
-    @endif
+<div class="max-w-2xl mx-auto p-4 sm:p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Job Listing Questions</h2>
 
     <form wire:submit.prevent="save">
-        @foreach ($questions as $index => $question)
-            <div class="mb-6 p-4 border rounded-lg">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold">Question {{ $index + 1 }}</h3>
-                    <button type="button" wire:click="removeQuestion({{ $index }})" class="text-red-500 hover:text-red-700">
-                        Remove
-                    </button>
-                </div>
+        <div class="max-h-[600px] overflow-y-auto mb-4 sm:mb-6">
+            @foreach ($questions as $index => $question)
+                <div wire:key="question-{{ $index }}" class="mb-4 sm:mb-6 p-3 sm:p-4 border rounded">
+                    <div class="flex justify-between items-center mb-3 sm:mb-4">
+                        <h3 class="font-semibold text-sm sm:text-base">Question {{ $index + 1 }}</h3>
+                        <button type="button" wire:click="removeQuestion({{ $index }})" class="text-red-600 text-xs sm:text-sm">Remove</button>
+                    </div>
 
-                <!-- Question Text -->
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Question</label>
-                    <input type="text" wire:model="questions.{{ $index }}.question_text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                    @error('questions.' . $index . '.question_text') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                </div>
+                    <label class="block mb-2 text-xs sm:text-sm font-medium">Question</label>
+                    <input type="text" wire:model.defer="questions.{{ $index }}.question_text"
+                           class="w-full border rounded px-2 py-1 mb-1 text-sm sm:text-base" />
+                    @error("questions.$index.question_text") <span class="text-red-500 text-xs sm:text-sm">{{ $message }}</span> @enderror
 
-                <!-- Input Type -->
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Input Type</label>
-                    <select wire:model="questions.{{ $index }}.input_type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    <label class="block mt-2 sm:mt-3 mb-2 text-xs sm:text-sm font-medium">Input Type</label>
+                    <select wire:model.lazy="questions.{{ $index }}.input_type"
+                            class="w-full border rounded px-2 py-1 mb-1 text-sm sm:text-base">
                         @foreach ($inputTypes as $type)
                             <option value="{{ $type }}">{{ ucfirst($type) }}</option>
                         @endforeach
                     </select>
-                    @error('questions.' . $index . '.input_type') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                </div>
+                    @error("questions.$index.input_type") <span class="text-red-500 text-xs sm:text-sm">{{ $message }}</span> @enderror
 
-                <!-- Options for Select/Checkbox/Radio -->
-                @if (in_array($question['input_type'], ['select', 'checkbox', 'radio']))
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700">Options</label>
+                    @if (isset($question['input_type']) && in_array($question['input_type'], ['select', 'checkbox', 'radio']) && isset($question['options']))
+                        <label class="block mt-2 sm:mt-3 mb-2 text-xs sm:text-sm font-medium">Options</label>
+
                         @foreach ($question['options'] as $optionIndex => $option)
-                            <div class="flex items-center mb-2">
-                                <input type="text" wire:model="questions.{{ $index }}.options.{{ $optionIndex }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                                <button type="button" wire:click="removeOption({{ $index }}, {{ $optionIndex }})" class="ml-2 text-red-500 hover:text-red-700">
-                                    Remove
-                                </button>
+                            <div class="flex items-center gap-2 mb-1">
+                                <input type="text" wire:model.defer="questions.{{ $index }}.options.{{ $optionIndex }}"
+                                       class="flex-grow border rounded px-2 py-1 text-sm sm:text-base" />
+                                <button type="button" wire:click="removeOption({{ $index }}, {{ $optionIndex }})"
+                                        class="text-red-500 text-xs">Remove</button>
                             </div>
-                            @error('questions.' . $index . '.options.' . $optionIndex) <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                         @endforeach
-                        <button type="button" wire:click="addOption({{ $index }})" class="text-blue-500 hover:text-blue-700">
-                            Add Option
-                        </button>
-                    </div>
-                @endif
 
-                <!-- Required Checkbox -->
-                <div class="mb-4">
-                    <label class="inline-flex items-center">
-                        <input type="checkbox" wire:model="questions.{{ $index }}.is_required" class="rounded border-gray-300 text-indigo-600 shadow-sm">
-                        <span class="ml-2 text-sm text-gray-700">Required</span>
+                        @if ($question['input_type'] !== 'radio')
+                            <button type="button" wire:click="addOption({{ $index }})"
+                                    class="text-blue-500 text-xs sm:text-sm mt-2">+ Add Option</button>
+                        @endif
+                    @endif
+
+                    <label class="flex items-center gap-2 mt-3 sm:mt-4 text-xs sm:text-sm">
+                        <input type="checkbox" wire:model.defer="questions.{{ $index }}.is_required" class="rounded">
+                        Required
                     </label>
                 </div>
+            @endforeach
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+            <button type="button" wire:click="addQuestion"
+                    class="bg-blue-500 text-white px-3 sm:px-4 py-2 rounded hover:bg-blue-600 w-full sm:w-auto">
+                + Add Question
+            </button>
+
+            <div class="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
+                <button type="submit" class="bg-green-600 text-white px-3 sm:px-4 py-2 rounded hover:bg-green-700">
+                    Save Questions
+                </button>
+                @if (session()->has('message'))
+                    <div id="flash-message" class="bg-green-100 text-green-700 px-3 sm:px-4 py-2 rounded text-xs sm:text-sm">
+                        {{ session('message') }}
+                    </div>
+                @endif
             </div>
-        @endforeach
-
-        <!-- Add Question Button -->
-        <button type="button" wire:click="addQuestion" class="mb-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-            Add Question
-        </button>
-
-        <!-- Save Button -->
-        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-            Save Questions
-        </button>
+        </div>
     </form>
+
+    @push('scripts')
+        <script>
+            document.addEventListener('livewire:load', function () {
+                Livewire.on('component-updated', () => {
+                    const flashMessage = document.getElementById('flash-message');
+                    if (flashMessage) {
+                        setTimeout(() => {
+                            flashMessage.style.display = 'none';
+                        }, 3000);
+                    }
+                });
+            });
+        </script>
+    @endpush
 </div>

@@ -49,6 +49,12 @@ class JobManagement extends Component
                         $query->where('name', 'like', '%' . $this->search . '%');
                     });
         });
+
+        // Filter listings based on the user's role
+        if($user->hasRole('Employer')) {
+            $query->where('user_id', $user->id); // Employers see their own listings
+        }
+
         $listings = $query->paginate(10);
 
         // Initialize selected status values

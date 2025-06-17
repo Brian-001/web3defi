@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class JobReferralForm extends Component
 {
-    
     use WithFileUploads;
 
     public $listingId;
@@ -26,28 +25,50 @@ class JobReferralForm extends Component
     protected $rules = [
         'name' => 'required|string|max:255',
         'email' => 'required|email|max:255',
-        'github' => 'required|url',
-        'linkedin' => 'required|url',
+        'github' => 'nullable|url',
+        'linkedin' => 'nullable|url',
         'resume_path' => 'nullable|file|mimes:pdf|max:2048',
         'answers.*' => 'nullable',
     ];
 
     public function mount($listingId)
     {
-        $this->listingId = $listingId;
-        $this->questions = Listing::findOrFail($listingId)->questions;
-        $this->employeeApplications = JobApplication::where('listing_id', $listingId)
-            ->where('application_type', 'employee')
-            ->get();
-        $this->setRules();
+        try {
+            $this->listingId = $listingId;
+            $this->questions = Listing::findOrFail($listingId)->questions;
+            $this->employeeApplications = JobApplication::where('listing_id', $listingId)
+                ->where('application_type', 'employee')
+                ->get();
+            $this->initializeAnswers();
+            $this->setRules();
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            session()->flash('error', 'Job listing not found.');
+            return redirect()->route('listings.index'); // Adjust route as needed
+        }
+    }
+
+    public function initializeAnswers()
+    {
+        foreach ($this->questions as $question) {
+            if ($question->input_type === 'checkbox') {
+                $this->answers[$question->id] = [];
+            } else {
+                $this->answers[$question->id] = null;
+            }
+        }
     }
 
     public function setRules()
     {
         foreach ($this->questions as $question) {
-            $this->rules["answers.{$question->id}"] = $question->is_required ? 'required' : 'nullable';
-            if (in_array($question->input_type, ['select', 'checkbox', 'radio'])) {
-                $this->rules["answers.{$question->id}"] .= '|in:' . implode(',', $question->options);
+            if ($question->input_type === 'checkbox') {
+                $this->rules["answers.{$question->id}"] = $question->is_required ? 'required|array|min:1' : 'nullable|array';
+                $this->rules["answers.{$question->id}.*"] = 'in:' . implode(',', $question->options);
+            } else {
+                $this->rules["answers.{$question->id}"] = $question->is_required ? 'required' : 'nullable';
+                if (in_array($question->input_type, ['select', 'radio'])) {
+                    $this->rules["answers.{$question->id}"] .= '|in:' . implode(',', $question->options);
+                }
             }
         }
     }
@@ -56,28 +77,35 @@ class JobReferralForm extends Component
     {
         $this->validate();
 
-        $resumePath = $this->resume_path ? $this->resume_path->store('resumes', 'public') : null;
+        try {
+            $resumePath = $this->resume_path ? $this->resume_path->store('resumes', 'public') : null;
 
-        JobApplication::create([
-            'listing_id' => $this->listingId,
-            'user_id' => Auth::user()->id, // Recruiter
-            'name' => $this->name,
-            'email' => $this->email,
-            'github' => $this->github,
-            'linkedin' => $this->linkedin,
-            'resume_path' => $resumePath,
-            'answers' => $this->answers,
-            'application_type' => 'recruiter',
-            'referred_by' => Auth::user()->id, // Referrer
-        ]);
+            JobApplication::create([
+                'listing_id' => $this->listingId,
+                'user_id' => Auth::user()->id, // Recruiter
+                'name' => $this->name,
+                'email' => $this->email,
+                'github' => $this->github,
+                'linkedin' => $this->linkedin,
+                'resume_path' => $resumePath,
+                'answers' => $this->answers,
+                'application_type' => 'recruiter',
+                'referred_by' => Auth::user()->id, // Referrer
+            ]);
 
-        session()->flash('message', 'Referral submitted successfully!');
-        $this->reset(['name', 'email', 'github', 'linkedin', 'resume_path', 'answers']);
+            session()->flash('message', 'Referral submitted successfully!');
+            $this->reset(['name', 'email', 'github', 'linkedin', 'resume_path', 'answers']);
+            $this->initializeAnswers();
+            $this->employeeApplications = JobApplication::where('listing_id', $this->listingId)
+                ->where('application_type', 'employee')
+                ->get();
+        } catch (\Exception $e) {
+            session()->flash('error', 'Failed to submit referral. Please try again.');
+        }
     }
 
     public function render()
     {
         return view('livewire.job-referral-form');
     }
-
 }
