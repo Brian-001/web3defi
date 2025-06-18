@@ -7,7 +7,7 @@
         @if ($employeeApplications->isEmpty())
             <p class="text-gray-500 text-sm sm:text-base italic">No employee applications for this job listing.</p>
         @else
-            <div class="space-y-4">
+            {{-- <div class="space-y-4">
                 @foreach ($employeeApplications as $application)
                     <div class="p-4 sm:p-5 border border-gray-200 rounded-lg bg-white hover:shadow-md transition-shadow duration-200">
                         <p class="text-sm sm:text-base text-gray-700"><strong class="font-medium">Name:</strong> {{ $application->name }}</p>
@@ -35,12 +35,15 @@
                         </p>
                     </div>
                 @endforeach
+            </div> --}}
+            <div class="space-y-4">
+                <p class="text-gray-700 text-sm"> Total Applications: <span class="bg-gray-200 px-4 py-1 rounded-2xl"> {{ \App\Models\JobApplication::count() }} <span></p>
             </div>
         @endif
     </div>
 
     <!-- Referral Form -->
-    <form wire:submit.prevent="submit" class="space-y-6 sm:space-y-8">
+    <form wire:submit.prevent="submit" class="space-y-4 sm:space-y-8">
         <!-- Applicant Details -->
         <div class="bg-gray-50 rounded-lg p-4 sm:p-6">
             <h3 class="text-base sm:text-lg font-semibold text-gray-700 mb-4 sm:mb-5">Candidate Details</h3>
@@ -58,18 +61,18 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mt-4 sm:mt-6">
                 <div class="flex flex-col">
-                    <label for="github" class="text-gray-700 font-medium mb-2 text-sm sm:text-base">GitHub URL</label>
+                    <label for="github" class="text-gray-700 font-medium mb-2 text-sm sm:text-base">GitHub URL<span class="text-red-500">*</span></label>
                     <input type="text" id="github" wire:model.defer="github" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-cyan-500 focus:border-cyan-500 text-sm sm:text-base transition-colors duration-200">
                     @error('github') <span class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</span> @enderror
                 </div>
                 <div class="flex flex-col">
-                    <label for="linkedin" class="text-gray-700 font-medium mb-2 text-sm sm:text-base">LinkedIn URL</label>
+                    <label for="linkedin" class="text-gray-700 font-medium mb-2 text-sm sm:text-base">LinkedIn URL<span class="text-red-500">*</span></label>
                     <input type="text" id="linkedin" wire:model.defer="linkedin" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-cyan-500 focus:border-cyan-500 text-sm sm:text-base transition-colors duration-200">
                     @error('linkedin') <span class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</span> @enderror
                 </div>
             </div>
             <div class="flex flex-col mt-4 sm:mt-6">
-                <label for="resume_path" class="text-gray-700 font-medium mb-2 text-sm sm:text-base">Upload Resume (PDF)</label>
+                <label for="resume_path" class="text-gray-700 font-medium mb-2 text-sm sm:text-base">Upload Resume (PDF)<span class="text-red-500">*</span></label>
                 <input type="file" id="resume_path" wire:model="resume_path" accept=".pdf" class="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-cyan-50 file:text-cyan-700 file:cursor-pointer hover:file:bg-cyan-100 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-colors duration-200">
                 @error('resume_path') <span class="text-red-500 text-xs sm:text-sm mt-1">{{ $message }}</span> @enderror
             </div>

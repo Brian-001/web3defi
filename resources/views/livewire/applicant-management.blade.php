@@ -67,8 +67,8 @@
                             </a>
                         </td>
                         <td class="py-2 px-2 whitespace-nowrap text-sm">
-                            <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full {{ $applicant->status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
-                                {{ ucfirst($applicant->status ?? 'active') }}
+                            <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full {{ $applicant->listing->listing_status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
+                                {{ ucfirst($applicant->listing->listing_status ?? 'active') }}
                             </span>
                         </td>
                         <td class="py-2 px-2 whitespace-nowrap text-sm">
@@ -80,12 +80,13 @@
                         </td>
                         <td class="py-2 px-2 whitespace-nowrap text-sm flex items-center gap-2">
                             <x-icons.document class="text-gray-500"/>
-                            <a wire:navigate href="{{ asset('storage/' . $applicant->resume_path) }}" 
-                               target="_blank" 
-                               class="text-cyan-600 hover:text-cyan-800 hover:underline transition-colors duration-200">
+                            <a  href="{{ asset('storage/' . $applicant->resume_path) }}" 
+                            target="_blank" 
+                            class="text-cyan-600 hover:text-cyan-800 hover:underline transition-colors duration-200">
                                 View
                             </a>
                         </td>
+                        
                         <td class="py-2 px-2 whitespace-nowrap text-sm">
                             @if ($applicant->referrer)
                                 {{ $applicant->referrer->name }}

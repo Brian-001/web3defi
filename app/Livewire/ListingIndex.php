@@ -33,7 +33,8 @@ class ListingIndex extends Component
     {
         try {
             $query = Listing::query()
-                ->select('id', 'listing_title', 'job_description', 'salary', 'location', 'job_type', 'listing_logo', 'tags', 'created_at')
+                ->select('id', 'listing_title', 'job_description', 'salary', 'location', 'job_type', 'listing_logo', 'tags', 'created_at', 'listing_status')
+                ->where('listing_status', 'active')
                 ->when($this->search, function ($query) {
                     $searchTerm = '%' . $this->search . '%';
                     $query->where('listing_title', 'like', $searchTerm)

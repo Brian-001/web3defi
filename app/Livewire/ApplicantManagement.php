@@ -46,7 +46,7 @@ class ApplicantManagement extends Component
             'github',
             'linkedin',
             'resume_path',
-            'status',
+            'listing_status',
             'referred_by',
             'created_at'
         ])
