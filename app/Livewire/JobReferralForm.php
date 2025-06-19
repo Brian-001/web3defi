@@ -43,18 +43,14 @@ class JobReferralForm extends Component
             $this->setRules();
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             session()->flash('error', 'Job listing not found.');
-            return redirect()->route('listings.index'); // Adjust route as needed
+            return redirect()->route('listings.index');
         }
     }
 
     public function initializeAnswers()
     {
         foreach ($this->questions as $question) {
-            if ($question->input_type === 'checkbox') {
-                $this->answers[$question->id] = [];
-            } else {
-                $this->answers[$question->id] = null;
-            }
+            $this->answers[$question->id] = $question->input_type === 'checkbox' ? [] : null;
         }
     }
 
@@ -63,11 +59,11 @@ class JobReferralForm extends Component
         foreach ($this->questions as $question) {
             if ($question->input_type === 'checkbox') {
                 $this->rules["answers.{$question->id}"] = $question->is_required ? 'required|array|min:1' : 'nullable|array';
-                $this->rules["answers.{$question->id}.*"] = 'in:' . implode(',', $question->options);
+                $this->rules["answers.{$question->id}.*"] = 'string|in:' . implode(',', array_map('strval', $question->options ?? []));
             } else {
-                $this->rules["answers.{$question->id}"] = $question->is_required ? 'required' : 'nullable';
+                $this->rules["answers.{$question->id}"] = $question->is_required ? 'required|string' : 'nullable|string';
                 if (in_array($question->input_type, ['select', 'radio'])) {
-                    $this->rules["answers.{$question->id}"] .= '|in:' . implode(',', $question->options);
+                    $this->rules["answers.{$question->id}"] .= '|in:' . implode(',', array_map('strval', $question->options ?? []));
                 }
             }
         }
@@ -91,7 +87,10 @@ class JobReferralForm extends Component
                 'answers' => $this->answers,
                 'application_type' => 'recruiter',
                 'referred_by' => Auth::user()->id, // Referrer
+                'application_status' => 'submitted',
             ]);
+
+            \Log::info('Referral submitted', ['answers' => $this->answers]);
 
             session()->flash('message', 'Referral submitted successfully!');
             $this->reset(['name', 'email', 'github', 'linkedin', 'resume_path', 'answers']);
@@ -100,6 +99,7 @@ class JobReferralForm extends Component
                 ->where('application_type', 'employee')
                 ->get();
         } catch (\Exception $e) {
+            \Log::error('Referral submission failed', ['error' => $e->getMessage()]);
             session()->flash('error', 'Failed to submit referral. Please try again.');
         }
     }

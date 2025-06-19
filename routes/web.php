@@ -89,7 +89,7 @@ Route::middleware(['auth'])->group(function()
 
     Route::get('/listings/{listing}/refer', [ListingController::class, 'refer'])->name('listings.refer');
 
-
+    Route::get('/dashboard/applications/{jobApplication}', [DashboardController::class, 'show'])->name('dashboard.single-application');
     //Two Factor Authentication
     // Route::post('/two-factor-authentication', [TwoFactorController::class, 'enable'])->name('two-factor.enable');
     // Route::post('/two-factor/confirm', [TwoFactorController::class, 'confirm'])->name('two-factor.confirm');

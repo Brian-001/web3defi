@@ -73,6 +73,8 @@ class DashboardController extends Controller
         return view('dashboard.index', compact('userStats', 'listingsPerDay', 'listingsPerWeek', 'listingsByJobType'));  
     }
 
+
+
     public function getUsersManagementData()
     {
         //Pagination, search is handled using livewire component (UserManagement)
@@ -147,6 +149,12 @@ class DashboardController extends Controller
 
         return redirect()->route('dashboard.profile')
             ->with('success', 'Profile updated successfully.');
+    }
+
+    public function show(JobApplication $jobApplication)
+    {
+        $jobApplication->load(['listing', 'referrer', 'listing.questions']);
+        return view('dashboard.application-show', compact('jobApplication'));
     }
 
     public function getReport()

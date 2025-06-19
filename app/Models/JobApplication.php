@@ -19,7 +19,8 @@ class JobApplication extends Model
         'resume_path', 
         'answers',
         'application_type',
-        'referred_by'
+        'referred_by',
+        'application_status',
     ];
 
     protected $casts = [

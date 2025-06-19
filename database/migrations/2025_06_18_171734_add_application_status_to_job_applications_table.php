@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::table('job_applications', function (Blueprint $table) {
             //
+            $table->enum('application_status', [
+                'submitted', 'under_review', 'shortlisted', 'interview_scheduled',
+                'assessment_pending', 'offer_extended', 'offer_accepted', 'offer_declined',
+                'rejected', 'onhold', 'withdrawn'
+            ])->default('submitted')->after('resume_path');
         });
     }
 
@@ -23,6 +28,7 @@ return new class extends Migration
     {
         Schema::table('job_applications', function (Blueprint $table) {
             //
+            $table->dropColumn('application_status');
         });
     }
 };
