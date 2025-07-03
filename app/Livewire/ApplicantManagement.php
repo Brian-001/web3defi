@@ -63,6 +63,11 @@ class ApplicantManagement extends Component
             })
             ->orderBy('created_at', 'desc');
 
+            //Filter Listings based on the user's role
+            if (Auth::user()->hasRole('Employer')) {
+                $listingsQuery->where('user_id', Auth::id()); // Employers see their own listings
+            }
+
         $listings = $listingsQuery->paginate(10);
 
         // Fetch applications only for expanded listings
