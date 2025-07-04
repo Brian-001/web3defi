@@ -90,6 +90,7 @@
                     </button>
                 </div>
 
+
                 <!-- Links -->
                 <div class="flex items-center justify-center gap-4 text-center">
                     <a class="text-xs sm:text-sm text-blue-500 hover:underline" href="{{ route('register') }}">Create a new account?</a>

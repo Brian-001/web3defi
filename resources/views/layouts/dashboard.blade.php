@@ -90,5 +90,7 @@
     </script>
     @livewireScripts
     @stack('scripts')
+    <x-notify::notify />
+    @notifyJs
 </body>
 </html>
